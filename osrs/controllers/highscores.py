@@ -11,7 +11,7 @@ from typing import Mapping, Union, Iterable
 import requests
 
 
-class Osrs(object):
+class Highscores(object):
     def __init__(self, username: str, account_type: AccountType):
         self.username = username
         self.account_type = account_type
@@ -26,16 +26,17 @@ class Osrs(object):
         self.bosses = Bosses()
         self.bosses_len = len(self.bosses.__dict__)
 
-    def get_user_highscores(self) -> Mapping[str, Union[SkillsSummary, Skills, Minigames, Bosses]]:
+    def set_user_highscores(self) -> None:
         response = self._call_highscores_api()
         rows = response.strip().split("\n")
-        row_count = CONFIG.get("API_ROWS")
+        row_count = CONFIG.get("HIGHSCORE_ROWS")
         if len(rows) != row_count:
             raise OutdatedError(
-                f"Expected {row_count} but received {len(rows)} from API"
+                f"Expected {row_count} but received {len(rows)} from highscores API"
             )
 
         self._set_summary_skills(rows[0].split(","))
+
         skills_end_index = self.skills_len + 1
         self._set_skills(
             [
@@ -43,6 +44,7 @@ class Osrs(object):
                 row in rows[1:skills_end_index]
             ]
         )
+
         minigames_end_index = skills_end_index + self.minigames_len
         self._set_minigames(
             [
@@ -50,6 +52,7 @@ class Osrs(object):
                 row in rows[skills_end_index:minigames_end_index]
             ]
         )
+
         bosses_end_index = minigames_end_index + self.bosses_len
         self._set_bosses(
             [
@@ -57,12 +60,6 @@ class Osrs(object):
                 row in rows[minigames_end_index:bosses_end_index]
             ]
         )
-        return {
-            "Skills Summary": self.skills_summary,
-            "Skills": self.skills,
-            "Minigames": self.minigames,
-            "Bosses": self.bosses
-        }
 
     def _set_summary_skills(self, skills_summary: Iterable[str]) -> None:
         (

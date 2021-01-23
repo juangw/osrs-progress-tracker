@@ -1,3 +1,3 @@
 CONFIG = {
-    "API_ROWS": 80
+    "HIGHSCORE_ROWS": 80
 }

@@ -22,3 +22,20 @@ class AccountType(Enum):
             cls.SEASONAL: "m=hiscore_oldschool_seasonal/index_lite.ws",
         }
         return url_mapping.get(account_type)
+
+@unique
+class GrandExchangeEndpoint(Enum):
+    INFO = "info"
+    ITEMS = "items"
+    DETAIL = "detail"
+    GRAPH = "graph"
+
+    @classmethod
+    def to_url(cls, endpoint_type: str) -> Optional[str]:
+        url_mapping = {
+            cls.INFO: "m=itemdb_rs/api/info.json",
+            cls.ITEMS: "m=itemdb_rs/api/catalogue/items.json",
+            cls.DETAIL: "m=itemdb_rs/api/catalogue/detail.json",
+            cls.GRAPH: "m=itemdb_rs/api/graph",
+        }
+        return url_mapping.get(endpoint_type)
