@@ -24,7 +24,7 @@ class GrandExchange(object):
         )
 
     def get_item_search(
-        self, category: str, alpha: str, page: str
+        self, category: int, alpha: str, page: int
     ) -> Mapping[str, Union[int, List[GrandExchangeItem]]]:
         grand_exchange_url = GrandExchangeEndpoint.to_url(GrandExchangeEndpoint.ITEMS)
         full_url = f"{self.base_url}/{grand_exchange_url}"
@@ -51,7 +51,7 @@ class GrandExchange(object):
             ],
         }
 
-    def get_item_detail(self, item_id: str) -> GrandExchangeItem:
+    def get_item_detail(self, item_id: int) -> GrandExchangeItem:
         grand_exchange_url = GrandExchangeEndpoint.to_url(GrandExchangeEndpoint.DETAIL)
         full_url = f"{self.base_url}/{grand_exchange_url}"
         response = requests.get(url=full_url, params={"item": item_id})
@@ -72,7 +72,7 @@ class GrandExchange(object):
             day180_change=response.json()["item"]["day180"]["change"],
         )
 
-    def get_item_graph(self, item_id: str) -> GrandExchangeItemGraph:
+    def get_item_graph(self, item_id: int) -> GrandExchangeItemGraph:
         grand_exchange_url = GrandExchangeEndpoint.to_url(GrandExchangeEndpoint.GRAPH)
         full_url = f"{self.base_url}/{grand_exchange_url}"
         response = requests.get(url=f"{full_url}/{item_id}.json")
