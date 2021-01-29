@@ -1,29 +1,29 @@
-from dataclasses import dataclass
-from typing import Optional, Mapping
+from dataclasses import dataclass, field
+from typing import Mapping
 
 @dataclass
 class Skills:
     """Class for keeping track of skill stats"""
-    attack: Optional[Mapping[str, str]] = None
-    defence: Optional[Mapping[str, str]] = None
-    strength: Optional[Mapping[str, str]] = None
-    hitpoints: Optional[Mapping[str, str]] = None
-    ranged: Optional[Mapping[str, str]] = None
-    prayer: Optional[Mapping[str, str]] = None
-    magic: Optional[Mapping[str, str]] = None
-    cooking: Optional[Mapping[str, str]] = None
-    woodcutting: Optional[Mapping[str, str]] = None
-    fletching: Optional[Mapping[str, str]] = None
-    fishing: Optional[Mapping[str, str]] = None
-    firemaking: Optional[Mapping[str, str]] = None
-    crafting: Optional[Mapping[str, str]] = None
-    smithing: Optional[Mapping[str, str]] = None
-    mining: Optional[Mapping[str, str]] = None
-    herblore: Optional[Mapping[str, str]] = None
-    agility: Optional[Mapping[str, str]] = None
-    thieving: Optional[Mapping[str, str]] = None
-    slayer: Optional[Mapping[str, str]] = None
-    farming: Optional[Mapping[str, str]] = None
-    runecrafting: Optional[Mapping[str, str]] = None
-    hunter: Optional[Mapping[str, str]] = None
-    construction: Optional[Mapping[str, str]] = None
+    attack: Mapping[str, str] = field(default_factory=dict)
+    defence: Mapping[str, str] = field(default_factory=dict)
+    strength: Mapping[str, str] = field(default_factory=dict)
+    hitpoints: Mapping[str, str] = field(default_factory=dict)
+    ranged: Mapping[str, str] = field(default_factory=dict)
+    prayer: Mapping[str, str] = field(default_factory=dict)
+    magic: Mapping[str, str] = field(default_factory=dict)
+    cooking: Mapping[str, str] = field(default_factory=dict)
+    woodcutting: Mapping[str, str] = field(default_factory=dict)
+    fletching: Mapping[str, str] = field(default_factory=dict)
+    fishing: Mapping[str, str] = field(default_factory=dict)
+    firemaking: Mapping[str, str] = field(default_factory=dict)
+    crafting: Mapping[str, str] = field(default_factory=dict)
+    smithing: Mapping[str, str] = field(default_factory=dict)
+    mining: Mapping[str, str] = field(default_factory=dict)
+    herblore: Mapping[str, str] = field(default_factory=dict)
+    agility: Mapping[str, str] = field(default_factory=dict)
+    thieving: Mapping[str, str] = field(default_factory=dict)
+    slayer: Mapping[str, str] = field(default_factory=dict)
+    farming: Mapping[str, str] = field(default_factory=dict)
+    runecrafting: Mapping[str, str] = field(default_factory=dict)
+    hunter: Mapping[str, str] = field(default_factory=dict)
+    construction: Mapping[str, str] = field(default_factory=dict)

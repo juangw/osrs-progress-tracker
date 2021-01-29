@@ -1,18 +1,18 @@
-from dataclasses import dataclass
-from typing import Optional, Mapping
+from dataclasses import dataclass, field
+from typing import Mapping
 
 @dataclass
 class Minigames:
     """Class for keeping track of minigame stats"""
-    league_points: Optional[Mapping[str, str]] = None
-    bounty_hunter: Optional[Mapping[str, str]] = None
-    bounty_hunter_rogue: Optional[Mapping[str, str]] = None
-    all_clue_scrolls: Optional[Mapping[str, str]] = None
-    beginner_clue_scrolls: Optional[Mapping[str, str]] = None
-    easy_clue_scrolls: Optional[Mapping[str, str]] = None
-    medium_clue_scrolls: Optional[Mapping[str, str]] = None
-    hard_clue_scrolls: Optional[Mapping[str, str]] = None
-    elite_clue_scrolls: Optional[Mapping[str, str]] = None
-    master_clue_scrolls: Optional[Mapping[str, str]] = None
-    last_man_standing: Optional[Mapping[str, str]] = None
-    soul_wars: Optional[Mapping[str, str]] = None
+    league_points: Mapping[str, str] = field(default_factory=dict)
+    bounty_hunter: Mapping[str, str] = field(default_factory=dict)
+    bounty_hunter_rogue: Mapping[str, str] = field(default_factory=dict)
+    all_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    beginner_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    easy_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    medium_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    hard_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    elite_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    master_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
+    last_man_standing: Mapping[str, str] = field(default_factory=dict)
+    soul_wars: Mapping[str, str] = field(default_factory=dict)
