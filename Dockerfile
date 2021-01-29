@@ -6,6 +6,4 @@ WORKDIR /usr/src/app
 
 RUN pip3 install -r requirements.txt
 
-EXPOSE 8000
-
-ENTRYPOINT ["uvicorn osrs.app:app"]
+CMD ["uvicorn osrs.app:app"]
