@@ -5,5 +5,7 @@ COPY . /usr/src/app
 WORKDIR /usr/src/app
 
 RUN pip3 install -r requirements.txt
+ENV PATH="/opt/gtk/bin:${PATH}"
 
+ENTRYPOINT ["bin/bash"]
 CMD ["uvicorn osrs.app:app"]
