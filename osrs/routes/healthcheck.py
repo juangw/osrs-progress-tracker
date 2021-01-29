@@ -1,5 +1,5 @@
 from osrs.app import app
 
-@app.get("/", tags=["Healthcheck"])
+@app.get("/healthcheck", tags=["Healthcheck"])
 def healthcheck():
     return "ok"
