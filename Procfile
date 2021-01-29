@@ -1,1 +1,0 @@
-uvicorn osrs.app:app
