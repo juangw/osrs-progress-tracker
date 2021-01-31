@@ -1,0 +1,15 @@
+FROM node:14
+
+# Create app directory
+RUN mkdir -p /usr/src/app/dashboards
+WORKDIR /usr/src/app/dashboards
+
+# Install app dependencies
+COPY ./dashboards .
+RUN yarn build
+ENV PATH="./node_modules/.bin:${PATH}"
+
+EXPOSE 3000
+
+# Command to run the app
+CMD [ "yarn", "start" ]

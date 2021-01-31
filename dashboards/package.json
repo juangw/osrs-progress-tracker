@@ -1,0 +1,56 @@
+{
+    "name": "osrs-progress-tracker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.tsx",
+    "scripts": {
+      "build": "yarn",
+      "start": "react-scripts start",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "lint": "tslint --quiet --fix --project ."
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/juangw/osrs-progress-tracker.git"
+    },
+    "author": "juangw@umich.edu",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/juangw/osrs-progress-tracker/issues"
+    },
+    "homepage": "https://github.com/osrs-progress-tracker",
+    "dependencies": {
+      "@types/react-dom": "^17.0.0",
+      "@types/react-router-dom": "^5.1.6",
+      "bootstrap": "^4.5.3",
+      "react": "^17.0.1",
+      "react-bootstrap": "^1.4.3",
+      "react-dom": "^16.9.0",
+      "react-router-dom": "^5.2.0",
+      "react-scripts": "^3.4.4",
+      "ts-node": "^8.10.2",
+      "tslint": "^6.1.3",
+      "typescript": "^3.9.7"
+    },
+    "devDependencies": {
+      "@types/react": "^17.0.0",
+      "@typescript-eslint/eslint-plugin": "^3.7.1",
+      "@typescript-eslint/parser": "^3.7.1"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+  
