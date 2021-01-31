@@ -19,7 +19,7 @@ const isLocalhost = Boolean(
         /^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/
       )
   );
-  
+
 export function register(config: any) {
     if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
       // The URL constructor is available in all browsers that support SW.
@@ -53,7 +53,7 @@ export function register(config: any) {
       });
     }
   }
-  
+
 function registerValidSW(swUrl: any, config: any) {
     navigator.serviceWorker
       .register(swUrl)
@@ -97,7 +97,7 @@ function registerValidSW(swUrl: any, config: any) {
         console.error("Error during service worker registration:", error);
       });
   }
-  
+
 function checkValidServiceWorker(swUrl: any, config: any) {
     // Check if the service worker can be found. If it can't reload the page.
     fetch(swUrl)
@@ -125,7 +125,7 @@ function checkValidServiceWorker(swUrl: any, config: any) {
         );
       });
   }
-  
+
 export function unregister() {
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.ready.then(registration => {
