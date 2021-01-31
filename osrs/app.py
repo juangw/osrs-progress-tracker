@@ -24,7 +24,7 @@ def get_player_stats():
     async def insert_user_stats(user_data: Mapping[str, Any]) -> None:
         url = CONFIG[ENV].get("API_URL")
         username, account_type = user_data["username"], user_data["account_type"]
-        result = requests.post(
+        result = requests.put(
             url=f"{url}/highscores/{username}?account_type={account_type}"
         ).json()
         # TODO: make this async
