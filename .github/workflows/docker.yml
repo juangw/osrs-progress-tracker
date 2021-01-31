@@ -12,11 +12,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Build, Push and Deploy to Heroku
+
+      - name: Build docker containers
+        run: docker-compose build
+
+      - name: Deploy to Heroku
         id: heroku
         uses: snithyanantham/docker-compose-multiple-apps-heroku-deploy@v1.0
         with:
           email: ${{ secrets.HEROKU_EMAIL }} # your heroku email
           api_key: ${{ secrets.HEROKU_API_KEY }} # your  heroku api key
           docker_compose_file: './docker-compose.yml'
-          heroku_apps: '[{"imagename":"osrs-progress-tracker-frontend-app","appname":"osrs-progress-tracker-ui","apptype":"web"},{"imagename":"osrs-progress-tracker-backend-app","appname":"osrs-progress-tracker","apptype":"web"}]'
+          heroku_apps: '[{"imagename":"osrs-progress-tracker/frontend","appname":"osrs-progress-tracker-ui","apptype":"web"},{"imagename":"osrs-progress-tracker/backend","appname":"osrs-progress-tracker","apptype":"web"}]'

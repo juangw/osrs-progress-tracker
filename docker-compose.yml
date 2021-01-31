@@ -13,6 +13,7 @@ services:
     entrypoint:
       - "uvicorn osrs.app:app --host=0.0.0.0 --port=${PORT:-8000}"
     container_name: "osrs-progress-tracker-backend-app"
+    image: "osrs-progress-tracker/backend"
 
   osrs-progress-tracker-frontend-app:
     tty: true
@@ -28,3 +29,4 @@ services:
     entrypoint:
       - "yarn start"
     container_name: "osrs-progress-tracker-frontend-app"
+    image: "osrs-progress-tracker/frontend"
