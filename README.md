@@ -58,17 +58,3 @@ print(ge.get_item_search(category="1", alpha="a", page="1"))
 print(ge.get_item_detail(item_id="50"))
 print(ge.get_item_graph(item_id="50"))
 ```
-
-# Setting up Heroku Deploy
-1. https://devcenter.heroku.com/articles/heroku-cli#download-and-install
-2. Run these commands to setup:
-```bash
-heroku create
-git remote -v
-heroku git:remote -a <NAME_OF_APP_ON_HEROKU>
-heroku stack:set container
-```
-3. Run this command to deploy:
-```bash
-git push heroku master
-```
