@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Optional, Mapping
 
+
 @dataclass
 class Bosses:
     """Class for keeping track of boss stats"""
+
     abyssal_sire: Mapping[str, str] = field(default_factory=dict)
     alchemical_hydra: Mapping[str, str] = field(default_factory=dict)
     barrows_chests: Mapping[str, str] = field(default_factory=dict)
@@ -48,3 +50,6 @@ class Bosses:
     wintertodt: Mapping[str, str] = field(default_factory=dict)
     zalcano: Mapping[str, str] = field(default_factory=dict)
     zulrah: Mapping[str, str] = field(default_factory=dict)
+
+    def to_json(self):
+        return self.__dict__

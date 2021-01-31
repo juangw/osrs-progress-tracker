@@ -1,2 +1,2 @@
 class OutdatedError(Exception):
-     pass
+    pass

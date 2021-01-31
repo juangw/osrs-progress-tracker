@@ -23,6 +23,7 @@ class AccountType(Enum):
         }
         return url_mapping.get(account_type)
 
+
 @unique
 class GrandExchangeEndpoint(Enum):
     INFO = "info"

@@ -1,3 +1,12 @@
+import os
+
+
+ENV = os.environ.get("ENV", "local")
+
 CONFIG = {
-    "HIGHSCORE_ROWS": 80
+    "local": {"HIGHSCORE_ROWS": 80, "API_URL": "http://localhost:8000",},
+    "prod": {
+        "HIGHSCORE_ROWS": 80,
+        "API_URL": "https://osrs-progress-tracker.herokuapp.com",
+    },
 }

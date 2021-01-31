@@ -29,7 +29,8 @@ class GrandExchange(object):
         grand_exchange_url = GrandExchangeEndpoint.to_url(GrandExchangeEndpoint.ITEMS)
         full_url = f"{self.base_url}/{grand_exchange_url}"
         response = requests.get(
-            url=f"{full_url}", params={"category": category, "alpha": alpha, "page": page}
+            url=f"{full_url}",
+            params={"category": category, "alpha": alpha, "page": page},
         )
         response.raise_for_status()
         return {
@@ -78,6 +79,5 @@ class GrandExchange(object):
         response = requests.get(url=f"{full_url}/{item_id}.json")
         response.raise_for_status()
         return GrandExchangeItemGraph(
-            daily=response.json()["daily"],
-            average=response.json()["average"],
+            daily=response.json()["daily"], average=response.json()["average"],
         )

@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from typing import Optional
 
+
 @dataclass
 class GrandExchangeItem:
     """Class for keeping track of when grand exchange item"""
+
     item_id: int
     icon: str
     icon_large: str

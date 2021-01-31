@@ -7,13 +7,21 @@ from osrs.models.grand_exchange_graph import GrandExchangeItemGraph
 from typing import List
 
 
-@app.get("/grand_exchange/last_updated", tags=["GrandExchange"], response_model=GrandExchangeLastUpdated)
+@app.get(
+    "/grand_exchange/last_updated",
+    tags=["GrandExchange"],
+    response_model=GrandExchangeLastUpdated,
+)
 def get_ge_last_updated():
     ge = GrandExchange()
     return ge.get_last_updated()
 
 
-@app.get("/grand_exchange/item_search", tags=["GrandExchange"], response_model=GrandExchangeItem)
+@app.get(
+    "/grand_exchange/item_search",
+    tags=["GrandExchange"],
+    response_model=GrandExchangeItem,
+)
 def get_get_item_search(category: int, alpha: str, page: int):
     ge = GrandExchange()
     return ge.get_item_search(category, alpha, page)
@@ -25,7 +33,11 @@ def get_ge_item_detail(item_id: int):
     return ge.get_item_detail(item_id)
 
 
-@app.get("/grand_exchange/item_graph/{item_id}", tags=["GrandExchange"], response_model=GrandExchangeItemGraph)
+@app.get(
+    "/grand_exchange/item_graph/{item_id}",
+    tags=["GrandExchange"],
+    response_model=GrandExchangeItemGraph,
+)
 def get_get_item_graph(item_id: int):
     ge = GrandExchange()
     return ge.get_item_graph(item_id)

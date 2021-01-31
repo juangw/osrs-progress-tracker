@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
 from typing import Mapping
 
+
 @dataclass
 class Skills:
     """Class for keeping track of skill stats"""
+
     attack: Mapping[str, str] = field(default_factory=dict)
     defence: Mapping[str, str] = field(default_factory=dict)
     strength: Mapping[str, str] = field(default_factory=dict)
@@ -27,3 +29,6 @@ class Skills:
     runecrafting: Mapping[str, str] = field(default_factory=dict)
     hunter: Mapping[str, str] = field(default_factory=dict)
     construction: Mapping[str, str] = field(default_factory=dict)
+
+    def to_json(self):
+        return self.__dict__
