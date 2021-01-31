@@ -1,11 +1,11 @@
 FROM node:14
 
 # Create app directory
-RUN mkdir -p /usr/src/app/dashboards
-WORKDIR /usr/src/app/dashboards
+RUN mkdir -p /usr/src/app/dashboard
+WORKDIR /usr/src/app/dashboard
 
 # Install app dependencies
-COPY ./dashboards .
+COPY ./dashboard .
 RUN yarn build
 ENV PATH="./node_modules/.bin:${PATH}"
 

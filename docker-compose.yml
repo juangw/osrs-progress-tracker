@@ -25,7 +25,7 @@ services:
       - "3000:3000"
     volumes:
       - ./:/usr/src/app/
-      - /usr/src/app/dashboards/node_modules
+      - /usr/src/app/dashboard/node_modules
     entrypoint:
       - "yarn start"
     container_name: "osrs-progress-tracker-frontend-app"
