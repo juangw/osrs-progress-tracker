@@ -22,7 +22,9 @@ from fastapi import Depends
     tags=["Highscores"],
     response_model=SkillsSummary,
 )
-def get_skills_summary_for_user(username: str, account_type: AccountType) -> SkillsSummary:
+def get_skills_summary_for_user(
+    username: str, account_type: AccountType
+) -> SkillsSummary:
     user_stats = Highscores(username, account_type)
     user_stats.set_user_highscores()
     return user_stats.skills_summary

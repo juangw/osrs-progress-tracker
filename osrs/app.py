@@ -53,7 +53,7 @@ def cron_job():
     init_db()
 
     # Start backend cron job
-    cron.add_job(get_player_stats, trigger="interval", hours=1)
+    cron.add_job(get_player_stats, trigger="interval", days=1)
     cron.start()
 
 
