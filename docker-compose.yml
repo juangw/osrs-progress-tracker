@@ -1,0 +1,30 @@
+version: "3"
+services:
+  osrs-progress-tracker-backend-app:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./:/usr/src/app/
+    entrypoint:
+      - "uvicorn osrs.app:app --host=0.0.0.0 --port=${PORT:-8000}"
+    container_name: "osrs-progress-tracker-backend-app"
+
+  osrs-progress-tracker-frontend-app:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./
+      dockerfile: Dockerfile.dashboards
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./:/usr/src/app/
+      - /usr/src/app/dashboards/node_modules
+    entrypoint:
+      - "yarn start"
+    container_name: "osrs-progress-tracker-frontend-app"
