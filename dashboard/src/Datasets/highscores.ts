@@ -1,7 +1,7 @@
 export async function getHistoricalHighscoresForUser(username: string) {
-    const environment = process.env.ENV
+    const environment = process.env.ENV || "local"
     let response;
-    if (environment == "local") {
+    if (environment === "local") {
         response = await fetch(
             `http://localhost:8000/highscores/historical/${encodeURIComponent(username)}`
         );

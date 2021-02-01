@@ -6,8 +6,7 @@ WORKDIR /usr/src/app/dashboard
 
 # Install app dependencies
 COPY ./dashboard .
-RUN yarn
-RUN yarn build
+RUN yarn install
 ENV PATH="./node_modules/.bin:${PATH}"
 
 EXPOSE 3000

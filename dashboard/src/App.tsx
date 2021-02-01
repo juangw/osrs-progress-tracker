@@ -11,20 +11,17 @@ import { getHistoricalHighscoresForUser } from "./Datasets/highscores";
 import { translateDataset } from "./Datasets/common";
 
 
-interface Dataset {
-  skills_summary: any[];
-  skills: any[];
-  minigames: any[];
-  bosses: any[];
-}
-
 export default function App() {
   const [username, setUsername] = useState("");
   const [userHighscores, setUserHighscores] = useState(
     {
+      // eslint-disable-next-line
       skills_summary: Array(),
+      // eslint-disable-next-line
       skills: Array(),
+      // eslint-disable-next-line
       minigames: Array(),
+      // eslint-disable-next-line
       bosses: Array(),
     }
   );
