@@ -68,5 +68,9 @@ def get_unique_usernames(session: Session) -> Iterable[Mapping[str, Any]]:
     ]
 
 
-def get_all_username_data(session: Session) -> Iterable[Mapping[str, Any]]:
+def get_all_username_highscores(session: Session) -> Iterable[Mapping[str, Any]]:
     return session.query(Highscores).all()
+
+
+def get_all_highscores_for_user(session: Session, username: str) -> Mapping[str, Any]:
+    return session.query(Highscores).filter(Highscores.username == username).one()

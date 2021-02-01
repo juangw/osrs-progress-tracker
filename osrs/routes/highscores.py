@@ -9,7 +9,8 @@ from osrs.database.highscores import (
     insert_user_highscores,
     append_user_highscores,
     get_unique_usernames,
-    get_all_username_data,
+    get_all_username_highscores,
+    get_all_highscores_for_user,
 )
 from osrs.db import get_db_session, Highscores as DBHighscores
 
@@ -59,11 +60,18 @@ def get_unique_highscore_usernames(session: Session = Depends(get_db_session)):
     return get_unique_usernames(session)
 
 
-@app.get("/highscores/all", tags=["Highscores"])
-def get_unique_highscore_usernames(
+@app.get("/highscores/historical", tags=["Highscores"])
+def get_all_highscores(
     session: Session = Depends(get_db_session),
 ) -> Iterable[Highscores]:
-    return get_all_username_data(session)
+    return get_all_username_highscores(session)
+
+
+@app.get("/highscores/historical/{username}", tags=["Highscores"])
+def get_all_highscores(
+    username: str, session: Session = Depends(get_db_session)
+) -> Iterable[Highscores]:
+    return get_all_highscores_for_user(session, username)
 
 
 @app.post("/highscores/{username}", tags=["Highscores"])
