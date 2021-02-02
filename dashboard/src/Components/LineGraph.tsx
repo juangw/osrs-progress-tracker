@@ -17,7 +17,7 @@ interface LineGraphProps {
 export default function LineGraph(props: LineGraphProps) {
     const remappedData = props.data.map(function(item: any) {
         return {
-          x: Number(item[props.xAccessor.accessor]),
+          x: item[props.xAccessor.accessor],
           y: Number(item[props.yAccessor.accessor]),
         };
     });
