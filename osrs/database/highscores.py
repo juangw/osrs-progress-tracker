@@ -51,10 +51,10 @@ def append_user_highscores(
         user_highscores.minigames.pop(removal_key, None)
         user_highscores.bosses.pop(removal_key, None)
 
-    user_highscores.skills_summary[current_time] = skills_summary
-    user_highscores.skills[current_time] = skills
-    user_highscores.minigames[current_time] = minigames
-    user_highscores.bosses[current_time] = bosses
+    user_highscores.skills_summary[current_time] = skills_summary.__dict__
+    user_highscores.skills[current_time] = skills.__dict__
+    user_highscores.minigames[current_time] = minigames.__dict__
+    user_highscores.bosses[current_time] = bosses.__dict__
     session.commit()
     session.refresh(user_highscores)
     return user_highscores
