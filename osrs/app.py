@@ -4,6 +4,7 @@ from osrs.enums import AccountType
 from osrs.db import init_db
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from typing import Iterable, Mapping, Any
@@ -14,7 +15,19 @@ import asyncio
 import uvicorn
 import os
 
+origins = [
+    "http://localhost:3000", # Local front end
+    "https://osrs-progress-tracker-ui.herokuapp.com" # Production front end
+]
+
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 def get_player_stats():

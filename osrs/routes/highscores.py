@@ -67,7 +67,7 @@ def get_all_highscores(
 
 
 @app.get("/highscores/historical/{username}", tags=["Highscores"])
-def get_all_highscores(
+def get_all_highscores_for_username(
     username: str, session: Session = Depends(get_db_session)
 ) -> Iterable[Highscores]:
     return get_all_highscores_for_user(session, username)
