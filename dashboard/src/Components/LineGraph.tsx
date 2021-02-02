@@ -22,19 +22,19 @@ export default function LineGraph(props: LineGraphProps) {
         };
     });
     return (
-    <XYPlot
-    width={1300}
-    height={300}
-    xType="ordinal"
-    margin={{left: 100, right: 100, top: 40, bottom: 40}}
-    >
-        <VerticalGridLines />
-        <HorizontalGridLines />
-        <LineSeries
-            color="green"
-            data={remappedData}/>
-        <XAxis title={props.xAccessor.displayText} />
-        <YAxis title={props.yAccessor.displayText} />
-    </XYPlot>
+        <XYPlot
+        width={1300}
+        height={300}
+        xType="ordinal"
+        margin={{left: 100, right: 100, top: 40, bottom: 40}}
+        >
+            <VerticalGridLines />
+            <HorizontalGridLines />
+            <LineSeries
+                color="green"
+                data={remappedData}/>
+            <XAxis title={props.xAccessor.displayText} />
+            <YAxis title={props.yAccessor.displayText} />
+        </XYPlot>
     );
 }           

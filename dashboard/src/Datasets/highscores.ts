@@ -1,5 +1,5 @@
 export async function getHistoricalHighscoresForUser(username: string) {
-    const environment = process.env.ENV || "local"
+    const environment = process.env.ENV || "prod";
     let response;
     if (environment === "local") {
         response = await fetch(

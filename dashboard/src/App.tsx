@@ -12,6 +12,7 @@ import { translateDataset } from "./Datasets/common";
 
 
 export default function App() {
+  const [textFieldValue, setTextFieldValue] = useState("");
   const [username, setUsername] = useState("");
   const [userHighscores, setUserHighscores] = useState(
     {
@@ -38,11 +39,13 @@ export default function App() {
 
         <TextField
           id="username"
+          InputLabelProps={{ shrink: true }}
           label="Username"
-          value={username}
+          value={textFieldValue}
           onChange={e => {
-            setUsername(e.target.value);
+            setTextFieldValue(e.target.value);
           }}
+          onBlur={() => setUsername(textFieldValue)}
           margin="normal"
         />
 
