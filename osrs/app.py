@@ -1,6 +1,7 @@
 from osrs.config import CONFIG, ENV
 from osrs.controllers.highscores import Highscores
 from osrs.enums import AccountType
+from osrs.db import init_db
 
 from fastapi import FastAPI
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -24,7 +25,7 @@ def get_player_stats():
     async def insert_user_stats(user_data: Mapping[str, Any]) -> None:
         url = CONFIG[ENV].get("API_URL")
         username, account_type = user_data["username"], user_data["account_type"]
-        result = requests.put(
+        result = requests.post(
             url=f"{url}/highscores/{username}?account_type={account_type}"
         ).json()
         # TODO: make this async
@@ -52,12 +53,11 @@ def cron_job():
     # Init db tables
     init_db()
 
+    # apply routes to app
+    from osrs.routes import healthcheck
+    from osrs.routes import highscores
+    from osrs.routes import grand_exchange
+
     # Start backend cron job
-    cron.add_job(get_player_stats, trigger="interval", days=1)
+    cron.add_job(get_player_stats, trigger="interval", hours=6)
     cron.start()
-
-
-from osrs.routes.healthcheck import *
-from osrs.routes.highscores import *
-from osrs.routes.grand_exchange import *
-from osrs.db import init_db

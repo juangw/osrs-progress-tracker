@@ -7,7 +7,6 @@ from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
 from osrs.database.highscores import (
     insert_user_highscores,
-    append_user_highscores,
     get_unique_usernames,
     get_all_username_highscores,
     get_all_highscores_for_user,
@@ -81,24 +80,6 @@ def add_user_to_highscores(
     user_stats = Highscores(username, account_type)
     user_stats.set_user_highscores()
     user_highscores = insert_user_highscores(
-        session,
-        username,
-        account_type,
-        user_stats.skills_summary,
-        user_stats.skills,
-        user_stats.minigames,
-        user_stats.bosses,
-    )
-    return user_highscores
-
-
-@app.put("/highscores/{username}", tags=["Highscores"])
-def append_to_user_highscores(
-    username: str, account_type: AccountType, session: Session = Depends(get_db_session)
-) -> DBHighscores:
-    user_stats = Highscores(username, account_type)
-    user_stats.set_user_highscores()
-    user_highscores = append_user_highscores(
         session,
         username,
         account_type,
