@@ -22,7 +22,7 @@ services:
     stdin_open: true
     build:
       context: ./
-      dockerfile: Dockerfile.dashboards
+      dockerfile: Dockerfile.dashboards.prod
     ports:
       - "3000:3000"
     environment:
