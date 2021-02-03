@@ -29,6 +29,7 @@ export default function App() {
 
   useEffect(() => {
     console.log(`fetching highscores for ${username}`);
+    if (!username) { return }
     getHistoricalHighscoresForUser(username).then(data => setUserHighscores(translateDataset(data)));
   },        [username]); // Only re-run the effect if username changes
 

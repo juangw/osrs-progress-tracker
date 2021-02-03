@@ -7,11 +7,10 @@ CONFIG = {
     "local": {
         "HIGHSCORE_ROWS": 80,
         "API_URL": "http://localhost:8000",
-        "DB_NAME": "osrs_tracker",
+        "DB_URI": "postgresql+psycopg2://postgres:postgres@localhost:5432/postgres",
     },
     "prod": {
         "HIGHSCORE_ROWS": 80,
         "API_URL": "https://osrs-progress-tracker.herokuapp.com",
-        "DB_NAME": "osrs_tracker",
     },
 }

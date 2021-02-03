@@ -12,6 +12,8 @@ services:
       ENV: "local"
     volumes:
       - ./:/usr/src/app/
+    depends_on:
+      - "postgres"
     entrypoint:
       - "/bin/bash"
     container_name: "osrs-progress-tracker-backend-app"
@@ -35,4 +37,16 @@ services:
       - "/bin/bash"
     container_name: "osrs-progress-tracker-frontend-app"
     image: "osrs-progress-tracker/frontend"
+    network_mode: "host"
+
+  postgres:
+    image: postgres:9.6
+    ports:
+      - "5432:5432"
+    environment:
+      LOG_LEVEL: INFO
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    container_name: postgres
     network_mode: "host"

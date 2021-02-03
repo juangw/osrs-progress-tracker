@@ -16,8 +16,8 @@ from typing import Mapping, Any
 import sqlalchemy
 import os
 
-DB_NAME = CONFIG[ENV].get("DB_NAME")
-URL = os.environ.get("DATABASE_URL", f"sqlite:///{DB_NAME}",)
+DB_URI = CONFIG[ENV].get("DB_URI")
+URL = os.environ.get("DATABASE_URL", DB_URI)
 
 engine = sqlalchemy.create_engine(URL)
 Base = declarative_base()
@@ -29,8 +29,8 @@ class Highscores(Base):
     __tablename__ = "highscores"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String, nullable=False)
-    account_type = Column(String, nullable=False)
+    username = Column(String(256), nullable=False)
+    account_type = Column(String(256), nullable=False)
     skills_summary = Column(MutableDict.as_mutable(JSON), nullable=False)
     skills = Column(MutableDict.as_mutable(JSON), nullable=False)
     minigames = Column(MutableDict.as_mutable(JSON), nullable=False)
@@ -57,9 +57,8 @@ class Highscores(Base):
 
 
 def init_db():
-    if not os.path.exists(f"osrs/{DB_NAME}"):
-        Base.metadata.create_all(engine)
-        print("Database created")
+    Base.metadata.create_all(engine)
+    print("Database created")
 
 
 def get_db_session():
