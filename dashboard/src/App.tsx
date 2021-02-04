@@ -78,7 +78,7 @@ export default function App() {
             <MenuItem value="ranking">Ranking</MenuItem>
           </Select>
         </div>
-        
+
 
         <LineGraph
           xAccessor={{accessor: "date", displayText: "Date"}}

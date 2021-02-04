@@ -16,23 +16,27 @@ interface LineGraphProps {
 
 export default function LineGraph(props: LineGraphProps) {
     const [mappedData, setMappedData] = useState([{x: 0, y: 0}]);
+    const [yDomain, setYDomain] = useState([0, 10000]);
 
     useEffect(() => {
         if (!props.data.length) { return; }
+        let maxY = 0;
         const graphData = props.data.map(function(item: any) {
-            console.log(item);
+            maxY = Number(item[props.yAccessor.accessor])
             return {
               x: item[props.xAccessor.accessor],
               y: Number(item[props.yAccessor.accessor]),
             };
         });
         setMappedData(graphData);
+        setYDomain([0, maxY + 50])
     },        [props]); // Only re-run the effect if props data changes
-    
+
     return (
         <XYPlot
             width={1300}
             height={300}
+            yDomain={yDomain}
             xType="ordinal"
             margin={{left: 100, right: 100, top: 40, bottom: 40}}
         >
@@ -41,8 +45,8 @@ export default function LineGraph(props: LineGraphProps) {
             <LineSeries
                 color="green"
                 data={mappedData}/>
-            <XAxis title={props.xAccessor.displayText} />
-            <YAxis title={props.yAccessor.displayText} />
+            <XAxis orientation={"bottom"} title={props.xAccessor.displayText} />
+            <YAxis orientation={"left"} title={props.yAccessor.displayText} />
         </XYPlot>
     );
 }           
