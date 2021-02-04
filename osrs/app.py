@@ -17,8 +17,8 @@ import os
 
 origins = [
     "http://localhost:3000",
-    "http://localhost:5000", # Local front end
-    "https://osrs-progress-tracker-ui.herokuapp.com" # Production front end
+    "http://localhost:5000",  # Local front end
+    "https://osrs-progress-tracker-ui.herokuapp.com",  # Production front end
 ]
 
 app = FastAPI()
