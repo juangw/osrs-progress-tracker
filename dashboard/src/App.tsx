@@ -8,6 +8,7 @@ import { Select, MenuItem } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import LineGraph from "./Components/LineGraph";
+import HighscoresTable from "./Components/Table";
 import { getHistoricalHighscoresForUser } from "./Datasets/highscores";
 import { translateDataset } from "./Datasets/common";
 
@@ -50,6 +51,7 @@ export default function App() {
   },        [summaryType]); // Only re-run the effect if summary type changes
 
   return (
+    // @ts-ignore
     <Router>
       <div className="App">
         <h1>Old School Runescape Progress Tracker</h1>
@@ -79,12 +81,17 @@ export default function App() {
           </Select>
         </div>
 
+        <div>
+          <LineGraph
+            xAccessor={{accessor: "date", displayText: "Date"}}
+            yAccessor={yAccessor}
+            data={userHighscores.skills_summary}
+          />
+        </div>
 
-        <LineGraph
-          xAccessor={{accessor: "date", displayText: "Date"}}
-          yAccessor={yAccessor}
-          data={userHighscores.skills_summary}
-        />
+        <div>
+          <HighscoresTable data={userHighscores.skills}/>
+        </div>
       </div>
     </Router>
   );

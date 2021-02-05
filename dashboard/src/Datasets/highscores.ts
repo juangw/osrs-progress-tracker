@@ -10,7 +10,7 @@ export async function getHistoricalHighscoresForUser(username: string) {
             `https://osrs-progress-tracker.herokuapp.com/highscores/historical/${encodeURIComponent(username)}`
         );
     }
-    
+
     const data = await response.json();
     return data;
 }

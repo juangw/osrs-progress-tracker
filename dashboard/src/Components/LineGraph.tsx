@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineSeries } from "react-vis";
 import "../../node_modules/react-vis/dist/style.css";
+import _ from "lodash";
 
 
 interface Accessor {
@@ -21,18 +22,23 @@ export default function LineGraph(props: LineGraphProps) {
     useEffect(() => {
         if (!props.data.length) { return; }
         let maxY = 0;
+        let minY = 4600000000;
         const graphData = props.data.map(function(item: any) {
-            maxY = Number(item[props.yAccessor.accessor])
+            const value = Number(item[props.yAccessor.accessor]);
+            maxY = value > maxY ? value : maxY;
+            minY = value < minY ? value : minY;
             return {
               x: item[props.xAccessor.accessor],
-              y: Number(item[props.yAccessor.accessor]),
+              y: value,
             };
         });
-        setMappedData(graphData);
-        setYDomain([0, maxY + 50])
+        const yDiff = maxY - minY;
+        setMappedData(_.orderBy(graphData, "x", ["asc"]));
+        setYDomain([minY - (yDiff * 3), maxY + (yDiff * 3)]);
     },        [props]); // Only re-run the effect if props data changes
 
     return (
+        // @ts-ignore
         <XYPlot
             width={1300}
             height={300}
@@ -49,4 +55,4 @@ export default function LineGraph(props: LineGraphProps) {
             <YAxis orientation={"left"} title={props.yAccessor.displayText} />
         </XYPlot>
     );
-}           
+}
