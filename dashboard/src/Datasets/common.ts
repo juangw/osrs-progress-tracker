@@ -33,3 +33,7 @@ export function translateDataset(data: any) {
     });
     return translatedDataset;
 }
+
+export function cleanNumber(value: number) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

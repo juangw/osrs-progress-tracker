@@ -18,6 +18,6 @@ export const styles: { [key: string]: React.CSSProperties } = {
    },
    tableCellNeutral: {
       fontWeight: "bold",
-      color: "grey",
+      color: "black",
    }
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
+import { cleanNumber } from "../Datasets/common";
 import { styles } from "./styling/table.css";
 
 import _ from "lodash";
@@ -59,10 +60,13 @@ export default function HighscoresTable(props: TableProps) {
     };
 
     const getStyledCell = (value: number) => {
-        console.log(value);
-        if (value > 0) { return <TableCell align="left" style={styles.tableCellPositive}>{value}</TableCell>; }
-        if (value < 0) { return <TableCell align="left" style={styles.tableCellNegative}>{value}</TableCell>; }
-        return <TableCell align="left" style={styles.tableCells}>{value}</TableCell>;
+        if (value > 0) {
+            return <TableCell align="left" style={styles.tableCellPositive}>{cleanNumber(value)}</TableCell>;
+        }
+        if (value < 0) {
+            return <TableCell align="left" style={styles.tableCellNegative}>{cleanNumber(value)}</TableCell>;
+        }
+        return <TableCell align="left" style={styles.tableCells}>{cleanNumber(value)}</TableCell>;
     };
 
     const createRows = (skill: string, index: number) => {
@@ -71,20 +75,20 @@ export default function HighscoresTable(props: TableProps) {
         const levelDiff = computeDifference(currentValues, compareValues, index, "level");
         const rankingDiff = computeDifference(currentValues, compareValues, index, "ranking");
         return (
-            <TableRow key={skill}>
+            <TableRow style={{height: 1}} key={skill}>
                 <TableCell component="th" scope="row" style={styles.tableCells}>
                     {skill.toUpperCase()}
                 </TableCell>
                 <TableCell align="left" style={styles.tableCells}>
-                    {currentValues[index].experience}
+                    {cleanNumber(currentValues[index].experience)}
                 </TableCell>
                 {getStyledCell(experienceDiff)}
                 <TableCell align="left" style={styles.tableCells}>
-                    {currentValues[index].level}
+                    {cleanNumber(currentValues[index].level)}
                 </TableCell>
                 {getStyledCell(levelDiff)}
                 <TableCell align="left" style={styles.tableCells}>
-                    {currentValues[index].ranking}
+                    {cleanNumber(currentValues[index].ranking)}
                 </TableCell>
                 {getStyledCell(rankingDiff)}
             </TableRow>
@@ -94,9 +98,10 @@ export default function HighscoresTable(props: TableProps) {
     return (
         // @ts-ignore
         <React.Fragment>
-            <p>Highscores Results From: {lastUpdated} Compared Against Last Data Point From: {prevUpdated}</p>
+            <p style={{fontSize: 14}}>Highscores Results From: {lastUpdated}</p>
+            <p style={{fontSize: 14}}>Compared Against Last Data Point From: {prevUpdated}</p>
 
-            <Table>
+            <Table style={{ width: "50%" }} size="small">
                 <TableHead style={styles.tableHeader}>
                     <TableRow key={"headers"}>
                         <TableCell align="left">Skill Name</TableCell>

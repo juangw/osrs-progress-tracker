@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineSeries } from "react-vis";
+import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineMarkSeries, LineMarkSeriesPoint, Hint } from "react-vis";
+import { cleanNumber } from "../Datasets/common";
 import "../../node_modules/react-vis/dist/style.css";
+import moment from "moment";
 import _ from "lodash";
 
 
@@ -15,9 +17,16 @@ interface LineGraphProps {
     data: any[];
 }
 
+interface Coordinate {
+    x: string;
+    y: number;
+}
+
 export default function LineGraph(props: LineGraphProps) {
-    const [mappedData, setMappedData] = useState([{x: 0, y: 0}]);
+    const [mappedData, setMappedData] = useState<Coordinate[] | any[] | undefined>(undefined);
     const [yDomain, setYDomain] = useState([0, 10000]);
+    const [hoverValue, setHoverValue] = useState<Coordinate | LineMarkSeriesPoint | undefined>(undefined);
+    const defaultEmptyData = [{x: "1/1/2020", y: 0}];
 
     useEffect(() => {
         if (!props.data.length) { return; }
@@ -27,15 +36,28 @@ export default function LineGraph(props: LineGraphProps) {
             const value = Number(item[props.yAccessor.accessor]);
             maxY = value > maxY ? value : maxY;
             minY = value < minY ? value : minY;
-            return {
-              x: item[props.xAccessor.accessor],
+            const coordinate: Coordinate = {
+              x: moment(item[props.xAccessor.accessor]).format("MM-DD-YYYY HH:mm"),
               y: value,
             };
+            return coordinate;
         });
         const yDiff = maxY - minY;
         setMappedData(_.orderBy(graphData, "x", ["asc"]));
         setYDomain([minY - (yDiff * 3), maxY + (yDiff * 3)]);
     },        [props]); // Only re-run the effect if props data changes
+
+    const createTooltip = () => {
+        if (typeof hoverValue === "undefined" || typeof mappedData === "undefined") { return; }
+        return (
+            <Hint value={hoverValue} style={{fontSize: 14}}>
+                <div style={{background: "rgba(45, 45, 45, 0.75)", color: "white", borderStyle: "solid", borderColor: "black"}}>
+                    <div style={{fontSize: 12}}>Date: {hoverValue.x}</div>
+                    <div style={{fontSize: 12}}>Value: {cleanNumber(hoverValue.y as number)}</div>
+                </div>
+            </Hint>
+        );
+    };
 
     return (
         // @ts-ignore
@@ -48,9 +70,13 @@ export default function LineGraph(props: LineGraphProps) {
         >
             <VerticalGridLines />
             <HorizontalGridLines />
-            <LineSeries
-                color="green"
-                data={mappedData}/>
+            <LineMarkSeries
+                color="#CF6D46"
+                data={typeof mappedData === "undefined" ? defaultEmptyData : mappedData}
+                onSeriesMouseOut={() => setHoverValue(undefined)}
+                onNearestX={(value: LineMarkSeriesPoint) => setHoverValue(value)}
+            />
+            {createTooltip()}
             <XAxis orientation={"bottom"} title={props.xAccessor.displayText} />
             <YAxis orientation={"left"} title={props.yAccessor.displayText} />
         </XYPlot>

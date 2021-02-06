@@ -46,6 +46,7 @@ export default function App() {
         setYAccessor({accessor: "ranking", displayText: "Ranking"});
         break;
       default:
+        setYAccessor({accessor: "total_experience", displayText: "Total XP"});
         break;
     }
   },        [summaryType]); // Only re-run the effect if summary type changes
