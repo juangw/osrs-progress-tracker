@@ -80,15 +80,15 @@ export default function HighscoresTable(props: TableProps) {
                     {skill.toUpperCase()}
                 </TableCell>
                 <TableCell align="left" style={styles.tableCells}>
-                    {cleanNumber(currentValues[index].experience)}
+                    {cleanNumber(Number(currentValues[index].experience))}
                 </TableCell>
                 {getStyledCell(experienceDiff)}
                 <TableCell align="left" style={styles.tableCells}>
-                    {cleanNumber(currentValues[index].level)}
+                    {cleanNumber(Number(currentValues[index].level))}
                 </TableCell>
                 {getStyledCell(levelDiff)}
                 <TableCell align="left" style={styles.tableCells}>
-                    {cleanNumber(currentValues[index].ranking)}
+                    {cleanNumber(Number(currentValues[index].ranking))}
                 </TableCell>
                 {getStyledCell(rankingDiff)}
             </TableRow>
