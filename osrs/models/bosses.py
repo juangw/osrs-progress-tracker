@@ -12,7 +12,7 @@ class Bosses:
     bryophyta: Mapping[str, str] = field(default_factory=dict)
     callisto: Mapping[str, str] = field(default_factory=dict)
     cerberus: Mapping[str, str] = field(default_factory=dict)
-    chambers_of_eric: Mapping[str, str] = field(default_factory=dict)
+    chambers_of_xeric: Mapping[str, str] = field(default_factory=dict)
     chambers_of_xeric_challenge_mode: Mapping[str, str] = field(default_factory=dict)
     chaos_elemental: Mapping[str, str] = field(default_factory=dict)
     chaos_fanatic: Mapping[str, str] = field(default_factory=dict)
