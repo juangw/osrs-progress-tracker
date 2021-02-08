@@ -18,7 +18,7 @@ interface LineGraphProps {
 }
 
 interface Coordinate {
-    x: string;
+    x: Date;
     y: number;
 }
 
@@ -26,7 +26,7 @@ export default function LineGraph(props: LineGraphProps) {
     const [mappedData, setMappedData] = useState<Coordinate[] | any[] | undefined>(undefined);
     const [yDomain, setYDomain] = useState([0, 10000]);
     const [hoverValue, setHoverValue] = useState<Coordinate | LineMarkSeriesPoint | undefined>(undefined);
-    const defaultEmptyData = [{x: "1/1/2020", y: 0}];
+    const defaultEmptyData = [{x: new Date("1/1/2020"), y: 0}];
 
     useEffect(() => {
         if (!props.data.length) { return; }
@@ -37,13 +37,13 @@ export default function LineGraph(props: LineGraphProps) {
             maxY = value > maxY ? value : maxY;
             minY = value < minY ? value : minY;
             const coordinate: Coordinate = {
-              x: moment(item[props.xAccessor.accessor]).format("MM-DD-YYYY HH:mm"),
+              x: moment(item[props.xAccessor.accessor]).toDate(),
               y: value,
             };
             return coordinate;
         });
         const yDiff = maxY - minY;
-        const lowerBound = (minY - (yDiff * 3) < 0) ?  minY - (yDiff * 3) : 0;
+        const lowerBound = (minY - (yDiff * 3) > 0) ?  minY - (yDiff * 3) : 0;
         setMappedData(_.orderBy(graphData, "x", ["asc"]));
         setYDomain([lowerBound, maxY + (yDiff * 3)]);
     },        [props]); // Only re-run the effect if props data changes
@@ -53,7 +53,7 @@ export default function LineGraph(props: LineGraphProps) {
         return (
             <Hint value={hoverValue} style={{fontSize: 14}}>
                 <div style={{background: "rgba(45, 45, 45, 0.75)", color: "white", borderStyle: "solid", borderColor: "black"}}>
-                    <div style={{fontSize: 12}}>Date: {hoverValue.x}</div>
+                    <div style={{fontSize: 12}}>Date: {moment(hoverValue.x).format("MM-DD-YYYY HH:mm")}</div>
                     <div style={{fontSize: 12}}>Value: {cleanNumber(hoverValue.y as number)}</div>
                 </div>
             </Hint>
@@ -66,7 +66,7 @@ export default function LineGraph(props: LineGraphProps) {
             width={1300}
             height={300}
             yDomain={yDomain}
-            xType="ordinal"
+            xType="time"
             margin={{left: 100, right: 100, top: 40, bottom: 40}}
         >
             <VerticalGridLines />

@@ -40,3 +40,11 @@ class GrandExchangeEndpoint(Enum):
             cls.GRAPH: "m=itemdb_rs/api/graph",
         }
         return url_mapping.get(endpoint_type)
+
+
+@unique
+class HighscoresDataTypes(Enum):
+    SKILLS_SUMMARY = "skills_summary"
+    SKILLS = "skills"
+    MINIGAMES = "minigames"
+    BOSSES = "bosses"

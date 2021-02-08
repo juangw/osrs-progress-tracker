@@ -3,10 +3,11 @@ from osrs.models.skills import Skills
 from osrs.models.skills_summary import SkillsSummary
 from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
-from osrs.enums import AccountType
+from osrs.enums import AccountType, HighscoresDataTypes
 
-from sqlalchemy.orm import Session
-from typing import Mapping, Any, Iterable
+from sqlalchemy.orm import Session, load_only
+from sqlalchemy import func
+from typing import Mapping, Any, Iterable, Optional
 
 import time
 
@@ -44,6 +45,19 @@ def get_all_username_highscores(session: Session) -> Iterable[Mapping[str, Any]]
 
 
 def get_all_highscores_for_user(
-    session: Session, username: str
+    session: Session,
+    username: str,
+    start_date: Optional[str],
+    only_return: Optional[HighscoresDataTypes],
 ) -> Iterable[Mapping[str, Any]]:
-    return session.query(Highscores).filter(Highscores.username == username).all()
+    query = session.query(Highscores).filter(Highscores.username == username)
+
+    # Add query for start_date
+    if start_date:
+        query = query.filter(Highscores.created_date >= func.date(start_date))
+
+    # Only return certain entities if requested in `only_return`
+    if only_return:
+        query = query.options(load_only(*[only_return.value, "created_date"]))
+
+    return query.all()

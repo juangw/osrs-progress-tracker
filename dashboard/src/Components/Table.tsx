@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 import { cleanNumber } from "../Datasets/common";
 import { styles } from "./styling/table.css";
+import { ProgressTimeframes } from "../App";
 
+import moment from "moment";
 import _ from "lodash";
 
 
@@ -21,6 +23,7 @@ interface HighscoresData {
 interface TableProps {
     data: HighscoresData[];
     type: "Skills" | "Bosses";
+    timeframe: ProgressTimeframes;
     includeLastUpdated: boolean;
 }
 
@@ -38,8 +41,8 @@ export default function HighscoresTable(props: TableProps) {
         setKeys(Object.keys(orderedProps[0]));
         setCurrentValues(Object.values(orderedProps[0]));
         if (typeof orderedProps[1] !== "undefined") {
-            setCompareValues(Object.values(orderedProps[1]));
-            setPrevUpdated(orderedProps[1].date);
+            setCompareValues(Object.values(orderedProps[orderedProps.length - 1]));
+            setPrevUpdated(orderedProps[orderedProps.length - 1].date);
         }
     },        [props]); // Only re-run the effect if props data changes
 
@@ -120,8 +123,12 @@ export default function HighscoresTable(props: TableProps) {
     const displayUpdatedTime = (lastUpdatedTime: string, prevUpdatedTime: string) => {
         return (
             <React.Fragment>
-                <p style={{fontSize: 14}}>Highscores Results From: {lastUpdatedTime}</p>
-                <p style={{fontSize: 14}}>Compared Against Last Data Point From: {prevUpdatedTime}</p>
+                <p style={{fontSize: 14}}>
+                    Highscores Results From: {moment(lastUpdatedTime).format("MM-DD-YYYY HH:mm")}
+                </p>
+                <p style={{fontSize: 14}}>
+                    Compared Against Last Data Point From: {moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm")}
+                </p>
             </React.Fragment>
         );
     };
@@ -153,7 +160,6 @@ export default function HighscoresTable(props: TableProps) {
         // @ts-ignore
         <React.Fragment>
             {props.includeLastUpdated ? displayUpdatedTime(lastUpdated, prevUpdated) : <React.Fragment/>}
-
             <Table style={{ width: "40%" }} size="small">
                 <TableHead style={styles.tableHeader}>
                     <TableRow key={"headers"}>

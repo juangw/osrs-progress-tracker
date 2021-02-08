@@ -4,21 +4,25 @@ import {
 } from "react-router-dom";
 import TextField from "@material-ui/core/TextField";
 import { Select, MenuItem } from "@material-ui/core";
+import moment from "moment";
 
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./App.css";
 import LineGraph from "./Components/LineGraph";
 import HighscoresTable from "./Components/Table";
 import { getHistoricalHighscoresForUser, postHighscoresForUser } from "./Datasets/highscores";
 import { translateDataset } from "./Datasets/common";
 
 
+export type SummaryTypes = "xp" | "totalLevel" | "ranking";
+export type ProgressTimeframes = "daily" | "weekly" | "monthly" | "yearly" | "allTime";
+
 export default function App() {
   const [newTextFieldValue, setNewTextFieldValue] = useState("");
   const [newUsername, setNewUsername] = useState("");
   const [textFieldValue, setTextFieldValue] = useState("");
   const [username, setUsername] = useState("");
-  const [summaryType, setSummaryType] = useState("xp");
+  const [summaryType, setSummaryType] = useState<SummaryTypes>("xp");
+  const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
   const [yAccessor, setYAccessor] = useState({accessor: "total_experience", displayText: "Total XP"});
   const [userHighscores, setUserHighscores] = useState(
     {
@@ -36,8 +40,27 @@ export default function App() {
   useEffect(() => {
     if (!username) { return; }
     console.log(`fetching highscores for user: ${username}`);
-    getHistoricalHighscoresForUser(username).then(data => setUserHighscores(translateDataset(data)));
-  },        [username]); // Only re-run the effect if username changes
+    let timeframe = moment() as moment.Moment | undefined;
+    switch (progressTimeframe) {
+      case "daily":
+        if (typeof timeframe === "undefined") { return timeframe; }
+        timeframe.subtract(1, "days");
+        break;
+      case "weekly":
+        if (typeof timeframe === "undefined") { return timeframe; }
+        timeframe.subtract(1, "weeks");
+        break;
+      case "monthly":
+        if (typeof timeframe === "undefined") { return timeframe; }
+        timeframe.subtract(1, "months");
+        break;
+      default:
+        timeframe = undefined as undefined;
+        break;
+    }
+    getHistoricalHighscoresForUser(username, timeframe)
+      .then(data => setUserHighscores(translateDataset(data)));
+  },        [username, progressTimeframe]); // Only re-run the effect if username or timeframe changes
 
   useEffect(() => {
     if (!newUsername) { return; }
@@ -114,8 +137,29 @@ export default function App() {
         </div>
 
         <div>
-          <HighscoresTable data={userHighscores.skills} type="Skills" includeLastUpdated={true}/>
-          <HighscoresTable data={userHighscores.bosses} type="Bosses" includeLastUpdated={false}/>
+            <Select
+              labelId="label"
+              id="select"
+              value={progressTimeframe}
+              onChange={(e) => setProgressTimeframe(e.target.value)}
+            >
+              <MenuItem value="daily">Daily</MenuItem>
+              <MenuItem value="weekly">Weekly</MenuItem>
+              <MenuItem value="yearly">Yearly</MenuItem>
+              <MenuItem value="allTime">All Time</MenuItem>
+            </Select>
+            <HighscoresTable
+              data={userHighscores.skills}
+              type="Skills"
+              timeframe={progressTimeframe}
+              includeLastUpdated={true}
+            />
+            <HighscoresTable
+              data={userHighscores.bosses}
+              type="Bosses"
+              timeframe={progressTimeframe}
+              includeLastUpdated={false}
+            />
         </div>
       </div>
     </Router>

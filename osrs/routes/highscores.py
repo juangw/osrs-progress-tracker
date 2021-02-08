@@ -1,6 +1,6 @@
 from osrs.app import app
 from osrs.controllers.highscores import Highscores
-from osrs.enums import AccountType
+from osrs.enums import AccountType, HighscoresDataTypes
 from osrs.models.skills import Skills
 from osrs.models.skills_summary import SkillsSummary
 from osrs.models.minigames import Minigames
@@ -14,7 +14,7 @@ from osrs.database.highscores import (
 from osrs.db import get_db_session, Highscores as DBHighscores
 
 from sqlalchemy.orm import Session
-from typing import Mapping, Union, Iterable
+from typing import Mapping, Union, Iterable, Optional, List
 from fastapi import Depends
 
 
@@ -68,9 +68,12 @@ def get_all_highscores(
 
 @app.get("/highscores/historical/{username}", tags=["Highscores"])
 def get_all_highscores_for_username(
-    username: str, session: Session = Depends(get_db_session)
+    username: str,
+    start_date: Optional[str] = None,
+    only_return: Optional[HighscoresDataTypes] = None,
+    session: Session = Depends(get_db_session),
 ) -> Iterable[Highscores]:
-    return get_all_highscores_for_user(session, username)
+    return get_all_highscores_for_user(session, username, start_date, only_return)
 
 
 @app.post("/highscores/{username}", tags=["Highscores"])
