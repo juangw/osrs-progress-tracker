@@ -9,6 +9,7 @@ import moment from "moment";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LineGraph from "./Components/LineGraph";
 import HighscoresTable from "./Components/Table";
+import Header from "./Components/Header";
 import { getHistoricalHighscoresForUser, postHighscoresForUser } from "./Datasets/highscores";
 import { translateDataset } from "./Datasets/common";
 
@@ -86,7 +87,7 @@ export default function App() {
     // @ts-ignore
     <Router>
       <div className="App">
-        <h1>Old School Runescape Progress Tracker</h1>
+        {Header()}
 
         <p>If you are a new user enter your username here:</p>
         <div>

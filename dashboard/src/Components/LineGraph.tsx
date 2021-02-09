@@ -43,7 +43,7 @@ export default function LineGraph(props: LineGraphProps) {
             return coordinate;
         });
         const yDiff = maxY - minY;
-        const lowerBound = (minY - (yDiff * 3) > 0) ?  minY - (yDiff * 3) : 0;
+        const lowerBound = (minY - (yDiff * 3) < 0) ? minY - (yDiff * 3) : 0;
         setMappedData(_.orderBy(graphData, "x", ["asc"]));
         setYDomain([lowerBound, maxY + (yDiff * 3)]);
     },        [props]); // Only re-run the effect if props data changes
@@ -78,7 +78,13 @@ export default function LineGraph(props: LineGraphProps) {
                 onNearestX={(value: LineMarkSeriesPoint) => setHoverValue(value)}
             />
             {createTooltip()}
-            <XAxis orientation={"bottom"} title={props.xAccessor.displayText} />
+            <XAxis
+                orientation={"bottom"}
+                title={props.xAccessor.displayText}
+                tickFormat={(d: Date) => moment(d).format("MMM DD HH:mm")}
+                tickLabelAngle={-20}
+                tickTotal={typeof mappedData === "undefined" ? 0 : 12}
+            />
             <YAxis orientation={"left"} title={props.yAccessor.displayText} />
         </XYPlot>
     );
