@@ -31,7 +31,7 @@ export default function Header() {
     const getNavLinks = [
         { title: "contact", path: "/contact"},
         { title: "donate", path: "/donate"},
-    ]
+    ];
 
 
     return (
@@ -55,5 +55,5 @@ export default function Header() {
                 </List>
             </Toolbar>
         </AppBar>
-    )
+    );
 }

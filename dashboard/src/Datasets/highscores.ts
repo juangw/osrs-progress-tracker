@@ -49,7 +49,7 @@ export async function postHighscoresForUser(username: string) {
         } catch (e) {
             // only re-throw error if its the last accountType
             if (accountTypes.indexOf(accountType) === accountTypes.length) {
-                throw e;
+                data = "Failed";
             }
         }
     }
