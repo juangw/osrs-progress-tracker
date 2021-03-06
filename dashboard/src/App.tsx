@@ -10,26 +10,29 @@ import Header from "./Components/Header";
 import NewUserInputCard from "./Components/NewUserInputCard";
 import UserSearchFiltersCard from "./Components/UserSearchFiltersCard";
 
-export type SummaryTypes = "xp" | "totalLevel" | "ranking";
+export type SummaryTypes =  "totalXP" | "gainedXP" | "totalLevel" | "ranking";
 export type ProgressTimeframes = "daily" | "weekly" | "monthly" | "yearly" | "allTime";
 export type AlertStatusTypes = "Success" | "Failed" | "None";
+
+interface HighscoresData {
+  skills_summary: any[];
+  skills: any[];
+  minigames: any[];
+  bosses: any[];
+}
 
 export default function App() {
   const [alertStatus, setAlertStatus] = useState<AlertStatusTypes>("None");
   const [alertText, setAlertText] = useState("");
-  const [summaryType, setSummaryType] = useState<SummaryTypes>("xp");
+  const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
   const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
   const [yAccessor, setYAccessor] = useState({accessor: "total_experience", displayText: "Total XP"});
-  const [userHighscores, setUserHighscores] = useState(
+  const [userHighscores, setUserHighscores] = useState<HighscoresData>(
     {
-      // eslint-disable-next-line
-      skills_summary: Array(),
-      // eslint-disable-next-line
-      skills: Array(),
-      // eslint-disable-next-line
-      minigames: Array(),
-      // eslint-disable-next-line
-      bosses: Array(),
+      skills_summary: [],
+      skills: [],
+      minigames: [],
+      bosses: [],
     }
   );
 
@@ -53,6 +56,14 @@ export default function App() {
     setUserHighscores(data);
   };
 
+  const getExperienceGained = (highscoresData: HighscoresData): HighscoresData => {
+    highscoresData.skills_summary.map((summary, index) => {
+      if (index === 0) { return summary.experience_gained = 0; }
+      summary.experience_gained = summary.total_experience - highscoresData.skills_summary[index - 1].total_experience;
+    });
+    return highscoresData;
+  };
+
   useEffect(() => {
     switch (summaryType) {
       case "totalLevel":
@@ -60,6 +71,10 @@ export default function App() {
         break;
       case "ranking":
         setYAccessor({accessor: "ranking", displayText: "Ranking"});
+        break;
+      case "gainedXP":
+        setUserHighscores(getExperienceGained(userHighscores));
+        setYAccessor({accessor: "experience_gained", displayText: "Gained XP"});
         break;
       default:
         setYAccessor({accessor: "total_experience", displayText: "Total XP"});
@@ -70,9 +85,9 @@ export default function App() {
   const getAlertFromStatus = (status: string) => {
     switch (status) {
         case "Failed":
-           return <Alert severity="error">{alertText}</Alert>;
+           return <Alert severity="error" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
         case "Success":
-            return <Alert severity="success">{alertText}</Alert>;
+            return <Alert severity="success" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
         default:
             break;
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Card, CardHeader, CardContent, Button } from "@material-ui/core";
+import { Grid, Card, CardHeader, CardContent } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Select, MenuItem } from "@material-ui/core";
@@ -44,7 +44,7 @@ export default function UserSearchFiltersCard(
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState("");
     const [username, setUsername] = useState("");
-    const [summaryType, setSummaryType] = useState<SummaryTypes>("xp");
+    const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
     const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
 
     useEffect(() => {
@@ -106,7 +106,8 @@ export default function UserSearchFiltersCard(
                     value={summaryType}
                     onChange={(e) => {setSummaryType(e.target.value); onSummaryTypeUpdate(e.target.value); }}
                 >
-                    <MenuItem value="xp">XP</MenuItem>
+                    <MenuItem value="totalXP">Total XP</MenuItem>
+                    <MenuItem value="gainedXP">Gained XP</MenuItem>
                     <MenuItem value="totalLevel">Total Level</MenuItem>
                     <MenuItem value="ranking">Ranking</MenuItem>
                 </Select>

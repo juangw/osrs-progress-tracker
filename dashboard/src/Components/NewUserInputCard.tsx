@@ -61,7 +61,8 @@ export default function NewUserInputCard(
               direction="row"
               alignItems="center"
             >
-              <TextField className={classes.textField}
+              <TextField
+                className={classes.textField}
                 id="username"
                 InputLabelProps={{ shrink: true }}
                 label="Username"
