@@ -45,14 +45,14 @@ export async function postHighscoresForUser(username: string) {
                 `${baseUrl}/${encodeURIComponent(username)}?account_type=${accountType}`, {method: "POST"}
             );
             data = await response.json();
+            if (data.status_code == 404) { throw new Error("User not found"); }
             break;
         } catch (e) {
             // only re-throw error if its the last accountType
-            if (accountTypes.indexOf(accountType) === accountTypes.length) {
+            if (accountTypes.indexOf(accountType) === accountTypes.length - 1) {
                 data = "Failed";
             }
         }
     }
-    if (data.status_code === 404) { data = "Failed" }
     return data;
 }
