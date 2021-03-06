@@ -12,10 +12,11 @@ from osrs.database.highscores import (
     get_all_highscores_for_user,
 )
 from osrs.db import get_db_session, Highscores as DBHighscores
+from osrs.exceptions import NoUserError
 
 from sqlalchemy.orm import Session
 from typing import Mapping, Union, Iterable, Optional, List
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 
 
 @app.get(
@@ -81,7 +82,10 @@ def add_user_to_highscores(
     username: str, account_type: AccountType, session: Session = Depends(get_db_session)
 ) -> DBHighscores:
     user_stats = Highscores(username, account_type)
-    user_stats.set_user_highscores()
+    try:
+        user_stats.set_user_highscores()
+    except NoUserError as e:
+        return HTTPException(status_code=404, detail="Username not found")
     user_highscores = insert_user_highscores(
         session,
         username,

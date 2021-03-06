@@ -53,6 +53,6 @@ export async function postHighscoresForUser(username: string) {
             }
         }
     }
-
+    if (data.status_code === 404) { data = "Failed" }
     return data;
 }

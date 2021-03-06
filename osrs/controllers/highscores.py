@@ -3,7 +3,7 @@ from osrs.models.skills_summary import SkillsSummary
 from osrs.models.skills import Skills
 from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
-from osrs.exceptions import OutdatedError
+from osrs.exceptions import OutdatedError, NoUserError
 from osrs.config import CONFIG, ENV
 
 from typing import Mapping, Union, Iterable
@@ -27,7 +27,10 @@ class Highscores(object):
         self.bosses_len = len(self.bosses.__dict__)
 
     def set_user_highscores(self) -> None:
-        response = self._call_highscores_api()
+        try:
+            response = self._call_highscores_api()
+        except Exception as e:
+            raise NoUserError(f"No user by the name of: {self.username}")
         rows = response.strip().split("\n")
         row_count = CONFIG[ENV].get("HIGHSCORE_ROWS")
         if len(rows) != row_count:
