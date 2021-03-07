@@ -6,7 +6,16 @@ import { Select, MenuItem } from "@material-ui/core";
 import moment from "moment";
 import { getHistoricalHighscoresForUser } from "../Datasets/highscores";
 import { translateDataset } from "../Datasets/common";
-import { SummaryTypes, ProgressTimeframes } from "../App";
+import {
+    SummaryTypes,
+    ProgressTimeframes,
+    HighscoresData,
+    DataUpdate,
+    SummaryTypeUpdate,
+    ProgressTimeframeUpdate,
+    StatusUpdate,
+    TextUpdate
+} from "../App";
 
 
 const useStyles = makeStyles((theme: any) => ({
@@ -23,22 +32,22 @@ const useStyles = makeStyles((theme: any) => ({
     }
 }));
 
-interface DataUpdate {
-    (data: any): void;
-}
-interface SummaryTypeUpdate {
-    (summaryType: SummaryTypes): void;
-}
-interface ProgressTimeframeUpdate {
-    (progressTimeframe: ProgressTimeframes): void;
-}
+
 
 export default function UserSearchFiltersCard(
-    {onUserDataUpdate, onSummaryTypeUpdate, onProgressTimeframeUpdate}:
+    {
+        onUserDataUpdate,
+        onSummaryTypeUpdate,
+        onProgressTimeframeUpdate,
+        onStatusUpdate,
+        onAlertTextUpdate
+    }:
     {
         onUserDataUpdate: DataUpdate,
         onSummaryTypeUpdate: SummaryTypeUpdate,
-        onProgressTimeframeUpdate: ProgressTimeframeUpdate
+        onProgressTimeframeUpdate: ProgressTimeframeUpdate,
+        onStatusUpdate: StatusUpdate,
+        onAlertTextUpdate: TextUpdate
     }
 ) {
     const classes = useStyles();
@@ -46,6 +55,17 @@ export default function UserSearchFiltersCard(
     const [username, setUsername] = useState("");
     const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
     const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
+
+    const getExperienceGained = (highscoresData: HighscoresData): HighscoresData => {
+        const augmentedHighscoresData = {...highscoresData};
+        augmentedHighscoresData.skills_summary.map((summary, index) => {
+            if (index === 0) { return summary.experience_gained = (0).toString(); }
+            summary.experience_gained = (
+                summary.total_experience - highscoresData.skills_summary[index - 1].total_experience
+            ).toString();
+        });
+        return augmentedHighscoresData;
+    };
 
     useEffect(() => {
         if (!username) { return; }
@@ -69,7 +89,16 @@ export default function UserSearchFiltersCard(
             break;
         }
         getHistoricalHighscoresForUser(username, timeframe)
-          .then(data => onUserDataUpdate(translateDataset(data)));
+        .then(data => {
+            console.log(data);
+            if (!data.length) {
+                onAlertTextUpdate("Unable to Find Account, Enter Username to Begin Tracking");
+                onStatusUpdate("Warning");
+                return;
+            }
+            const dataset = translateDataset(data);
+            onUserDataUpdate(getExperienceGained(dataset));
+        });
       },      [username, progressTimeframe]); // Only re-run the effect if username or timeframe changes
 
     return (
@@ -81,7 +110,7 @@ export default function UserSearchFiltersCard(
         >
         <Grid item xs={10}>
         <Card className={classes.enterUsernameCard}>
-        <CardHeader title="Filter Usernames to Search For:"/>
+        <CardHeader title="Username Data Visualization Filters:"/>
         <CardContent>
             <Grid
               container

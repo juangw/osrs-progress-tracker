@@ -12,13 +12,29 @@ import UserSearchFiltersCard from "./Components/UserSearchFiltersCard";
 
 export type SummaryTypes =  "totalXP" | "gainedXP" | "totalLevel" | "ranking";
 export type ProgressTimeframes = "daily" | "weekly" | "monthly" | "yearly" | "allTime";
-export type AlertStatusTypes = "Success" | "Failed" | "None";
+export type AlertStatusTypes = "Success" | "Warning" | "Failed" | "None";
 
-interface HighscoresData {
+export interface HighscoresData {
   skills_summary: any[];
   skills: any[];
   minigames: any[];
   bosses: any[];
+}
+
+export interface DataUpdate {
+  (data: any): void;
+}
+export interface SummaryTypeUpdate {
+  (summaryType: SummaryTypes): void;
+}
+export interface ProgressTimeframeUpdate {
+  (progressTimeframe: ProgressTimeframes): void;
+}
+export interface StatusUpdate {
+  (status: AlertStatusTypes): void;
+}
+export interface TextUpdate {
+  (text: string): void;
 }
 
 export default function App() {
@@ -56,14 +72,6 @@ export default function App() {
     setUserHighscores(data);
   };
 
-  const getExperienceGained = (highscoresData: HighscoresData): HighscoresData => {
-    highscoresData.skills_summary.map((summary, index) => {
-      if (index === 0) { return summary.experience_gained = 0; }
-      summary.experience_gained = summary.total_experience - highscoresData.skills_summary[index - 1].total_experience;
-    });
-    return highscoresData;
-  };
-
   useEffect(() => {
     switch (summaryType) {
       case "totalLevel":
@@ -73,7 +81,6 @@ export default function App() {
         setYAccessor({accessor: "ranking", displayText: "Ranking"});
         break;
       case "gainedXP":
-        setUserHighscores(getExperienceGained(userHighscores));
         setYAccessor({accessor: "experience_gained", displayText: "Gained XP"});
         break;
       default:
@@ -88,6 +95,8 @@ export default function App() {
            return <Alert severity="error" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
         case "Success":
             return <Alert severity="success" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
+        case "Warning":
+          return <Alert severity="warning" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
         default:
             break;
 
@@ -106,6 +115,8 @@ export default function App() {
           onUserDataUpdate={updateUserData}
           onSummaryTypeUpdate={updateSummaryType}
           onProgressTimeframeUpdate={updateProgressTimeframe}
+          onStatusUpdate={updateAlertStatus}
+          onAlertTextUpdate={updateAlertText}
         />
 
         <div>

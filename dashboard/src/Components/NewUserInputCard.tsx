@@ -3,7 +3,7 @@ import { Grid, Card, CardHeader, CardContent, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { postHighscoresForUser } from "../Datasets/highscores";
-import { AlertStatusTypes } from "../App";
+import { StatusUpdate, TextUpdate } from "../App";
 
 
 const useStyles = makeStyles((theme: any) => ({
@@ -16,13 +16,6 @@ const useStyles = makeStyles((theme: any) => ({
         margin: theme.spacing(1),
     }
 }));
-
-interface StatusUpdate {
-    (status: AlertStatusTypes): void;
-}
-interface TextUpdate {
-    (text: string): void;
-}
 
 export default function NewUserInputCard(
     {onStatusUpdate, onAlertTextUpdate}: {onStatusUpdate: StatusUpdate, onAlertTextUpdate: TextUpdate}
