@@ -40,7 +40,7 @@ jobs:
           docker-compose exec -T osrs-progress-tracker-backend-app pytest .
 
           # run unit tests for frontend
-          docker-compose exec -T osrs-progress-tracker-frontend-app yarn run test
+          docker-compose exec -T osrs-progress-tracker-frontend-app yarn run test .
 
       - name: Deploy to Heroku
         id: heroku
