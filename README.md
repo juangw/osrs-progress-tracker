@@ -41,6 +41,14 @@ docker run --rm -it -p 8000:8000 -v "$(pwd):/usr/src/app/" --network=host <IMAGE
 docker run --rm -it -p 3000:3000 -v "$(pwd):/usr/src/app/dashboard" --network=host <IMAGE_NAME>
 ```
 
+Or with docker-compose
+```
+docker-compose -f docker-compose.local.yml build
+docker-compose -f docker-compose.local.yml up -d
+docker-compose exec osrs-progress-tracker-backend-app bash
+docker-compose exec osrs-progress-tracker-frontend-app bash
+```
+
 Or you can just access the data through the module itself like the example below
 ```python
 from osrs.controllers.highscores import Highscores

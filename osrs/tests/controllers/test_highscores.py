@@ -4,7 +4,6 @@ from osrs.exceptions import OutdatedError
 from unittest import mock
 
 import unittest
-import json
 
 
 class TestHighscores(unittest.TestCase):
