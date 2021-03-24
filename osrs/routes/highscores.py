@@ -15,7 +15,7 @@ from osrs.db import get_db_session, Highscores as DBHighscores
 from osrs.exceptions import NoUserError
 
 from sqlalchemy.orm import Session
-from typing import Iterable, Optional, List
+from typing import Iterable, Optional
 from fastapi import Depends, HTTPException
 
 

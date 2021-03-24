@@ -6,7 +6,7 @@ from osrs.models.bosses import Bosses
 from osrs.exceptions import OutdatedError, NoUserError
 from osrs.config import CONFIG, ENV
 
-from typing import Mapping, Union, Iterable
+from typing import Iterable
 
 import requests
 
@@ -30,7 +30,7 @@ class Highscores(object):
         try:
             response = self._call_highscores_api()
         except Exception as e:
-            raise NoUserError(f"No user by the name of: {self.username}")
+            raise NoUserError(f"No user with name of '{self.username}': {e}")
         rows = response.strip().split("\n")
         row_count = CONFIG[ENV].get("HIGHSCORE_ROWS")
         if len(rows) != row_count:
