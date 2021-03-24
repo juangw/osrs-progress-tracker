@@ -48,5 +48,5 @@ jobs:
         with:
           email: ${{ secrets.HEROKU_EMAIL }}
           api_key: ${{ secrets.HEROKU_API_KEY }}
-          docker_compose_file: './docker-compose.deploy.yml'
+          docker_compose_file: './docker-compose.yml'
           heroku_apps: '[{"imagename":"osrs-progress-tracker/frontend","appname":"osrs-progress-tracker-ui","apptype":"web"},{"imagename":"osrs-progress-tracker/backend","appname":"osrs-progress-tracker","apptype":"web"}]'
