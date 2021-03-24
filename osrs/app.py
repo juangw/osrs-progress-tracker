@@ -1,19 +1,13 @@
 from osrs.config import CONFIG, ENV
-from osrs.controllers.highscores import Highscores
-from osrs.enums import AccountType
 from osrs.db import init_db
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from typing import Iterable, Mapping, Any
-from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 
 import requests
 import asyncio
-import uvicorn
-import os
 
 origins = [
     "http://localhost:3000",
@@ -39,7 +33,7 @@ def get_player_stats():
     async def insert_user_stats(user_data: Mapping[str, Any]) -> None:
         url = CONFIG[ENV].get("API_URL")
         username, account_type = user_data["username"], user_data["account_type"]
-        result = requests.post(
+        requests.post(
             url=f"{url}/highscores/{username}?account_type={account_type}"
         ).json()
         # TODO: make this async
@@ -49,7 +43,7 @@ def get_player_stats():
     asyncio.set_event_loop(loop)
     users = get_users()
     try:
-        results = loop.run_until_complete(
+        loop.run_until_complete(
             asyncio.gather(*[insert_user_stats(user) for user in users])
         )
     except Exception as e:
@@ -68,9 +62,9 @@ def cron_job():
     init_db()
 
     # apply routes to app
-    from osrs.routes import healthcheck
-    from osrs.routes import highscores
-    from osrs.routes import grand_exchange
+    from osrs.routes import healthcheck  # noqa: F401
+    from osrs.routes import highscores  # noqa: F401
+    from osrs.routes import grand_exchange  # noqa: F401
 
     # Start backend cron job
     cron.add_job(get_player_stats, trigger="interval", hours=6)

@@ -77,7 +77,7 @@ class Highscores(object):
             setattr(
                 self.minigames,
                 attribute,
-                {"ranking": minigames[index][0], "count": minigames[index][1],},
+                {"ranking": minigames[index][0], "count": minigames[index][1]},
             )
 
     def _set_bosses(self, bosses: Iterable[Iterable[str]]) -> None:
@@ -85,7 +85,7 @@ class Highscores(object):
             setattr(
                 self.bosses,
                 attribute,
-                {"ranking": bosses[index][0], "count": bosses[index][1],},
+                {"ranking": bosses[index][0], "count": bosses[index][1]},
             )
 
     def _call_highscores_api(self) -> str:

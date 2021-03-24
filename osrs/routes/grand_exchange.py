@@ -4,8 +4,6 @@ from osrs.models.grand_exchange_last_update import GrandExchangeLastUpdated
 from osrs.models.grand_exchange_item import GrandExchangeItem
 from osrs.models.grand_exchange_graph import GrandExchangeItemGraph
 
-from typing import List
-
 
 @app.get(
     "/grand_exchange/last_updated",

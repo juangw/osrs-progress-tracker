@@ -8,10 +8,8 @@ from osrs.config import CONFIG, ENV
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import Column, DateTime, String, Integer, func, ForeignKey
+from sqlalchemy import Column, DateTime, String, Integer, func
 from sqlalchemy.dialects.sqlite import JSON
-
-from typing import Mapping, Any
 
 import sqlalchemy
 import os

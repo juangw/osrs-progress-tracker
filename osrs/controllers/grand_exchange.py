@@ -2,10 +2,8 @@ from osrs.enums import GrandExchangeEndpoint
 from osrs.models.grand_exchange_graph import GrandExchangeItemGraph
 from osrs.models.grand_exchange_item import GrandExchangeItem
 from osrs.models.grand_exchange_last_update import GrandExchangeLastUpdated
-from osrs.exceptions import OutdatedError
-from osrs.config import CONFIG
 
-from typing import Optional, Mapping, Any, Union, List
+from typing import Mapping, Union, List
 
 import requests
 
