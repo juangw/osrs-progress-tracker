@@ -49,7 +49,7 @@ jobs:
           machine api.heroku.com
               login ${{ secrets.HEROKU_EMAIL }}
               password ${{ secrets.HEROKU_API_KEY }}
-          EOF`
+          EOF
           echo ${{ secrets.HEROKU_API_KEY }} | docker login --username=${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
 
           # tag backend and frontend docker images
