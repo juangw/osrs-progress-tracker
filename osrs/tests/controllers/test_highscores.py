@@ -90,6 +90,7 @@ class TestHighscores(unittest.TestCase):
         -1,-1
         -1,-1
         -1,-1
+        -1,-1
         116318,58
         -1,-1
         -1,-1
