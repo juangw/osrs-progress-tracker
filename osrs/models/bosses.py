@@ -38,6 +38,7 @@ class Bosses:
     sarachnis: Mapping[str, str] = field(default_factory=dict)
     scorpia: Mapping[str, str] = field(default_factory=dict)
     skotizo: Mapping[str, str] = field(default_factory=dict)
+    tempoross: Mapping[str, str] = field(default_factory=dict)
     the_guantlet: Mapping[str, str] = field(default_factory=dict)
     the_corrupted_guantlet: Mapping[str, str] = field(default_factory=dict)
     theatre_of_blood: Mapping[str, str] = field(default_factory=dict)
