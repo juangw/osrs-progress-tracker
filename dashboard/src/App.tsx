@@ -99,7 +99,6 @@ export default function App() {
           return <Alert severity="warning" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
         default:
             break;
-
     }
   };
 

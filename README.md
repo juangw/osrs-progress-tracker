@@ -20,7 +20,7 @@ pip3 install -r requirements.txt
 
 Start the API locally (remove the --reload for non development)
 ```bash
-uvicorn osrs.app:app --reload
+uvicorn osrs.app:app --host=0.0.0.0 --port=8000
 ```
 
 # Setting up with Docker

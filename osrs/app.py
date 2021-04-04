@@ -3,10 +3,11 @@ from osrs.db import init_db
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from typing import Iterable, Mapping, Any
 
 import requests
+import aiohttp
 import asyncio
 
 origins = [
@@ -24,6 +25,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Start scheduling backend
+job_defaults = {"coalesce": False, "max_instances": 1}
+cron = AsyncIOScheduler(job_defaults=job_defaults, daemon=True)
+# Start backend cron job once per day at Noon
+cron.add_job(get_player_stats, trigger="interval", hour=12)
+cron.start()
+
 
 def get_player_stats():
     def get_users() -> Iterable[Mapping[str, Any]]:
@@ -33,11 +41,11 @@ def get_player_stats():
     async def insert_user_stats(user_data: Mapping[str, Any]) -> None:
         url = CONFIG[ENV].get("API_URL")
         username, account_type = user_data["username"], user_data["account_type"]
-        requests.post(
-            url=f"{url}/highscores/{username}?account_type={account_type}"
-        ).json()
-        # TODO: make this async
-        await asyncio.sleep(1)
+        async with aiohttp.ClientSession() as session:
+            response = session.post(
+                url=f"{url}/highscores/{username}?account_type={account_type}"
+            )
+            return await response
 
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
@@ -48,16 +56,10 @@ def get_player_stats():
         )
     except Exception as e:
         print(e)
-        loop.close()
-
-
-# Start scheduling backend
-job_defaults = {"coalesce": False, "max_instances": 1}
-cron = BackgroundScheduler(job_defaults=job_defaults, daemon=True)
 
 
 @app.on_event("startup")
-def cron_job():
+async def startup():
     # Init db tables
     init_db()
 
@@ -65,7 +67,3 @@ def cron_job():
     from osrs.routes import healthcheck  # noqa: F401
     from osrs.routes import highscores  # noqa: F401
     from osrs.routes import grand_exchange  # noqa: F401
-
-    # Start backend cron job
-    cron.add_job(get_player_stats, trigger="interval", hours=6)
-    cron.start()
