@@ -56,7 +56,7 @@ def get_player_stats():
 
 
 # Start backend cron job once per day at Noon
-cron.add_job(get_player_stats, trigger="interval", hour=12)
+cron.add_job(get_player_stats, trigger="interval", hours=12)
 cron.start()
 
 
