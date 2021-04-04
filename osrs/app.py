@@ -28,9 +28,6 @@ app.add_middleware(
 # Start scheduling backend
 job_defaults = {"coalesce": False, "max_instances": 1}
 cron = AsyncIOScheduler(job_defaults=job_defaults, daemon=True)
-# Start backend cron job once per day at Noon
-cron.add_job(get_player_stats, trigger="interval", hour=12)
-cron.start()
 
 
 def get_player_stats():
@@ -58,8 +55,13 @@ def get_player_stats():
         print(e)
 
 
+# Start backend cron job once per day at Noon
+cron.add_job(get_player_stats, trigger="interval", hour=12)
+cron.start()
+
+
 @app.on_event("startup")
-async def startup():
+def startup():
     # Init db tables
     init_db()
 
