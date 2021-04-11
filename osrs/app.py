@@ -4,6 +4,7 @@ from osrs.db import init_db
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from apscheduler.triggers.cron import CronTrigger
 from typing import Iterable, Mapping, Any
 
 import requests
@@ -56,7 +57,8 @@ def get_player_stats():
 
 
 # Start backend cron job once per day at Noon
-cron.add_job(get_player_stats, trigger="interval", hours=12)
+cron_trigger = CronTrigger(hour=12, timezone="America/Detroit")
+cron.add_job(get_player_stats, cron_trigger)
 cron.start()
 
 
