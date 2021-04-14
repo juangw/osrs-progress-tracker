@@ -37,8 +37,8 @@
     "build": "react-scripts build",
     "test": "CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "tslint --quiet --fix --project .",
-    "lint:fix": "tslint --quiet --project ."
+    "lint": "tslint --quiet --project .",
+    "lint:fix": "tslint --quiet --fix --project ."
   },
   "eslintConfig": {
     "extends": [

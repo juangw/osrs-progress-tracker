@@ -9,6 +9,10 @@ import _ from "lodash";
 
 
 interface RowData {
+    [key: string]: RowInfo;
+}
+
+interface RowInfo {
     experience?: string;
     level?: string;
     count?: string;
@@ -16,46 +20,50 @@ interface RowData {
     date: string;
 }
 
-interface HighscoresData {
-    date: string;
-}
-
 interface TableProps {
-    data: HighscoresData[];
+    data: RowData[];
     type: "Skills" | "Bosses";
     timeframe: ProgressTimeframes;
     includeLastUpdated: boolean;
 }
 
 export default function HighscoresTable(props: TableProps) {
-    const [prevUpdated, setPrevUpdated] = useState("N/A");
-    const [lastUpdated, setLastUpdated] = useState("N/A");
-    const [keys, setKeys] = useState([""]);
-    const [currentValues, setCurrentValues] = useState<RowData[]>([{date: ""}]);
-    const [compareValues, setCompareValues] = useState<RowData[]>([{date: ""}]);
+    const [prevUpdated, setPrevUpdated] = useState<string>("N/A");
+    const [lastUpdated, setLastUpdated] = useState<string>("N/A");
+    const [keys, setKeys] = useState(["placeholder"]);
+    const [lastValues, setLastValues] = useState<RowData>({placeholder: {"date": ""}});
+    const [earliestValues, setEarliestValues] = useState<RowData>({placeholder: {"date": ""}});
 
     useEffect(() => {
         if (!props.data.length) { return; }
-        const orderedProps = _.orderBy(props.data, "date", ["desc"]);
-        setLastUpdated(orderedProps[0].date);
+        const orderedProps: RowData[] = _.orderBy(props.data, "date", ["desc"]);
+
+        // Grab most recent data
+        const latestDatapoint = orderedProps[0];
+        const firstKey = Object.keys(latestDatapoint)[0];
+        setLastUpdated(latestDatapoint[firstKey].date);
+        setLastValues(latestDatapoint);
         setKeys(Object.keys(orderedProps[0]));
-        setCurrentValues(Object.values(orderedProps[0]));
+
+        // Grab oldest data
         if (typeof orderedProps[1] !== "undefined") {
-            setCompareValues(Object.values(orderedProps[orderedProps.length - 1]));
-            setPrevUpdated(orderedProps[orderedProps.length - 1].date);
+            const earliestDatapoint = orderedProps[orderedProps.length - 1];
+            const earliestKey = Object.keys(earliestDatapoint)[0];
+            setEarliestValues(earliestDatapoint);
+            setPrevUpdated(earliestDatapoint[earliestKey].date);
         }
     },        [props]); // Only re-run the effect if props data changes
 
     const computeDifference = (
-        currentVals: RowData[],
-        compareVals: RowData[],
-        index: number,
+        lastVals: RowData,
+        earliestVals: RowData,
+        key: string,
         field: "experience" | "ranking" | "level" | "count",
     ) => {
         let difference;
-        if (typeof currentVals[index] !== "undefined" && typeof compareVals[index] !== "undefined") {
-            const currentValue = currentVals[index][field] === "-1" ? "0" : currentVals[index][field];
-            const compareValue = compareVals[index][field] === "-1" ? "0" : compareVals[index][field];
+        if (typeof lastVals[key] !== "undefined" && typeof earliestVals[key] !== "undefined") {
+            const currentValue = lastVals[key][field] === "-1" ? "0" : lastVals[key][field];
+            const compareValue = earliestVals[key][field] === "-1" ? "0" : earliestVals[key][field];
             difference = Number(currentValue) - Number(compareValue);
         } else {
             difference = 0;
@@ -74,8 +82,8 @@ export default function HighscoresTable(props: TableProps) {
         return <TableCell align="left" style={styles.tableCells}>{cleanNumber(value)}</TableCell>;
     };
 
-    const createRows = (tableType: string, key: string, index: number) => {
-        if (key === "date") { return; }
+    const createRows = (tableType: string, key: string) => {
+        if (key === "placeholder" || key === "date") { return; }
         return (
             <TableRow style={{height: 1}} key={key}>
                 <TableCell component="th" scope="row" style={styles.tableCells}>
@@ -84,38 +92,38 @@ export default function HighscoresTable(props: TableProps) {
                 {tableType === "Skills" ? (
                     <React.Fragment>
                         <TableCell align="left" style={styles.tableCells}>
-                            {cleanNumber(Number(currentValues[index].experience))}
+                            {cleanNumber(Number(lastValues[key].experience))}
                         </TableCell>
-                        {getStyledCell(computeDifference(currentValues, compareValues, index, "experience"))}
+                        {getStyledCell(computeDifference(lastValues, earliestValues, key, "experience"))}
                         <TableCell align="left" style={styles.tableCells}>
-                            {cleanNumber(Number(currentValues[index].level))}
+                            {cleanNumber(Number(lastValues[key].level))}
                         </TableCell>
-                        {getStyledCell(computeDifference(currentValues, compareValues, index, "level"))}
+                        {getStyledCell(computeDifference(lastValues, earliestValues, key, "level"))}
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
                         <TableCell align="left" style={styles.tableCells}>
                             {
                                 cleanNumber(Number(
-                                    currentValues[index].count === "-1"
+                                    lastValues[key].count === "-1"
                                     ? "0"
-                                    : currentValues[index].count
+                                    : lastValues[key].count
                                 ))
                             }
                         </TableCell>
-                        {getStyledCell(computeDifference(currentValues, compareValues, index, "count"))}
+                        {getStyledCell(computeDifference(lastValues, earliestValues, key, "count"))}
                     </React.Fragment>
                 )}
                 <TableCell align="left" style={styles.tableCells}>
                     {
                         cleanNumber(Number(
-                            currentValues[index].ranking === "-1"
+                            lastValues[key].ranking === "-1"
                             ? "0"
-                            : currentValues[index].ranking
+                            : lastValues[key].ranking
                         ))
                     }
                 </TableCell>
-                {getStyledCell(computeDifference(currentValues, compareValues, index, "ranking"))}
+                {getStyledCell(computeDifference(lastValues, earliestValues, key, "ranking"))}
             </TableRow>
         );
     };
@@ -167,7 +175,7 @@ export default function HighscoresTable(props: TableProps) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {keys.map((key: string, index: number) => createRows(props.type, key, index))}
+                    {keys.map((key: string) => createRows(props.type, key))}
                 </TableBody>
             </Table>
         </React.Fragment>
