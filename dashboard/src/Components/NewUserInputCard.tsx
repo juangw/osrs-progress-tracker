@@ -64,7 +64,7 @@ export default function NewUserInputCard(
                 onKeyDown={(e) => {if (e.key === "Enter") { setNewUsername(newTextFieldValue); }}}
                 margin="normal"
               />
-              <Button variant="outlined" id="submit" onClick={() => setNewUsername(newTextFieldValue)}>Submit</Button>
+              <Button variant="outlined" onClick={() => setNewUsername(newTextFieldValue)}>Submit</Button>
             </Grid>
             </CardContent>
             </Card>

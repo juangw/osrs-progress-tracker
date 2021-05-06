@@ -30,7 +30,7 @@
     "start": "next dev",
     "start:prod": "ENV=prod next start",
     "build": "next build",
-    "test": "next test .",
+    "test": "jest .",
     "lint": "tslint --quiet --project .",
     "lint:fix": "tslint --quiet --fix --project ."
   },
