@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router
-} from "react-router-dom";
 import { Alert } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LineGraph from "./Components/LineGraph";
@@ -37,7 +34,7 @@ export interface TextUpdate {
   (text: string): void;
 }
 
-export default function App() {
+export default function AppEntry() {
   const [alertStatus, setAlertStatus] = useState<AlertStatusTypes>("None");
   const [alertText, setAlertText] = useState("");
   const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
@@ -92,55 +89,53 @@ export default function App() {
   const getAlertFromStatus = (status: string) => {
     switch (status) {
         case "Failed":
-           return <Alert severity="error" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
+          return <Alert severity="error" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
         case "Success":
-            return <Alert severity="success" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
+          return <Alert severity="success" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
         case "Warning":
-          return <Alert severity="warning" onClose={() => {setAlertStatus("None"); }}>{alertText}</Alert>;
+          return <Alert severity="warning" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
         default:
-            break;
+          break;
     }
   };
 
   return (
     // @ts-ignore
-    <Router>
-      <div className="App">
-        {Header()}
-        {getAlertFromStatus(alertStatus)}
+    <div className="App">
+      {Header()}
+      {getAlertFromStatus(alertStatus)}
 
-        <NewUserInputCard onStatusUpdate={updateAlertStatus} onAlertTextUpdate={updateAlertText}/>
-        <UserSearchFiltersCard
-          onUserDataUpdate={updateUserData}
-          onSummaryTypeUpdate={updateSummaryType}
-          onProgressTimeframeUpdate={updateProgressTimeframe}
-          onStatusUpdate={updateAlertStatus}
-          onAlertTextUpdate={updateAlertText}
+      <NewUserInputCard onStatusUpdate={updateAlertStatus} onAlertTextUpdate={updateAlertText}/>
+      <UserSearchFiltersCard
+        onUserDataUpdate={updateUserData}
+        onSummaryTypeUpdate={updateSummaryType}
+        onProgressTimeframeUpdate={updateProgressTimeframe}
+        onStatusUpdate={updateAlertStatus}
+        onAlertTextUpdate={updateAlertText}
+      />
+
+      <div>
+        <LineGraph
+          xAccessor={{accessor: "date", displayText: "Date"}}
+          yAccessor={yAccessor}
+          data={userHighscores.skills_summary}
         />
-
-        <div>
-          <LineGraph
-            xAccessor={{accessor: "date", displayText: "Date"}}
-            yAccessor={yAccessor}
-            data={userHighscores.skills_summary}
-          />
-        </div>
-
-        <div>
-          <HighscoresTable
-            data={userHighscores.skills}
-            type="Skills"
-            timeframe={progressTimeframe}
-            includeLastUpdated={true}
-          />
-          <HighscoresTable
-            data={userHighscores.bosses}
-            type="Bosses"
-            timeframe={progressTimeframe}
-            includeLastUpdated={false}
-          />
-        </div>
       </div>
-    </Router>
+
+      <div>
+        <HighscoresTable
+          data={userHighscores.skills}
+          type="Skills"
+          timeframe={progressTimeframe}
+          includeLastUpdated={true}
+        />
+        <HighscoresTable
+          data={userHighscores.bosses}
+          type="Bosses"
+          timeframe={progressTimeframe}
+          includeLastUpdated={false}
+        />
+      </div>
+    </div>
   );
 }

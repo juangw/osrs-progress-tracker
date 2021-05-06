@@ -1,6 +1,8 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import fireEvent from "@testing-library/user-event";
 import NewUserInputCard from "../Components/NewUserInputCard";
-import TextField from "@material-ui/core/TextField";
+import assert from "assert";
 
 
 it("Component loads with no initial username in text box", () => {
@@ -8,17 +10,18 @@ it("Component loads with no initial username in text box", () => {
 
     const username = screen.getByLabelText(/Username/i);
 
-    expect(username).toHaveTextContent("");
+    assert(username.textContent === "");
 });
 
 it("Component loads with inputted username in text box", () => {
     render(<NewUserInputCard />);
 
-    const username = screen.getByLabelText(/Username/i);
+    let username = screen.getByLabelText(/Username/i);
+    const button = screen.getByText(/Submit/i);
 
     // Enter in a new username
-    fireEvent.change(username, { target: { value: "TestAcc" } });
-    fireEvent.keyDown(username, { key: "Enter" });
+    fireEvent.type(username, "TestAcc");
+    fireEvent.click(button);
 
-    expect(username.value).toBe("TestAcc");
+    assert(username, "TestAcc");
 });

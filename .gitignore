@@ -6,6 +6,9 @@ __pycache__/
 # Ignore front end node_modules folder
 node_modules/
 
+# Ignore nextjs files
+.next
+
 # VS Code
 .vscode
 

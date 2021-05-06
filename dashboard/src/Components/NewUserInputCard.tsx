@@ -3,7 +3,7 @@ import { Grid, Card, CardHeader, CardContent, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { postHighscoresForUser } from "../Datasets/highscores";
-import { StatusUpdate, TextUpdate } from "../App";
+import { StatusUpdate, TextUpdate } from "../AppEntry";
 
 
 const useStyles = makeStyles((theme: any) => ({
@@ -64,7 +64,7 @@ export default function NewUserInputCard(
                 onKeyDown={(e) => {if (e.key === "Enter") { setNewUsername(newTextFieldValue); }}}
                 margin="normal"
               />
-              <Button variant="outlined" onClick={() => setNewUsername(newTextFieldValue)}>Submit</Button>
+              <Button variant="outlined" id="submit" onClick={() => setNewUsername(newTextFieldValue)}>Submit</Button>
             </Grid>
             </CardContent>
             </Card>
