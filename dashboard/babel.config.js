@@ -6,8 +6,10 @@ module.exports = function (api) {
         "@babel/preset-env",
         "@babel/preset-typescript"
     ];
+    const plugins = ["@babel/transform-runtime"]
 
     return {
-        presets
+        presets,
+        plugins
     };
 }
