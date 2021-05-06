@@ -13,4 +13,4 @@ ENV PATH="./node_modules/.bin:${PATH}"
 EXPOSE 3000
 
 # Command to run the app
-CMD [ "serve", "-s", "build" ]
+CMD [ "yarn", "run", "start" ]
