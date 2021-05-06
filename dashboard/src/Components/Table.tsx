@@ -129,13 +129,15 @@ export default function HighscoresTable(props: TableProps) {
     };
 
     const displayUpdatedTime = (lastUpdatedTime: string, prevUpdatedTime: string) => {
+        const lastUpdatedText = lastUpdatedTime === "N/A" ? "N/A" : moment(lastUpdatedTime).format("MM-DD-YYYY HH:mm");
+        const prevUpdatedText = prevUpdatedTime === "N/A" ? "N/A" : moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm");
         return (
             <React.Fragment>
                 <p style={{fontSize: 14}}>
-                    Highscores Results From: {moment(lastUpdatedTime).format("MM-DD-YYYY HH:mm")}
+                    Highscores Results From: {lastUpdatedText}
                 </p>
                 <p style={{fontSize: 14}}>
-                    Compared Against Last Data Point From: {moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm")}
+                    Compared Against Last Data Point From: {prevUpdatedText}
                 </p>
             </React.Fragment>
         );

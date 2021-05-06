@@ -56,7 +56,7 @@ export default function NewUserInputCard(
             >
               <TextField
                 className={classes.textField}
-                id="username"
+                id="newUsername"
                 InputLabelProps={{ shrink: true }}
                 label="Username"
                 value={newTextFieldValue}

@@ -101,7 +101,7 @@ export default function AppEntry() {
 
   return (
     // @ts-ignore
-    <div className="App">
+    <div className="AppEntry">
       {Header()}
       {getAlertFromStatus(alertStatus)}
 
