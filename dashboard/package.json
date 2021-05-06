@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "next dev",
-    "start:prod": "ENV=prod next start",
+    "start:prod": "ENV=prod next start -p $PORT",
     "build": "next build",
     "test": "jest .",
     "lint": "tslint --quiet --project .",
