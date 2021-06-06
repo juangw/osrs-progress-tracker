@@ -42,6 +42,7 @@ class Bosses:
     the_guantlet: Mapping[str, str] = field(default_factory=dict)
     the_corrupted_guantlet: Mapping[str, str] = field(default_factory=dict)
     theatre_of_blood: Mapping[str, str] = field(default_factory=dict)
+    theatre_of_blood_hard_mode: Mapping[str, str] = field(default_factory=dict)
     thermonuclear_smoke_devil: Mapping[str, str] = field(default_factory=dict)
     tzkal_zuk: Mapping[str, str] = field(default_factory=dict)
     tztok_jad: Mapping[str, str] = field(default_factory=dict)

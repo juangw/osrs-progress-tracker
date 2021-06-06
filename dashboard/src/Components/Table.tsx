@@ -65,6 +65,10 @@ export default function HighscoresTable(props: TableProps) {
             const currentValue = lastVals[key][field] === "-1" ? "0" : lastVals[key][field];
             const compareValue = earliestVals[key][field] === "-1" ? "0" : earliestVals[key][field];
             difference = Number(currentValue) - Number(compareValue);
+        } else if (typeof lastVals[key] !== "undefined" && typeof earliestVals[key] === "undefined") {
+            const currentValue = lastVals[key][field] === "-1" ? "0" : lastVals[key][field];
+            const compareValue = 0;
+            difference = Number(currentValue) - Number(compareValue);
         } else {
             difference = 0;
         }
