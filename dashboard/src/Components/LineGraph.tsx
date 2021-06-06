@@ -43,9 +43,9 @@ export default function LineGraph(props: LineGraphProps) {
             return coordinate;
         });
         const yDiff = maxY - minY;
-        const lowerBound = (minY - (yDiff * 1.5) < 0) ? minY - (yDiff * 1.5) : 0;
+        const lowerBound = (minY - (yDiff * 1.25) < 0) ? 0 : minY - (yDiff * 1.25);
         setMappedData(_.orderBy(graphData, "x", ["asc"]));
-        setYDomain([lowerBound, maxY + (yDiff * 1.5)]);
+        setYDomain([lowerBound, maxY + (yDiff * 1.25)]);
     },        [props]); // Only re-run the effect if props data changes
 
     const createTooltip = () => {

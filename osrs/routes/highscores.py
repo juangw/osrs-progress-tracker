@@ -72,9 +72,13 @@ def get_all_highscores_for_username(
     username: str,
     start_date: Optional[str] = None,
     only_return: Optional[HighscoresDataTypes] = None,
+    page_size: Optional[int] = None,
+    page: Optional[int] = None,
     session: Session = Depends(get_db_session),
 ) -> Iterable[Highscores]:
-    return get_all_highscores_for_user(session, username, start_date, only_return)
+    return get_all_highscores_for_user(
+        session, username, start_date, only_return, page_size, page
+    )
 
 
 @app.post("/highscores/{username}", tags=["Highscores"])

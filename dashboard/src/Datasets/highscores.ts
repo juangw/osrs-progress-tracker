@@ -1,12 +1,20 @@
 import moment from "moment";
 
+const environment = process.env.NODE_ENV || "development";
 
-export async function getHistoricalHighscoresForUser(
-    username: string,
-    startDate?: moment.Moment,
-    returnOnly?: string
-) {
-    const environment = process.env.NODE_ENV || "development";
+interface HistoricalHighscoresParams {
+    username: string;
+    startDate?: moment.Moment;
+    returnOnly?: string;
+    pagination?: [number, number];
+}
+
+export async function getHistoricalHighscoresForUser({
+    username,
+    startDate,
+    returnOnly,
+    pagination
+}: HistoricalHighscoresParams) {
     let baseUrl;
     let params = [];
     if (environment === "development") {
@@ -14,11 +22,15 @@ export async function getHistoricalHighscoresForUser(
     } else {
         baseUrl = "https://osrs-progress-tracker.herokuapp.com/highscores/historical";
     }
+
     if (typeof startDate !== "undefined") {
         params.push(`start_date=${startDate.format("MM-DD-YYYY")}`);
     }
     if (typeof returnOnly !== "undefined") {
         params.push(`&only_return=${returnOnly}`);
+    }
+    if (typeof pagination !== "undefined") {
+        params.push(`page=${pagination[0]}&page_size=${pagination[1]}`);
     }
     const response = await fetch(
         `${baseUrl}/${encodeURIComponent(username)}${params.length > 0 ? `?${params.join("&")}` : ""}`
@@ -29,7 +41,6 @@ export async function getHistoricalHighscoresForUser(
 }
 
 export async function postHighscoresForUser(username: string) {
-    const environment = process.env.NODE_ENV || "development";
     let baseUrl;
     if (environment === "development") {
         baseUrl = "http://localhost:8000/highscores";

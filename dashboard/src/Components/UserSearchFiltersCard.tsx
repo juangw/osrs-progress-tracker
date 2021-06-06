@@ -88,15 +88,15 @@ export default function UserSearchFiltersCard(
             timeframe = undefined as undefined;
             break;
         }
-        getHistoricalHighscoresForUser(username, timeframe)
-        .then(data => {
-            console.log(data);
-            if (!data.length) {
+        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000]})
+        .then(result => {
+            console.log(result);
+            if (!result.data.length) {
                 onAlertTextUpdate("Unable to Find Account, Enter Username to Begin Tracking");
                 onStatusUpdate("Warning");
                 return;
             }
-            const dataset = translateDataset(data);
+            const dataset = translateDataset(result.data);
             onUserDataUpdate(getExperienceGained(dataset));
         });
       },      [username, progressTimeframe]); // Only re-run the effect if username or timeframe changes
@@ -151,6 +151,7 @@ export default function UserSearchFiltersCard(
                 >
                     <MenuItem value="daily">Daily</MenuItem>
                     <MenuItem value="weekly">Weekly</MenuItem>
+                    <MenuItem value="monthly">Monthly</MenuItem>
                     <MenuItem value="yearly">Yearly</MenuItem>
                     <MenuItem value="allTime">All Time</MenuItem>
                 </Select>

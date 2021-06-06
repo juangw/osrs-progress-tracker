@@ -11,7 +11,8 @@ class TestHighscores(unittest.TestCase):
 
     @mock.patch("osrs.controllers.highscores.Highscores._call_highscores_api")
     def test_save_animal(
-        self, highscores_api_results: mock.MagicMock(),
+        self,
+        highscores_api_results: mock.MagicMock(),
     ):
         """Test fails when gets incorrect number of rows from response"""
         # Given

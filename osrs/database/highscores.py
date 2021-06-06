@@ -4,6 +4,7 @@ from osrs.models.skills_summary import SkillsSummary
 from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
 from osrs.enums import AccountType, HighscoresDataTypes
+from osrs.utils.pagination import Pagination, PaginationEexception, paginate
 
 from sqlalchemy.orm import Session, load_only
 from sqlalchemy import func
@@ -49,6 +50,8 @@ def get_all_highscores_for_user(
     username: str,
     start_date: Optional[str],
     only_return: Optional[HighscoresDataTypes],
+    page_size: Optional[int],
+    page: Optional[int],
 ) -> Iterable[Mapping[str, Any]]:
     query = session.query(Highscores).filter(Highscores.username == username)
 
@@ -60,4 +63,14 @@ def get_all_highscores_for_user(
     if only_return:
         query = query.options(load_only(*[only_return.value, "created_date"]))
 
-    return query.all()
+    query_result = paginate(
+        query=query, page=page, page_size=page_size, error_out=False
+    )
+    result = dict(
+        data=query_result.items,
+        total=query_result.total,
+        current_page=query_result.page,
+        page_size=query_result.page_size,
+    )
+
+    return result
