@@ -12,7 +12,7 @@ class Pagination:
     items: Mapping[str, Any]
 
 
-class PaginationEexception(Exception):
+class PaginationException(Exception):
     pass
 
 

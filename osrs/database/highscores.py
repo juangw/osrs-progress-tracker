@@ -4,7 +4,7 @@ from osrs.models.skills_summary import SkillsSummary
 from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
 from osrs.enums import AccountType, HighscoresDataTypes
-from osrs.utils.pagination import Pagination, PaginationEexception, paginate
+from osrs.utils.pagination import paginate
 
 from sqlalchemy.orm import Session, load_only
 from sqlalchemy import func
