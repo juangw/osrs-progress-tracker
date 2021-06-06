@@ -18,10 +18,10 @@ class PaginationException(Exception):
 
 def paginate(query, page, page_size=20, error_out=True):
     if error_out and page < 1:
-        raise PaginationEexception(404)
+        raise PaginationException(404)
     items = query.limit(page_size).offset((page - 1) * page_size).all()
     if not items and page != 1 and error_out:
-        raise PaginationEexception(404)
+        raise PaginationException(404)
 
     # No need to count if we're on the first page and there are fewer
     # items than we expected.
