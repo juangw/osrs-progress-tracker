@@ -7,6 +7,11 @@ import {
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
+import { getDonationIntent } from "../Datasets/donations";
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe("pk_test_51J0e4kCC3J1OWSJDoHpOBPVocD3cbhyd4fH1775hdWJDdKiC1IwiENTXWMBHIUDF3XNb5lnhqNsRJirENI2RlHBi00TNx5wxWF");
 
 const CARD_OPTIONS = {
   style: {
@@ -141,16 +146,18 @@ const CheckoutForm = () => {
       setProcessing(true);
     }
 
-    const payload = await stripe.createPaymentMethod({
-      type: "card",
-      card: elements.getElement(CardElement) as StripeCardElement,
-      billing_details: billingDetails
+    const paymentIntent = await getDonationIntent(500, "usd");
+    const payment = await stripe.confirmCardPayment(paymentIntent.client_secret, {
+      payment_method: {
+        card: elements.getElement(CardElement) as StripeCardElement,
+        billing_details: billingDetails
+      }
     });
 
     setProcessing(false);
 
-    if (payload.error) {
-      setError(payload.error);
+    if (payment.error) {
+      setError(payment.error);
     }
   };
 
@@ -204,15 +211,11 @@ const CheckoutForm = () => {
       </fieldset>
       {error && <ErrorMessage>{error.message}</ErrorMessage>}
       <SubmitButton processing={processing} error={error} disabled={!stripe}>
-        Pay $25
+        Pay $5
       </SubmitButton>
     </form>
   );
 };
-
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 export const StripeDonation = () => {
   return (

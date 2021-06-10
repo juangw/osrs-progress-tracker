@@ -27,7 +27,7 @@ export async function getHistoricalHighscoresForUser({
         params.push(`start_date=${startDate.format("MM-DD-YYYY")}`);
     }
     if (typeof returnOnly !== "undefined") {
-        params.push(`&only_return=${returnOnly}`);
+        params.push(`only_return=${returnOnly}`);
     }
     if (typeof pagination !== "undefined") {
         params.push(`page=${pagination[0]}&page_size=${pagination[1]}`);

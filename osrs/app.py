@@ -69,6 +69,7 @@ def startup():
     from osrs.routes import healthcheck  # noqa: F401
     from osrs.routes import highscores  # noqa: F401
     from osrs.routes import grand_exchange  # noqa: F401
+    from osrs.routes import donations  # noqa: F401
 
     cron.add_job(get_player_stats, cron_trigger)
     cron.start()
