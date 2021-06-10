@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 import { cleanNumber } from "../Datasets/common";
 import { styles } from "./styling/table.css";
-import { ProgressTimeframes } from "../AppEntry";
+import { ProgressTimeframes } from "../HomePage";
 
 import moment from "moment";
 import _ from "lodash";

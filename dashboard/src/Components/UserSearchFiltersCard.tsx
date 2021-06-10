@@ -15,7 +15,7 @@ import {
     ProgressTimeframeUpdate,
     StatusUpdate,
     TextUpdate
-} from "../AppEntry";
+} from "../HomePage";
 
 
 const useStyles = makeStyles((theme: any) => ({

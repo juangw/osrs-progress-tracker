@@ -3,7 +3,6 @@ import { Alert } from "@material-ui/core";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LineGraph from "./Components/LineGraph";
 import HighscoresTable from "./Components/Table";
-import Header from "./Components/Header";
 import NewUserInputCard from "./Components/NewUserInputCard";
 import UserSearchFiltersCard from "./Components/UserSearchFiltersCard";
 
@@ -34,7 +33,7 @@ export interface TextUpdate {
   (text: string): void;
 }
 
-export default function AppEntry() {
+export default function HomePage() {
   const [alertStatus, setAlertStatus] = useState<AlertStatusTypes>("None");
   const [alertText, setAlertText] = useState("");
   const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
@@ -101,8 +100,7 @@ export default function AppEntry() {
 
   return (
     // @ts-ignore
-    <div className="AppEntry">
-      {Header()}
+    <div className="HomePage">
       {getAlertFromStatus(alertStatus)}
 
       <NewUserInputCard onStatusUpdate={updateAlertStatus} onAlertTextUpdate={updateAlertText}/>

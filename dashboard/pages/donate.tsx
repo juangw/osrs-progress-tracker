@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../src/Components/Header'
-import HomePage from '../src/HomePage';
+import {StripeDonation} from '../src/Components/StripeDonation';
 
 function App() {
   const [isMounted, setIsMounted] = useState(true)
@@ -16,7 +16,7 @@ function App() {
   return (
     <div>
       <Header/>
-      <HomePage/>
+      <StripeDonation/>
     </div>
   )
 }
