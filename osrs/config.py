@@ -5,12 +5,12 @@ ENV = os.environ.get("ENV", "local")
 
 CONFIG = {
     "local": {
-        "HIGHSCORE_ROWS": 82,
+        "HIGHSCORE_ROWS": 83,
         "API_URL": "http://localhost:8000",
         "DB_URI": "postgresql+psycopg2://postgres:postgres@postgres:5432/postgres",
     },
     "prod": {
-        "HIGHSCORE_ROWS": 82,
+        "HIGHSCORE_ROWS": 83,
         "API_URL": "https://osrs-progress-tracker.herokuapp.com",
     },
 }

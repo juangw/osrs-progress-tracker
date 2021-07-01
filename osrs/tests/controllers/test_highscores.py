@@ -102,6 +102,7 @@ class TestHighscores(unittest.TestCase):
         216533,50
         extra,values
         extra,values
+        extra,values
         """
 
         # When/Then
