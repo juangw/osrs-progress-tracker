@@ -60,9 +60,9 @@ export default function UserSearchFiltersCard(
         const augmentedHighscoresData = {...highscoresData};
         augmentedHighscoresData.skills_summary.map((summary, index) => {
             if (index === 0) { return summary.experience_gained = (0).toString(); }
-            summary.experience_gained = (
-                summary.total_experience - highscoresData.skills_summary[index - 1].total_experience
-            ).toString();
+            const current = highscoresData.skills_summary[index].total_experience;
+            const previous = highscoresData.skills_summary[index - 1].total_experience;
+            summary.experience_gained = (current - previous).toString();
         });
         return augmentedHighscoresData;
     };
@@ -88,7 +88,7 @@ export default function UserSearchFiltersCard(
             timeframe = undefined as undefined;
             break;
         }
-        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000]})
+        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
         .then(result => {
             console.log(result);
             if (!result.data.length) {

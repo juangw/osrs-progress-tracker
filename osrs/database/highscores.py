@@ -7,8 +7,8 @@ from osrs.enums import AccountType, HighscoresDataTypes
 from osrs.utils.pagination import paginate
 
 from sqlalchemy.orm import Session, load_only
-from sqlalchemy import func
-from typing import Mapping, Any, Iterable, Optional
+from sqlalchemy import func, text
+from typing import Mapping, Any, Iterable, Optional, List
 
 import time
 
@@ -52,6 +52,7 @@ def get_all_highscores_for_user(
     only_return: Optional[HighscoresDataTypes],
     page_size: Optional[int],
     page: Optional[int],
+    sort_by: Optional[str],
 ) -> Iterable[Mapping[str, Any]]:
     query = session.query(Highscores).filter(Highscores.username == username)
 
@@ -62,6 +63,13 @@ def get_all_highscores_for_user(
     # Only return certain entities if requested in `only_return`
     if only_return:
         query = query.options(load_only(*[only_return.value, "created_date"]))
+
+    # Apply sort order
+    if sort_by:
+        sort_bys = sort_by.split(",")
+        for sort in sort_bys:
+            column, sort_order = sort_by.split(":", 1)
+            query = query.order_by(text(f"{column} {sort_order}"))
 
     query_result = paginate(
         query=query, page=page, page_size=page_size, error_out=False

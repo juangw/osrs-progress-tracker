@@ -15,7 +15,7 @@ from osrs.db import get_db_session, Highscores as DBHighscores
 from osrs.exceptions import NoUserError
 
 from sqlalchemy.orm import Session
-from typing import Iterable, Optional
+from typing import Iterable, Optional, List
 from fastapi import Depends, HTTPException
 
 
@@ -74,10 +74,11 @@ def get_all_highscores_for_username(
     only_return: Optional[HighscoresDataTypes] = None,
     page_size: Optional[int] = None,
     page: Optional[int] = None,
+    sort_by: Optional[str] = None,
     session: Session = Depends(get_db_session),
 ) -> Iterable[Highscores]:
     return get_all_highscores_for_user(
-        session, username, start_date, only_return, page_size, page
+        session, username, start_date, only_return, page_size, page, sort_by
     )
 
 
