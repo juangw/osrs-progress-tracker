@@ -7,13 +7,15 @@ interface HistoricalHighscoresParams {
     startDate?: moment.Moment;
     returnOnly?: string;
     pagination?: [number, number];
+    sortBy?: [string];
 }
 
 export async function getHistoricalHighscoresForUser({
     username,
     startDate,
     returnOnly,
-    pagination
+    pagination,
+    sortBy
 }: HistoricalHighscoresParams) {
     let baseUrl;
     let params = [];
@@ -31,6 +33,9 @@ export async function getHistoricalHighscoresForUser({
     }
     if (typeof pagination !== "undefined") {
         params.push(`page=${pagination[0]}&page_size=${pagination[1]}`);
+    }
+    if (typeof sortBy !== "undefined") {
+        params.push(`sort_by=${sortBy.join(",")}`);
     }
     const response = await fetch(
         `${baseUrl}/${encodeURIComponent(username)}${params.length > 0 ? `?${params.join("&")}` : ""}`

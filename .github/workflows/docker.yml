@@ -43,6 +43,7 @@ jobs:
           docker-compose exec -T osrs-progress-tracker-frontend-app yarn run test .
 
       - name: Deploy to Heroku
+        if: github.ref == 'refs/heads/master'
         run: |
           # login to heroku and docker
           cat >~/.netrc <<EOF

@@ -10,6 +10,13 @@ from typing import Iterable, Mapping, Any
 import requests
 import aiohttp
 import asyncio
+import os
+
+if os.environ.get("DEBUG_QUERY", False):
+    import logging
+
+    logging.basicConfig()
+    logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 origins = [
     "http://localhost:3000",
