@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../src/Components/Header'
+import { Header } from '../src/Components/Header'
 import {StripeDonation} from '../src/Components/StripeDonation';
 
 function App() {
