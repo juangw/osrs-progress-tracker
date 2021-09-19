@@ -1,26 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Grid, Card, CardHeader, CardContent, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { postHighscoresForUser } from "../Datasets/highscores";
 import { StatusUpdate, TextUpdate } from "../HomePage";
+import { customTheme } from "../Components/styling/theme";
 
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles(theme => ({
     enterUsernameCard: {
-        margin: theme.spacing(1),
-        width: theme.spacing(50),
-        height: theme.spacing(25),
+        background: customTheme.primary,
+        color: customTheme.tertiary,
+        width: "100%",
+        height: "10%",
+    },
+    welcomeCard: {
+        background: customTheme.primary,
+        color: customTheme.tertiary,
+        width: "100%",
+        height: "10%",
     },
     textField: {
-        margin: theme.spacing(1),
+        color: `${customTheme.tertiary}`,
+    },
+    textFieldOutline: {
+        borderColor: `${customTheme.tertiary}`,
+    },
+    button: {
+        background: customTheme.secondary,
+        borderColor: customTheme.tertiary,
+        color: customTheme.tertiary,
     }
 }));
 
-export default function NewUserInputCard(
-    {onStatusUpdate, onAlertTextUpdate}: {onStatusUpdate: StatusUpdate, onAlertTextUpdate: TextUpdate}
-) {
+export const NewUserInputCard: FC<{onStatusUpdate: StatusUpdate, onAlertTextUpdate: TextUpdate}> = (
+    {onStatusUpdate, onAlertTextUpdate}
+) => {
     const classes = useStyles();
+
     const [newTextFieldValue, setNewTextFieldValue] = useState("");
     const [newUsername, setNewUsername] = useState("");
 
@@ -45,7 +62,11 @@ export default function NewUserInputCard(
           direction="column"
           alignItems="center"
         >
-        <Grid item xs={5}>
+        <Grid item xs={6}>
+            <Card className={classes.welcomeCard}>
+                <CardHeader title="Welcome the OSRS Progress Tracker"/>
+            </Card>
+            <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
             <Card className={classes.enterUsernameCard}>
             <CardHeader title="Enter Your Username To Begin Tracking Account:"/>
             <CardContent>
@@ -57,18 +78,27 @@ export default function NewUserInputCard(
               <TextField
                 className={classes.textField}
                 id="newUsername"
-                InputLabelProps={{ shrink: true }}
+                InputLabelProps={{ shrink: true, classes: { root: classes.textField } }}
+                InputProps={{classes: { notchedOutline: classes.textFieldOutline }}}
                 label="Username"
+                variant="outlined"
                 value={newTextFieldValue}
                 onChange={e => setNewTextFieldValue(e.target.value)}
                 onKeyDown={(e) => {if (e.key === "Enter") { setNewUsername(newTextFieldValue); }}}
                 margin="normal"
               />
-              <Button variant="outlined" onClick={() => setNewUsername(newTextFieldValue)}>Submit</Button>
+              <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={() => setNewUsername(newTextFieldValue)}
+              >
+                  Submit
+              </Button>
             </Grid>
             </CardContent>
             </Card>
           </Grid>
         </Grid>
     );
-}
+};

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import ReactDOM from "react-dom";
-import HomePage from "../HomePage";
+import { HomePage } from "../HomePage";
 
 
 it("Renders without crashing", () => {
