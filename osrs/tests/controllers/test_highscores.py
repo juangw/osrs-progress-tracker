@@ -103,7 +103,6 @@ class TestHighscores(unittest.TestCase):
         extra,values
         extra,values
         extra,values
-        extra,values
         """
 
         # When/Then
