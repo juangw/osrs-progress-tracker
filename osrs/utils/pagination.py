@@ -16,7 +16,7 @@ class PaginationException(Exception):
     pass
 
 
-def paginate(query, page, page_size=20, error_out=True):
+def paginate(query, page=1, page_size=20, error_out=True):
     if error_out and page < 1:
         raise PaginationException(404)
     items = query.limit(page_size).offset((page - 1) * page_size).all()
