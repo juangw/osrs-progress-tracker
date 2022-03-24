@@ -33,6 +33,12 @@ def insert_user_highscores(
     return user_highscores
 
 
+def delete_user_from_highscores(session: Session, username: str,) -> Highscores:
+    session.query(Highscores).filter(Highscores.username == username).delete()
+    session.commit()
+    return username
+
+
 def get_unique_usernames(session: Session) -> Iterable[Mapping[str, Any]]:
     users_highscores = session.query(Highscores).distinct(Highscores.username).all()
     return [
