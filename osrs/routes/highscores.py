@@ -16,7 +16,7 @@ from osrs.db import get_db_session, Highscores as DBHighscores
 from osrs.exceptions import NoUserError
 
 from sqlalchemy.orm import Session
-from typing import Iterable, Optional, List
+from typing import Iterable, Optional
 from fastapi import Depends, HTTPException
 
 
@@ -105,7 +105,7 @@ def add_user_to_highscores(
 
 
 @app.delete("/highscores/{username}", tags=["Highscores"])
-def add_user_to_highscores(
+def delete_username_from_highscores(
     username: str, session: Session = Depends(get_db_session)
 ) -> DBHighscores:
     deleted_user = delete_user_from_highscores(session, username)

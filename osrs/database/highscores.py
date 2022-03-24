@@ -8,7 +8,7 @@ from osrs.utils.pagination import paginate
 
 from sqlalchemy.orm import Session, load_only
 from sqlalchemy import func, text
-from typing import Mapping, Any, Iterable, Optional, List
+from typing import Mapping, Any, Iterable, Optional
 
 import time
 
