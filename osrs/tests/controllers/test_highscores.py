@@ -10,10 +10,27 @@ class TestHighscores(unittest.TestCase):
     """Test highscores controller"""
 
     @mock.patch("osrs.controllers.highscores.Highscores._call_highscores_api")
-    def test_retrieve_highscores(
+    def test_fail_retrieve_highscores(
         self, highscores_api_results: mock.MagicMock(),
     ):
         """Test fails when gets incorrect number of rows from response"""
+        # Given
+        highscores_controller = Highscores(
+            username="testerboi", account_type=AccountType.NORMAL
+        )
+        highscores_api_results.return_value = """
+        24422,2277,331473717
+        """
+
+        # When/Then
+        with self.assertRaises(OutdatedError):
+            highscores_controller.set_user_highscores()
+
+    @mock.patch("osrs.controllers.highscores.Highscores._call_highscores_api")
+    def test_retrieve_highscores(
+        self, highscores_api_results: mock.MagicMock(),
+    ):
+        """Test assigns correct number of values for each category"""
         # Given
         highscores_controller = Highscores(
             username="testerboi", account_type=AccountType.NORMAL
@@ -106,6 +123,10 @@ class TestHighscores(unittest.TestCase):
         198449,160
         """
 
-        # When/Then
-        with self.assertRaises(OutdatedError):
-            highscores_controller.set_user_highscores()
+        # When
+        highscores_controller.set_user_highscores()
+
+        # Then
+        self.assertEqual(len(highscores_controller.bosses.to_json()), 48)
+        self.assertEqual(len(highscores_controller.minigames.to_json()), 13)
+        self.assertEqual(len(highscores_controller.skills.to_json()), 23)
