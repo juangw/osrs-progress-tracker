@@ -18,6 +18,7 @@ class Minigames:
     master_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
     last_man_standing: Mapping[str, str] = field(default_factory=dict)
     soul_wars: Mapping[str, str] = field(default_factory=dict)
+    guardians_of_the_rift: Mapping[str, str] = field(default_factory=dict)
 
     def to_json(self):
         return self.__dict__
