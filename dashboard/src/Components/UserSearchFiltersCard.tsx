@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Grid, Card, CardHeader, CardContent } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,40 +16,45 @@ import {
     StatusUpdate,
     TextUpdate
 } from "../HomePage";
+import { customTheme } from "../Components/styling/theme";
 
 
-const useStyles = makeStyles((theme: any) => ({
+const useStyles = makeStyles(theme => ({
     enterUsernameCard: {
-        margin: theme.spacing(2),
-        width: "80%",
-        height: theme.spacing(25),
+        background: customTheme.primary,
+        color: customTheme.tertiary,
+        width: "100%",
+        height: "30%",
     },
     textField: {
-        margin: theme.spacing(2),
+        color: customTheme.tertiary,
+    },
+    textFieldOutline: {
+        borderColor: customTheme.tertiary,
     },
     selectField: {
-        margin: theme.spacing(2),
+        color: customTheme.tertiary,
+    },
+    icon: {
+        fill: customTheme.tertiary,
     }
 }));
 
-
-
-export default function UserSearchFiltersCard(
+export const UserSearchFiltersCard: FC<{
+    onUserDataUpdate: DataUpdate,
+    onSummaryTypeUpdate: SummaryTypeUpdate,
+    onProgressTimeframeUpdate: ProgressTimeframeUpdate,
+    onStatusUpdate: StatusUpdate,
+    onAlertTextUpdate: TextUpdate
+}> = (
     {
         onUserDataUpdate,
         onSummaryTypeUpdate,
         onProgressTimeframeUpdate,
         onStatusUpdate,
         onAlertTextUpdate
-    }:
-    {
-        onUserDataUpdate: DataUpdate,
-        onSummaryTypeUpdate: SummaryTypeUpdate,
-        onProgressTimeframeUpdate: ProgressTimeframeUpdate,
-        onStatusUpdate: StatusUpdate,
-        onAlertTextUpdate: TextUpdate
     }
-) {
+) => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState("");
     const [username, setUsername] = useState("");
@@ -60,9 +65,9 @@ export default function UserSearchFiltersCard(
         const augmentedHighscoresData = {...highscoresData};
         augmentedHighscoresData.skills_summary.map((summary, index) => {
             if (index === 0) { return summary.experience_gained = (0).toString(); }
-            summary.experience_gained = (
-                summary.total_experience - highscoresData.skills_summary[index - 1].total_experience
-            ).toString();
+            const current = highscoresData.skills_summary[index].total_experience;
+            const previous = highscoresData.skills_summary[index - 1].total_experience;
+            summary.experience_gained = (current - previous).toString();
         });
         return augmentedHighscoresData;
     };
@@ -88,7 +93,7 @@ export default function UserSearchFiltersCard(
             timeframe = undefined as undefined;
             break;
         }
-        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000]})
+        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
         .then(result => {
             console.log(result);
             if (!result.data.length) {
@@ -108,7 +113,7 @@ export default function UserSearchFiltersCard(
           direction="row"
           alignItems="center"
         >
-        <Grid item xs={10}>
+        <Grid item xs={12}>
         <Card className={classes.enterUsernameCard}>
         <CardHeader title="Username Data Visualization Filters:"/>
         <CardContent>
@@ -120,26 +125,31 @@ export default function UserSearchFiltersCard(
                 <TextField
                     className={classes.textField}
                     id="username"
-                    InputLabelProps={{ shrink: true }}
+                    InputLabelProps={{ shrink: true, classes: { root: classes.textField } }}
+                    InputProps={{classes: { notchedOutline: classes.textFieldOutline }}}
                     label="Username"
+                    variant="outlined"
                     value={textFieldValue}
                     onChange={e => setTextFieldValue(e.target.value)}
                     onBlur={() => setUsername(textFieldValue)}
                     onKeyDown={(e) => {if (e.key === "Enter") { setUsername(textFieldValue); }}}
                     margin="normal"
                 />
+                <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
                 <Select
                     className={classes.selectField}
                     labelId="label"
                     id="select"
                     value={summaryType}
                     onChange={(e) => {setSummaryType(e.target.value); onSummaryTypeUpdate(e.target.value); }}
+                    inputProps={{classes: { icon: classes.icon}}}
                 >
                     <MenuItem value="totalXP">Total XP</MenuItem>
                     <MenuItem value="gainedXP">Gained XP</MenuItem>
                     <MenuItem value="totalLevel">Total Level</MenuItem>
                     <MenuItem value="ranking">Ranking</MenuItem>
                 </Select>
+                <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
                 <Select
                     className={classes.selectField}
                     labelId="label"
@@ -148,6 +158,7 @@ export default function UserSearchFiltersCard(
                     onChange={
                         (e) => {setProgressTimeframe(e.target.value); onProgressTimeframeUpdate(e.target.value); }
                     }
+                    inputProps={{classes: {icon: classes.icon}}}
                 >
                     <MenuItem value="daily">Daily</MenuItem>
                     <MenuItem value="weekly">Weekly</MenuItem>
@@ -161,4 +172,4 @@ export default function UserSearchFiltersCard(
         </Grid>
         </Grid>
     );
-}
+};

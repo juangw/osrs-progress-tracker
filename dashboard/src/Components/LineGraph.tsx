@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { XYPlot, XAxis, YAxis, VerticalGridLines, HorizontalGridLines, LineMarkSeries, LineMarkSeriesPoint, Hint } from "react-vis";
 import { cleanNumber } from "../Datasets/common";
 import "../../node_modules/react-vis/dist/style.css";
@@ -22,7 +22,7 @@ interface Coordinate {
     y: number;
 }
 
-export default function LineGraph(props: LineGraphProps) {
+export const LineGraph: FC<LineGraphProps> = (props) => {
     const [mappedData, setMappedData] = useState<Coordinate[] | any[] | undefined>(undefined);
     const [yDomain, setYDomain] = useState([0, 10000]);
     const [hoverValue, setHoverValue] = useState<Coordinate | LineMarkSeriesPoint | undefined>(undefined);
@@ -88,4 +88,4 @@ export default function LineGraph(props: LineGraphProps) {
             <YAxis orientation={"left"} title={props.yAccessor.displayText} />
         </XYPlot>
     );
-}
+};

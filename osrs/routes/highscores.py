@@ -7,6 +7,7 @@ from osrs.models.minigames import Minigames
 from osrs.models.bosses import Bosses
 from osrs.database.highscores import (
     insert_user_highscores,
+    delete_user_from_highscores,
     get_unique_usernames,
     get_all_username_highscores,
     get_all_highscores_for_user,
@@ -74,10 +75,11 @@ def get_all_highscores_for_username(
     only_return: Optional[HighscoresDataTypes] = None,
     page_size: Optional[int] = None,
     page: Optional[int] = None,
+    sort_by: Optional[str] = None,
     session: Session = Depends(get_db_session),
 ) -> Iterable[Highscores]:
     return get_all_highscores_for_user(
-        session, username, start_date, only_return, page_size, page
+        session, username, start_date, only_return, page_size, page, sort_by
     )
 
 
@@ -100,3 +102,11 @@ def add_user_to_highscores(
         user_stats.bosses,
     )
     return user_highscores
+
+
+@app.delete("/highscores/{username}", tags=["Highscores"])
+def delete_username_from_highscores(
+    username: str, session: Session = Depends(get_db_session)
+) -> DBHighscores:
+    deleted_user = delete_user_from_highscores(session, username)
+    return deleted_user

@@ -1,24 +1,19 @@
 import React from "react";
+import { customTheme } from "./theme";
 
 
 export const styles: { [key: string]: React.CSSProperties } = {
-    navbarDisplayFlex: {
-        display: "flex",
-        justifyContent: "space-between"
+    navBar: {
+      background: customTheme.tertiary,
     },
-    navDisplayFlex: {
-      marginLeft: "auto !important",
+    navBarLinks: {
+      marginLeft: "auto",
       display: "flex",
       justifyContent: "space-between"
     },
     linkText: {
       textDecoration: "none",
       textTransform: "uppercase",
-      color: "white"
+      color: customTheme.primary
     },
-    pageHeader: {
-      marginLeft: "auto !important",
-      textAlign: "center",
-      fontWeight: "bold"
-    }
 };

@@ -33,6 +33,7 @@ class Bosses:
     kreearra: Mapping[str, str] = field(default_factory=dict)
     kril_tsutsaroth: Mapping[str, str] = field(default_factory=dict)
     mimic: Mapping[str, str] = field(default_factory=dict)
+    nex: Mapping[str, str] = field(default_factory=dict)
     nightmare: Mapping[str, str] = field(default_factory=dict)
     phosanis_nightmare: Mapping[str, str] = field(default_factory=dict)
     obor: Mapping[str, str] = field(default_factory=dict)

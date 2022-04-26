@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
 import { cleanNumber } from "../Datasets/common";
 import { styles } from "./styling/table.css";
-import { ProgressTimeframes } from "../HomePage";
+import { OldestUpdate, RecentUpdate, ProgressTimeframes } from "../HomePage";
 
-import moment from "moment";
 import _ from "lodash";
 
 
@@ -24,12 +23,11 @@ interface TableProps {
     data: RowData[];
     type: "Skills" | "Bosses";
     timeframe: ProgressTimeframes;
-    includeLastUpdated: boolean;
+    onOldestUpdate?: OldestUpdate;
+    onRecentUpdate?: RecentUpdate;
 }
 
-export default function HighscoresTable(props: TableProps) {
-    const [prevUpdated, setPrevUpdated] = useState<string>("N/A");
-    const [lastUpdated, setLastUpdated] = useState<string>("N/A");
+export const HighscoresTable: FC<TableProps> = (props) => {
     const [keys, setKeys] = useState(["placeholder"]);
     const [lastValues, setLastValues] = useState<RowData>({placeholder: {"date": ""}});
     const [earliestValues, setEarliestValues] = useState<RowData>({placeholder: {"date": ""}});
@@ -41,7 +39,7 @@ export default function HighscoresTable(props: TableProps) {
         // Grab most recent data
         const latestDatapoint = orderedProps[0];
         const firstKey = Object.keys(latestDatapoint)[0];
-        setLastUpdated(latestDatapoint[firstKey].date);
+        if (props.onRecentUpdate) { props.onRecentUpdate(latestDatapoint[firstKey].date); }
         setLastValues(latestDatapoint);
         setKeys(Object.keys(orderedProps[0]));
 
@@ -50,7 +48,7 @@ export default function HighscoresTable(props: TableProps) {
             const earliestDatapoint = orderedProps[orderedProps.length - 1];
             const earliestKey = Object.keys(earliestDatapoint)[0];
             setEarliestValues(earliestDatapoint);
-            setPrevUpdated(earliestDatapoint[earliestKey].date);
+            if (props.onOldestUpdate) { props.onOldestUpdate(earliestDatapoint[earliestKey].date); }
         }
     },        [props]); // Only re-run the effect if props data changes
 
@@ -132,21 +130,6 @@ export default function HighscoresTable(props: TableProps) {
         );
     };
 
-    const displayUpdatedTime = (lastUpdatedTime: string, prevUpdatedTime: string) => {
-        const lastUpdatedText = lastUpdatedTime === "N/A" ? "N/A" : moment(lastUpdatedTime).format("MM-DD-YYYY HH:mm");
-        const prevUpdatedText = prevUpdatedTime === "N/A" ? "N/A" : moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm");
-        return (
-            <React.Fragment>
-                <p style={{fontSize: 14}}>
-                    Highscores Results From: {lastUpdatedText}
-                </p>
-                <p style={{fontSize: 14}}>
-                    Compared Against Last Data Point From: {prevUpdatedText}
-                </p>
-            </React.Fragment>
-        );
-    };
-
     const getTableHeaderCells = (tableType: string) => {
         return (
             <React.Fragment>
@@ -173,7 +156,6 @@ export default function HighscoresTable(props: TableProps) {
     return (
         // @ts-ignore
         <React.Fragment>
-            {props.includeLastUpdated ? displayUpdatedTime(lastUpdated, prevUpdated) : <React.Fragment/>}
             <Table style={{ width: "40%" }} size="small">
                 <TableHead style={styles.tableHeader}>
                     <TableRow key={"headers"}>
@@ -186,4 +168,4 @@ export default function HighscoresTable(props: TableProps) {
             </Table>
         </React.Fragment>
     );
-}
+};
