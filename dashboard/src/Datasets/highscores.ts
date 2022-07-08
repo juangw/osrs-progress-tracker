@@ -3,7 +3,7 @@ import moment from "moment";
 const environment = process.env.NODE_ENV || "development";
 
 interface HistoricalHighscoresParams {
-    username: string;
+    username: string | null;
     startDate?: moment.Moment;
     returnOnly?: string;
     pagination?: [number, number];
