@@ -6,7 +6,7 @@ import "../src/Components/styling/donation.css";
 const THEME = createMuiTheme({
   palette: {
     primary: {
-      background: "#EEEEEE",
+      dark: "#EEEEEE",
       main: "#FFFFFF",
     },
     secondary: {

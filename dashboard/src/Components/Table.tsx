@@ -8,7 +8,7 @@ import _ from "lodash";
 const useStyles = makeStyles((theme: Theme) => ({
     tableHeader: {
         color: theme.palette.secondary.main,
-        background: theme.palette.primary.background,
+        background: theme.palette.primary.dark,
      },
      tableCells: {
         color: theme.palette.secondary.main,

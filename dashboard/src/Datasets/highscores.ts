@@ -20,7 +20,7 @@ export async function getHistoricalHighscoresForUser({
     let baseUrl;
     let params = [];
     if (environment === "development") {
-        baseUrl = "https://osrs-progress-tracker.herokuapp.com/highscores/historical";
+        baseUrl = "http://localhost:8000/highscores/historical";
     } else {
         baseUrl = "https://osrs-progress-tracker.herokuapp.com/highscores/historical";
     }

@@ -10,7 +10,7 @@ import { UserSearchFiltersCard } from "./Components/UserSearchFiltersCard";
 
 const useStyles = makeStyles((theme: Theme) => ({
   home: {
-    background: theme.palette.primary.background,
+    background: theme.palette.primary.dark,
     height: "100%",
     width: "100%",
   },
