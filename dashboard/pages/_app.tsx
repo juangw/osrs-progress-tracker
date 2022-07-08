@@ -1,6 +1,8 @@
 import type { AppProps } from 'next/app';
 import React from 'react';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { QueryClient, QueryClientProvider } from "react-query";
+
 import "../src/Components/styling/donation.css";
 
 const THEME = createMuiTheme({
@@ -22,10 +24,14 @@ const THEME = createMuiTheme({
   }
 });
 
+const queryClient = new QueryClient()
+
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <MuiThemeProvider theme={THEME}>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
     </MuiThemeProvider>
   )
 }

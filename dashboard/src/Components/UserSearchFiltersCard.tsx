@@ -16,6 +16,7 @@ import {
     StatusUpdate,
     TextUpdate
 } from "../HomePage";
+import { useQuery } from "react-query";
 import { Theme } from "@material-ui/core";
 
 
@@ -58,7 +59,8 @@ export const UserSearchFiltersCard: FC<{
 ) => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState("");
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(null);
+    const [timeframe, setTimeframe] = useState(moment().subtract(1, "days"));
     const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
     const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
 
@@ -73,27 +75,9 @@ export const UserSearchFiltersCard: FC<{
         return augmentedHighscoresData;
     };
 
-    useEffect(() => {
-        if (!username) { return; }
-        console.log(`fetching highscores for user: ${username}`);
-        let timeframe = moment() as moment.Moment | undefined;
-        switch (progressTimeframe) {
-          case "daily":
-            if (typeof timeframe === "undefined") { return timeframe; }
-            timeframe.subtract(1, "days");
-            break;
-          case "weekly":
-            if (typeof timeframe === "undefined") { return timeframe; }
-            timeframe.subtract(1, "weeks");
-            break;
-          case "monthly":
-            if (typeof timeframe === "undefined") { return timeframe; }
-            timeframe.subtract(1, "months");
-            break;
-          default:
-            timeframe = undefined as undefined;
-            break;
-        }
+    useQuery(
+        `${username}-${timeframe}-timeseries-data`,
+        () =>
         getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
         .then(result => {
             console.log(result);
@@ -104,8 +88,9 @@ export const UserSearchFiltersCard: FC<{
             }
             const dataset = translateDataset(result.data);
             onUserDataUpdate(getExperienceGained(dataset));
-        });
-      },      [username, progressTimeframe]); // Only re-run the effect if username or timeframe changes
+        }),
+        { enabled: username !== null }
+      );
 
     return (
         // @ts-ignore
@@ -157,7 +142,33 @@ export const UserSearchFiltersCard: FC<{
                     id="select"
                     value={progressTimeframe}
                     onChange={
-                        (e) => {setProgressTimeframe(e.target.value); onProgressTimeframeUpdate(e.target.value); }
+                        (e) => {
+                            let timeframeMoment = moment() as moment.Moment | undefined;
+                            switch (e.target.value) {
+                              case "daily":
+                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
+                                timeframeMoment.subtract(1, "days");
+                                break;
+                              case "weekly":
+                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
+                                timeframeMoment.subtract(1, "weeks");
+                                break;
+                              case "monthly":
+                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
+                                timeframeMoment.subtract(1, "months");
+                                break;
+                              case "yearly":
+                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
+                                timeframeMoment.subtract(1, "years");
+                                break;
+                              default:
+                                timeframeMoment = undefined as undefined;
+                                break;
+                            }
+                            setTimeframe(timeframeMoment);
+                            setProgressTimeframe(e.target.value);
+                            onProgressTimeframeUpdate(e.target.value);
+                        }
                     }
                     inputProps={{classes: {icon: classes.icon}}}
                 >

@@ -38,23 +38,17 @@ export const NewUserInputCard: FC<{onStatusUpdate: StatusUpdate, onAlertTextUpda
     {onStatusUpdate, onAlertTextUpdate}
 ) => {
     const classes = useStyles();
-
     const [newTextFieldValue, setNewTextFieldValue] = useState("");
-    const [newUsername, setNewUsername] = useState("");
 
-    useEffect(() => {
-        if (!newUsername) { return; }
-        console.log(`inserting highscores for new user: ${newUsername}`);
-        postHighscoresForUser(newUsername).then(result => {
-            if (result === "Failed") {
-                onAlertTextUpdate("Failed to Find Account to Track");
-                onStatusUpdate("Failed");
-            } else {
-                onAlertTextUpdate("Account now being Tracked");
-                onStatusUpdate("Success");
-            }
-        });
-    },        [newUsername]); // Only re-run the effect if new username entered
+    const createNewUser = (username: string) => postHighscoresForUser(username).then(result => {
+        if (result === "Failed") {
+            onAlertTextUpdate("Failed to Find Account to Track");
+            onStatusUpdate("Failed");
+        } else {
+            onAlertTextUpdate("Account now being Tracked");
+            onStatusUpdate("Success");
+        }
+    });
 
     return (
         // @ts-ignore
@@ -84,15 +78,21 @@ export const NewUserInputCard: FC<{onStatusUpdate: StatusUpdate, onAlertTextUpda
                 label="Username"
                 variant="outlined"
                 value={newTextFieldValue}
-                onChange={e => setNewTextFieldValue(e.target.value)}
-                onKeyDown={(e) => {if (e.key === "Enter") { setNewUsername(newTextFieldValue); }}}
+                onChange={e => {
+                    setNewTextFieldValue(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        createNewUser(newTextFieldValue);
+                    }
+                }}
                 margin="normal"
               />
               <div style={{paddingTop: "10px"}}/>
               <Button
                 className={classes.button}
                 variant="contained"
-                onClick={() => setNewUsername(newTextFieldValue)}
+                onClick={() => createNewUser(newTextFieldValue)}
               >
                   Submit
               </Button>
