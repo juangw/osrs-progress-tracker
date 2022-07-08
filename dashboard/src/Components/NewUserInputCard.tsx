@@ -4,32 +4,33 @@ import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { postHighscoresForUser } from "../Datasets/highscores";
 import { StatusUpdate, TextUpdate } from "../HomePage";
-import { customTheme } from "../Components/styling/theme";
+import { Theme } from "@material-ui/core";
 
-
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     enterUsernameCard: {
-        background: customTheme.primary,
-        color: customTheme.tertiary,
+        background: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         width: "100%",
         height: "10%",
+        boxShadow: "5px 5px 20px gray",
     },
     welcomeCard: {
-        background: customTheme.primary,
-        color: customTheme.tertiary,
+        background: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         width: "100%",
         height: "10%",
+        boxShadow: "5px 5px 20px gray",
     },
     textField: {
-        color: `${customTheme.tertiary}`,
+        color: theme.palette.secondary.main,
     },
     textFieldOutline: {
-        borderColor: `${customTheme.tertiary}`,
+        borderColor: theme.palette.secondary.main,
     },
     button: {
-        background: customTheme.secondary,
-        borderColor: customTheme.tertiary,
-        color: customTheme.tertiary,
+        background: theme.palette.primary.main,
+        borderColor: theme.palette.secondary.main,
+        color: theme.palette.secondary.main,
     }
 }));
 
@@ -64,9 +65,9 @@ export const NewUserInputCard: FC<{onStatusUpdate: StatusUpdate, onAlertTextUpda
         >
         <Grid item xs={6}>
             <Card className={classes.welcomeCard}>
-                <CardHeader title="Welcome the OSRS Progress Tracker"/>
+                <CardHeader title="Welcome to the OSRS Progress Tracker"/>
             </Card>
-            <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
+            <div style={{paddingTop: "10px"}}/>
             <Card className={classes.enterUsernameCard}>
             <CardHeader title="Enter Your Username To Begin Tracking Account:"/>
             <CardContent>
@@ -87,7 +88,7 @@ export const NewUserInputCard: FC<{onStatusUpdate: StatusUpdate, onAlertTextUpda
                 onKeyDown={(e) => {if (e.key === "Enter") { setNewUsername(newTextFieldValue); }}}
                 margin="normal"
               />
-              <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
+              <div style={{paddingTop: "10px"}}/>
               <Button
                 className={classes.button}
                 variant="contained"

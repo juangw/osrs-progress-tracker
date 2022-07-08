@@ -16,27 +16,28 @@ import {
     StatusUpdate,
     TextUpdate
 } from "../HomePage";
-import { customTheme } from "../Components/styling/theme";
+import { Theme } from "@material-ui/core";
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
     enterUsernameCard: {
-        background: customTheme.primary,
-        color: customTheme.tertiary,
+        background: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
         width: "100%",
         height: "30%",
+        boxShadow: "5px 5px 20px gray",
     },
     textField: {
-        color: customTheme.tertiary,
+        color: theme.palette.secondary.background,
     },
     textFieldOutline: {
-        borderColor: customTheme.tertiary,
+        borderColor: theme.palette.secondary.background,
     },
     selectField: {
-        color: customTheme.tertiary,
+        color: theme.palette.secondary.background,
     },
     icon: {
-        fill: customTheme.tertiary,
+        fill: theme.palette.secondary.background,
     }
 }));
 
@@ -115,7 +116,7 @@ export const UserSearchFiltersCard: FC<{
         >
         <Grid item xs={12}>
         <Card className={classes.enterUsernameCard}>
-        <CardHeader title="Username Data Visualization Filters:"/>
+        <CardHeader title="Search Existing Usernames"/>
         <CardContent>
             <Grid
               container
@@ -135,7 +136,7 @@ export const UserSearchFiltersCard: FC<{
                     onKeyDown={(e) => {if (e.key === "Enter") { setUsername(textFieldValue); }}}
                     margin="normal"
                 />
-                <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
+                <div style={{paddingRight: "10px"}}/>
                 <Select
                     className={classes.selectField}
                     labelId="label"
@@ -149,7 +150,7 @@ export const UserSearchFiltersCard: FC<{
                     <MenuItem value="totalLevel">Total Level</MenuItem>
                     <MenuItem value="ranking">Ranking</MenuItem>
                 </Select>
-                <div style={{paddingRight: `${customTheme.horizontalSpacing}px`}}/>
+                <div style={{paddingRight: "10px"}}/>
                 <Select
                     className={classes.selectField}
                     labelId="label"

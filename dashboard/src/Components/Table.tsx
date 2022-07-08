@@ -1,10 +1,32 @@
 import React, { useState, useEffect, FC } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody } from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Theme } from "@material-ui/core";
 import { cleanNumber } from "../Datasets/common";
-import { styles } from "./styling/table.css";
 import { OldestUpdate, RecentUpdate, ProgressTimeframes } from "../HomePage";
 
 import _ from "lodash";
+
+const useStyles = makeStyles((theme: Theme) => ({
+    tableHeader: {
+        color: theme.palette.secondary.main,
+        background: theme.palette.primary.background,
+     },
+     tableCells: {
+        color: theme.palette.secondary.main,
+        fontWeight: "bold" as "bold"
+     },
+     tableCellPositive: {
+        fontWeight: "bold",
+        color: "green",
+     },
+     tableCellNegative: {
+        fontWeight: "bold",
+        color: "red",
+     },
+     tableCellNeutral: {
+        fontWeight: "bold",
+        color: theme.palette.secondary.main,
+     }
+}));
 
 
 interface RowData {
@@ -28,6 +50,7 @@ interface TableProps {
 }
 
 export const HighscoresTable: FC<TableProps> = (props) => {
+    const classes = useStyles();
     const [keys, setKeys] = useState(["placeholder"]);
     const [lastValues, setLastValues] = useState<RowData>({placeholder: {"date": ""}});
     const [earliestValues, setEarliestValues] = useState<RowData>({placeholder: {"date": ""}});
@@ -76,35 +99,35 @@ export const HighscoresTable: FC<TableProps> = (props) => {
 
     const getStyledCell = (value: number) => {
         if (value > 0) {
-            return <TableCell align="left" style={styles.tableCellPositive}>{cleanNumber(value)}</TableCell>;
+            return <TableCell align="left" className={classes.tableCellPositive}>{cleanNumber(value)}</TableCell>;
         }
         if (value < 0) {
-            return <TableCell align="left" style={styles.tableCellNegative}>{cleanNumber(value)}</TableCell>;
+            return <TableCell align="left" className={classes.tableCellNegative}>{cleanNumber(value)}</TableCell>;
         }
-        return <TableCell align="left" style={styles.tableCells}>{cleanNumber(value)}</TableCell>;
+        return <TableCell align="left" className={classes.tableCells}>{cleanNumber(value)}</TableCell>;
     };
 
     const createRows = (tableType: string, key: string) => {
         if (key === "placeholder" || key === "date") { return; }
         return (
             <TableRow style={{height: 1}} key={key}>
-                <TableCell component="th" scope="row" style={styles.tableCells}>
+                <TableCell component="th" scope="row" className={classes.tableCells}>
                     {key.toUpperCase().replace(/_/g, " ")}
                 </TableCell>
                 {tableType === "Skills" ? (
                     <React.Fragment>
-                        <TableCell align="left" style={styles.tableCells}>
+                        <TableCell align="left" className={classes.tableCells}>
                             {cleanNumber(Number(lastValues[key].experience))}
                         </TableCell>
                         {getStyledCell(computeDifference(lastValues, earliestValues, key, "experience"))}
-                        <TableCell align="left" style={styles.tableCells}>
+                        <TableCell align="left" className={classes.tableCells}>
                             {cleanNumber(Number(lastValues[key].level))}
                         </TableCell>
                         {getStyledCell(computeDifference(lastValues, earliestValues, key, "level"))}
                     </React.Fragment>
                 ) : (
                     <React.Fragment>
-                        <TableCell align="left" style={styles.tableCells}>
+                        <TableCell align="left" className={classes.tableCells}>
                             {
                                 cleanNumber(Number(
                                     lastValues[key].count === "-1"
@@ -116,7 +139,7 @@ export const HighscoresTable: FC<TableProps> = (props) => {
                         {getStyledCell(computeDifference(lastValues, earliestValues, key, "count"))}
                     </React.Fragment>
                 )}
-                <TableCell align="left" style={styles.tableCells}>
+                <TableCell align="left" className={classes.tableCells}>
                     {
                         cleanNumber(Number(
                             lastValues[key].ranking === "-1"
@@ -157,7 +180,7 @@ export const HighscoresTable: FC<TableProps> = (props) => {
         // @ts-ignore
         <React.Fragment>
             <Table style={{ width: "40%" }} size="small">
-                <TableHead style={styles.tableHeader}>
+                <TableHead className={classes.tableHeader}>
                     <TableRow key={"headers"}>
                         {getTableHeaderCells(props.type)}
                     </TableRow>

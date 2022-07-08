@@ -4,6 +4,15 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import "../src/Components/styling/donation.css";
 
 const THEME = createMuiTheme({
+  palette: {
+    primary: {
+      background: "#EEEEEE",
+      main: "#FFFFFF",
+    },
+    secondary: {
+      main: "#000000",
+    }
+  },
   typography: {
    "fontFamily": `"Roboto", "Helvetica", "Arial", sans-serif`,
    "fontSize": 14,

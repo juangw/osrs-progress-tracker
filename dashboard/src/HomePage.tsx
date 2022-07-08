@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
 import moment from "moment";
-import { Alert } from "@material-ui/core";
-import { customTheme } from "./Components/styling/theme";
+import { Alert, Theme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LineGraph } from "./Components/LineGraph";
@@ -9,9 +8,9 @@ import { HighscoresTable } from "./Components/Table";
 import { NewUserInputCard } from "./Components/NewUserInputCard";
 import { UserSearchFiltersCard } from "./Components/UserSearchFiltersCard";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme: Theme) => ({
   home: {
-    background: customTheme.secondary,
+    background: theme.palette.primary.background,
     height: "100%",
     width: "100%",
   },
@@ -141,10 +140,10 @@ export const HomePage: FC = () => {
     const prevUpdatedText = prevUpdatedTime === "N/A" ? "N/A" : moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm");
     return (
         <React.Fragment>
-            <p style={{fontSize: 14, color: customTheme.tertiary}}>
+            <p style={{fontSize: 14}}>
                 Highscores Results From: {lastUpdatedText}
             </p>
-            <p style={{fontSize: 14, color: customTheme.tertiary}}>
+            <p style={{fontSize: 14}}>
                 Compared Against Last Data Point From: {prevUpdatedText}
             </p>
         </React.Fragment>
@@ -156,10 +155,10 @@ export const HomePage: FC = () => {
     <div className={classes.home}>
       {getAlertFromStatus(alertStatus)}
 
-      <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
+      <div style={{paddingTop: "10px"}}/>
       <NewUserInputCard onStatusUpdate={updateAlertStatus} onAlertTextUpdate={updateAlertText}/>
 
-      <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
+      <div style={{paddingTop: "10px"}}/>
       <UserSearchFiltersCard
         onUserDataUpdate={updateUserData}
         onSummaryTypeUpdate={updateSummaryType}
@@ -168,14 +167,14 @@ export const HomePage: FC = () => {
         onAlertTextUpdate={updateAlertText}
       />
 
-      <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
+      <div style={{paddingTop: "10px"}}/>
       <LineGraph
         xAccessor={{accessor: "date", displayText: "Date"}}
         yAccessor={yAccessor}
         data={userHighscores.skills_summary}
       />
 
-      <div style={{paddingTop: `${customTheme.verticalSpacing}px`}}/>
+      <div style={{paddingTop: "10px"}}/>
       {displayUpdatedTime(oldestUpdate, recentUpdate)}
       <div className={classes.tablesWrapper}>
         <HighscoresTable
