@@ -6,7 +6,7 @@ import { HomePage } from "../HomePage";
 
 it("Renders without crashing", () => {
   const div = document.createElement("div");
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
   ReactDOM.render(
     <QueryClientProvider client={queryClient}>
       <HomePage />
