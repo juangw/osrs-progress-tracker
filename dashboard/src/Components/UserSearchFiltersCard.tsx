@@ -78,7 +78,7 @@ export const UserSearchFiltersCard: FC<{
     useQuery(
         `${username}-${timeframe}-timeseries-data`,
         () =>
-        getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
+        getHistoricalHighscoresForUser({username: (username as string), startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
         .then(result => {
             console.log(result);
             if (!result.data.length) {
