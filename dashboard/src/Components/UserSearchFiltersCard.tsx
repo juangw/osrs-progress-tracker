@@ -28,16 +28,16 @@ const useStyles = makeStyles((theme: Theme) => ({
         boxShadow: "5px 5px 20px gray",
     },
     textField: {
-        color: theme.palette.secondary.background,
+        color: theme.palette.secondary.main,
     },
     textFieldOutline: {
-        borderColor: theme.palette.secondary.background,
+        borderColor: theme.palette.secondary.main,
     },
     selectField: {
-        color: theme.palette.secondary.background,
+        color: theme.palette.secondary.main,
     },
     icon: {
-        fill: theme.palette.secondary.background,
+        fill: theme.palette.secondary.main,
     }
 }));
 
