@@ -59,7 +59,7 @@ export const UserSearchFiltersCard: FC<{
 ) => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState("");
-    const [username, setUsername] = useState(null);
+    const [username, setUsername] = useState<string | null>(null);
     const [timeframe, setTimeframe] = useState(moment().subtract(1, "days"));
     const [summaryType, setSummaryType] = useState<SummaryTypes>("totalXP");
     const [progressTimeframe, setProgressTimeframe] = useState<ProgressTimeframes>("daily");
@@ -143,26 +143,21 @@ export const UserSearchFiltersCard: FC<{
                     value={progressTimeframe}
                     onChange={
                         (e) => {
-                            let timeframeMoment = moment() as moment.Moment | undefined;
+                            let timeframeMoment = moment() as moment.Moment;
                             switch (e.target.value) {
                               case "daily":
-                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
                                 timeframeMoment.subtract(1, "days");
                                 break;
                               case "weekly":
-                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
                                 timeframeMoment.subtract(1, "weeks");
                                 break;
                               case "monthly":
-                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
                                 timeframeMoment.subtract(1, "months");
                                 break;
                               case "yearly":
-                                if (typeof timeframeMoment === "undefined") { return timeframeMoment; }
                                 timeframeMoment.subtract(1, "years");
                                 break;
                               default:
-                                timeframeMoment = undefined as undefined;
                                 break;
                             }
                             setTimeframe(timeframeMoment);
