@@ -11,8 +11,8 @@ it("Renders title text", () => {
             onAlertTextUpdate={() => console.log("test")}
         />
     );
-    const linkElement = screen.getByText(/Welcome the OSRS Progress Tracker/i);
-    assert(linkElement.textContent?.includes("Welcome the OSRS Progress Tracker"));
+    const linkElement = screen.getByText(/Welcome to the OSRS Progress Tracker/i);
+    assert(linkElement.textContent?.includes("Welcome to the OSRS Progress Tracker"));
   });
 
 it("Component loads with no initial username in text box", () => {
