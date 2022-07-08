@@ -19,7 +19,7 @@ export async function getHistoricalHighscoresForUser({
 }: HistoricalHighscoresParams) {
     let baseUrl;
     let params = [];
-    if (!username) return;
+    if (!username) { return; }
     if (environment === "development") {
         baseUrl = "http://localhost:8000/highscores/historical";
     } else {
