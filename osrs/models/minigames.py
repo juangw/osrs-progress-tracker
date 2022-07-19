@@ -17,6 +17,7 @@ class Minigames:
     elite_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
     master_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
     last_man_standing: Mapping[str, str] = field(default_factory=dict)
+    pvp_arena: Mapping[str, str] = field(default_factory=dict)
     soul_wars: Mapping[str, str] = field(default_factory=dict)
     guardians_of_the_rift: Mapping[str, str] = field(default_factory=dict)
 
