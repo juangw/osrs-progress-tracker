@@ -129,5 +129,5 @@ class TestHighscores(unittest.TestCase):
 
         # Then
         self.assertEqual(len(highscores_controller.bosses.to_json()), 48)
-        self.assertEqual(len(highscores_controller.minigames.to_json()), 13)
+        self.assertEqual(len(highscores_controller.minigames.to_json()), 14)
         self.assertEqual(len(highscores_controller.skills.to_json()), 23)
