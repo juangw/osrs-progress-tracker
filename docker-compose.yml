@@ -28,8 +28,7 @@ services:
     environment:
       ENV: "prod"
     volumes:
-      - ./:/usr/src/app/
-      - /usr/src/app/dashboard/node_modules
+      - ./dashboard:/usr/src/app/dashboard
     entrypoint:
       - "/bin/bash"
     container_name: "osrs-progress-tracker-frontend-app"

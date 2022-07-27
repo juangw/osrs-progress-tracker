@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from "react";
+import React, { useState, FC } from "react";
 import { Grid, Card, CardHeader, CardContent } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -127,7 +127,10 @@ export const UserSearchFiltersCard: FC<{
                     labelId="label"
                     id="select"
                     value={summaryType}
-                    onChange={(e) => {setSummaryType(e.target.value); onSummaryTypeUpdate(e.target.value); }}
+                    onChange={(e) => {
+                        setSummaryType((e.target.value as SummaryTypes));
+                        onSummaryTypeUpdate((e.target.value as SummaryTypes));
+                    }}
                     inputProps={{classes: { icon: classes.icon}}}
                 >
                     <MenuItem value="totalXP">Total XP</MenuItem>
@@ -161,8 +164,8 @@ export const UserSearchFiltersCard: FC<{
                                 break;
                             }
                             setTimeframe(timeframeMoment);
-                            setProgressTimeframe(e.target.value);
-                            onProgressTimeframeUpdate(e.target.value);
+                            setProgressTimeframe((e.target.value as ProgressTimeframes));
+                            onProgressTimeframeUpdate((e.target.value as ProgressTimeframes));
                         }
                     }
                     inputProps={{classes: {icon: classes.icon}}}

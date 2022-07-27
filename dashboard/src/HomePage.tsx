@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FC } from "react";
 import moment from "moment";
-import { Alert, Theme } from "@material-ui/core";
+import { Theme } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { LineGraph } from "./Components/LineGraph";

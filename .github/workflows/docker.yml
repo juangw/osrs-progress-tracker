@@ -31,6 +31,7 @@ jobs:
           docker-compose exec -T osrs-progress-tracker-backend-app black . --check
 
           # lint frontend
+          docker-compose exec -T osrs-progress-tracker-frontend-app yarn install --development
           docker-compose exec -T osrs-progress-tracker-frontend-app yarn run lint
 
       - name: Run Unit Tests
