@@ -1,16 +1,16 @@
-FROM node:14
+FROM node:14 as build-stage
 
 # Create app directory
 RUN mkdir -p /usr/src/app/dashboard
 WORKDIR /usr/src/app/dashboard
 
 # Install app dependencies
-COPY ./dashboard .
+ADD ./dashboard/package.json ./package.json
 RUN yarn install
-RUN yarn build
+ADD ./dashboard .
 ENV PATH="./node_modules/.bin:${PATH}"
 
 EXPOSE 3000
 
 # Command to run the app
-CMD [ "yarn", "run", "start:prod" ]
+CMD [ "yarn", "start" ]

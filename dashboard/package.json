@@ -28,7 +28,7 @@
   "scripts": {
     "start": "next dev",
     "start:prod": "ENV=prod next start -p $PORT",
-    "build": "next build",
+    "build": "next build && next export",
     "test": "jest .",
     "lint": "tslint --quiet --project .",
     "lint:fix": "tslint --quiet --fix --project ."

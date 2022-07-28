@@ -22,7 +22,7 @@ jobs:
       - name: Lint and Format Checker
         run: |
           # lint and format backend
-          docker-compose exec -T osrs-progress-tracker-backend-app pip install flake8 black==19.10b0
+          docker-compose exec -T osrs-progress-tracker-backend-app pip install flake8 black==22.3.0
           # stop the build if there are Python syntax errors or undefined names
           docker-compose exec -T osrs-progress-tracker-backend-app flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
@@ -31,8 +31,8 @@ jobs:
           docker-compose exec -T osrs-progress-tracker-backend-app black . --check
 
           # lint frontend
-          docker-compose exec -T osrs-progress-tracker-frontend-app yarn install --development
-          docker-compose exec -T osrs-progress-tracker-frontend-app yarn run lint
+          docker-compose exec -T osrs-progress-tracker-frontend-app-testing yarn install --development
+          docker-compose exec -T osrs-progress-tracker-frontend-app-testing yarn run lint
 
       - name: Run Unit Tests
         run: |
@@ -41,7 +41,7 @@ jobs:
           docker-compose exec -T osrs-progress-tracker-backend-app pytest .
 
           # run unit tests for frontend
-          docker-compose exec -T osrs-progress-tracker-frontend-app yarn run test .
+          docker-compose exec -T osrs-progress-tracker-frontend-app-testing yarn run test .
 
       - name: Deploy to Heroku
         if: github.ref == 'refs/heads/main'

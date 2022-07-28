@@ -11,7 +11,8 @@ class TestHighscores(unittest.TestCase):
 
     @mock.patch("osrs.controllers.highscores.Highscores._call_highscores_api")
     def test_fail_retrieve_highscores(
-        self, highscores_api_results: mock.MagicMock(),
+        self,
+        highscores_api_results: mock.MagicMock(),
     ):
         """Test fails when gets incorrect number of rows from response"""
         # Given
@@ -28,7 +29,8 @@ class TestHighscores(unittest.TestCase):
 
     @mock.patch("osrs.controllers.highscores.Highscores._call_highscores_api")
     def test_retrieve_highscores(
-        self, highscores_api_results: mock.MagicMock(),
+        self,
+        highscores_api_results: mock.MagicMock(),
     ):
         """Test assigns correct number of values for each category"""
         # Given

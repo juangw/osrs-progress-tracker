@@ -24,7 +24,15 @@ origins = [
     "https://osrs-progress-tracker-ui.herokuapp.com",  # Production front end
 ]
 
-app = FastAPI()
+app = FastAPI(
+    servers=[
+        {
+            "url": "https://osrs-progress-tracker.herokuapp.com",
+            "description": "production environment",
+        }
+    ],
+    root_path="/api",
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

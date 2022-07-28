@@ -22,14 +22,29 @@ services:
     stdin_open: true
     build:
       context: ./
-      dockerfile: Dockerfile.dashboards.prod
+      dockerfile: Dockerfile.deploy.dashboards
     ports:
       - "3000:3000"
+      - "80:80"
+    environment:
+      ENV: "prod"
+    volumes:
+      - ./dashboard:/usr/src/app/dashboard
+    container_name: "osrs-progress-tracker-frontend-app"
+    image: "osrs-progress-tracker/frontend"
+
+  osrs-progress-tracker-frontend-app-testing:
+    tty: true
+    stdin_open: true
+    build:
+      context: ./
+      dockerfile: Dockerfile.local.dashboards
+    ports:
+      - "3001:3001"
     environment:
       ENV: "prod"
     volumes:
       - ./dashboard:/usr/src/app/dashboard
     entrypoint:
       - "/bin/bash"
-    container_name: "osrs-progress-tracker-frontend-app"
-    image: "osrs-progress-tracker/frontend"
+    container_name: "osrs-progress-tracker-frontend-app-testing"

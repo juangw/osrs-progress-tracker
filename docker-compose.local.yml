@@ -24,15 +24,13 @@ services:
     stdin_open: true
     build:
       context: ./
-      dockerfile: Dockerfile.dashboards.local
+      dockerfile: Dockerfile.local.dashboards
     ports:
       - "3000:3000"
     environment:
       ENV: "local"
     volumes:
       - ./dashboard:/usr/src/app/dashboard
-    entrypoint:
-      - "/bin/bash"
     container_name: "osrs-progress-tracker-frontend-app"
     image: "osrs-progress-tracker/frontend"
 

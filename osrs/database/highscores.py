@@ -33,7 +33,10 @@ def insert_user_highscores(
     return user_highscores
 
 
-def delete_user_from_highscores(session: Session, username: str,) -> Highscores:
+def delete_user_from_highscores(
+    session: Session,
+    username: str,
+) -> Highscores:
     session.query(Highscores).filter(Highscores.username == username).delete()
     session.commit()
     return username
