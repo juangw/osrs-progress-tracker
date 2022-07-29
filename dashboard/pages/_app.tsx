@@ -1,19 +1,26 @@
-import type { AppProps } from 'next/app';
-import React from 'react';
-import { createTheme } from '@material-ui/core/styles';
+import type { AppProps } from "next/app";
+import React from "react";
+import { createTheme } from "@material-ui/core/styles";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import { QueryClient, QueryClientProvider } from "react-query";
-
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import createEmotionCache from "../src/createEmotionCache";
 import "../src/Components/styling/donation.css";
+import "../src/Components/styling/global.css";
 
 const THEME = createTheme({
   palette: {
     primary: {
-      dark: "#EEEEEE",
       main: "#FFFFFF",
     },
     secondary: {
       main: "#000000",
+    },
+    background: {
+      default: "#EEEEEE",
+    },
+    grey: {
+      500: "#9e9e9e",
     }
   },
   typography: {
@@ -26,14 +33,21 @@ const THEME = createTheme({
 });
 
 const queryClient = new QueryClient()
+const clientSideEmotionCache = createEmotionCache();
 
-function MyApp({ Component, pageProps }: AppProps) {
+type MyAppProps = AppProps & {
+  emotionCache: EmotionCache,
+}
+
+function MyApp({ Component, pageProps, emotionCache = clientSideEmotionCache }: MyAppProps) {
   return (
-    <MuiThemeProvider theme={THEME}>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-    </MuiThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <MuiThemeProvider theme={THEME}>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </MuiThemeProvider>
+    </CacheProvider>
   )
 }
 

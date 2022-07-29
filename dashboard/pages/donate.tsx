@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../src/Components/Header'
-import {StripeDonation} from '../src/Components/StripeDonation';
+import { StripeDonation } from '../src/Components/StripeDonation';
 
 function App() {
   const [isMounted, setIsMounted] = useState(true)

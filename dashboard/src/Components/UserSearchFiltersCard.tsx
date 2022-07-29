@@ -15,7 +15,7 @@ import {
     ProgressTimeframeUpdate,
     StatusUpdate,
     TextUpdate
-} from "../HomePage";
+} from "./UsersPage";
 import { useQuery } from "react-query";
 import { Theme } from "@material-ui/core";
 
@@ -24,9 +24,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     enterUsernameCard: {
         background: theme.palette.primary.main,
         color: theme.palette.secondary.main,
-        width: "100%",
+        margin: "20px",
         height: "30%",
-        boxShadow: "5px 5px 20px gray",
+        border: `1px solid ${theme.palette.grey[500]}`,
+        boxShadow: "3px 3px 10px gray",
     },
     textField: {
         color: theme.palette.secondary.main,
@@ -93,93 +94,92 @@ export const UserSearchFiltersCard: FC<{
       );
 
     return (
-        // @ts-ignore
-        <Grid
-          container
-          direction="row"
-          alignItems="center"
-        >
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+      >
         <Grid item xs={12}>
-        <Card className={classes.enterUsernameCard}>
-        <CardHeader title="Search Existing Usernames"/>
-        <CardContent>
-            <Grid
-              container
-              direction="row"
-              alignItems="center"
-            >
+          <Card className={classes.enterUsernameCard}>
+            <CardHeader title="Search Existing Usernames"/>
+            <CardContent>
+              <Grid
+                container
+                direction="row"
+                alignItems="center"
+              >
                 <TextField
-                    className={classes.textField}
-                    id="username"
-                    InputLabelProps={{ shrink: true, classes: { root: classes.textField } }}
-                    InputProps={{classes: { notchedOutline: classes.textFieldOutline }}}
-                    label="Username"
-                    variant="outlined"
-                    value={textFieldValue}
-                    onChange={e => setTextFieldValue(e.target.value)}
-                    onBlur={() => setUsername(textFieldValue)}
-                    onKeyDown={(e) => {if (e.key === "Enter") { setUsername(textFieldValue); }}}
-                    margin="normal"
+                  className={classes.textField}
+                  id="username"
+                  InputLabelProps={{ shrink: true, classes: { root: classes.textField } }}
+                  InputProps={{classes: { notchedOutline: classes.textFieldOutline }}}
+                  label="Username"
+                  variant="outlined"
+                  value={textFieldValue}
+                  onChange={e => setTextFieldValue(e.target.value)}
+                  onBlur={() => setUsername(textFieldValue)}
+                  onKeyDown={(e) => {if (e.key === "Enter") { setUsername(textFieldValue); }}}
+                  margin="normal"
                 />
                 <div style={{paddingRight: "10px"}}/>
                 <Select
-                    className={classes.selectField}
-                    labelId="label"
-                    id="select"
-                    value={summaryType}
-                    onChange={(e) => {
-                        setSummaryType((e.target.value as SummaryTypes));
-                        onSummaryTypeUpdate((e.target.value as SummaryTypes));
-                    }}
-                    inputProps={{classes: { icon: classes.icon}}}
+                  className={classes.selectField}
+                  labelId="label"
+                  id="select"
+                  value={summaryType}
+                  onChange={(e) => {
+                    setSummaryType((e.target.value as SummaryTypes));
+                    onSummaryTypeUpdate((e.target.value as SummaryTypes));
+                  }}
+                  inputProps={{classes: { icon: classes.icon}}}
                 >
-                    <MenuItem value="totalXP">Total XP</MenuItem>
-                    <MenuItem value="gainedXP">Gained XP</MenuItem>
-                    <MenuItem value="totalLevel">Total Level</MenuItem>
-                    <MenuItem value="ranking">Ranking</MenuItem>
+                  <MenuItem value="totalXP">Total XP</MenuItem>
+                  <MenuItem value="gainedXP">Gained XP</MenuItem>
+                  <MenuItem value="totalLevel">Total Level</MenuItem>
+                  <MenuItem value="ranking">Ranking</MenuItem>
                 </Select>
                 <div style={{paddingRight: "10px"}}/>
                 <Select
-                    className={classes.selectField}
-                    labelId="label"
-                    id="select"
-                    value={progressTimeframe}
-                    onChange={
-                        (e) => {
-                            let timeframeMoment = moment() as moment.Moment;
-                            switch (e.target.value) {
-                              case "daily":
-                                timeframeMoment.subtract(1, "days");
-                                break;
-                              case "weekly":
-                                timeframeMoment.subtract(1, "weeks");
-                                break;
-                              case "monthly":
-                                timeframeMoment.subtract(1, "months");
-                                break;
-                              case "yearly":
-                                timeframeMoment.subtract(1, "years");
-                                break;
-                              default:
-                                break;
-                            }
-                            setTimeframe(timeframeMoment);
-                            setProgressTimeframe((e.target.value as ProgressTimeframes));
-                            onProgressTimeframeUpdate((e.target.value as ProgressTimeframes));
-                        }
+                  className={classes.selectField}
+                  labelId="label"
+                  id="select"
+                  value={progressTimeframe}
+                  onChange={
+                    (e) => {
+                      let timeframeMoment = moment() as moment.Moment;
+                      switch (e.target.value) {
+                        case "daily":
+                          timeframeMoment.subtract(1, "days");
+                          break;
+                        case "weekly":
+                          timeframeMoment.subtract(1, "weeks");
+                          break;
+                        case "monthly":
+                          timeframeMoment.subtract(1, "months");
+                          break;
+                        case "yearly":
+                          timeframeMoment.subtract(1, "years");
+                          break;
+                        default:
+                          break;
+                      }
+                      setTimeframe(timeframeMoment);
+                      setProgressTimeframe((e.target.value as ProgressTimeframes));
+                      onProgressTimeframeUpdate((e.target.value as ProgressTimeframes));
                     }
-                    inputProps={{classes: {icon: classes.icon}}}
+                  }
+                  inputProps={{classes: {icon: classes.icon}}}
                 >
-                    <MenuItem value="daily">Daily</MenuItem>
-                    <MenuItem value="weekly">Weekly</MenuItem>
-                    <MenuItem value="monthly">Monthly</MenuItem>
-                    <MenuItem value="yearly">Yearly</MenuItem>
-                    <MenuItem value="allTime">All Time</MenuItem>
+                  <MenuItem value="daily">Daily</MenuItem>
+                  <MenuItem value="weekly">Weekly</MenuItem>
+                  <MenuItem value="monthly">Monthly</MenuItem>
+                  <MenuItem value="yearly">Yearly</MenuItem>
+                  <MenuItem value="allTime">All Time</MenuItem>
                 </Select>
-            </Grid>
-        </CardContent>
-        </Card>
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
-        </Grid>
+      </Grid>
     );
 };

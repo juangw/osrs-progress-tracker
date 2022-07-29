@@ -7,11 +7,20 @@ import {
   useElements,
   useStripe
 } from "@stripe/react-stripe-js";
+import { Theme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { getDonationIntent } from "../Datasets/donations";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe("pk_test_51J0e4kCC3J1OWSJDoHpOBPVocD3cbhyd4fH1775hdWJDdKiC1IwiENTXWMBHIUDF3XNb5lnhqNsRJirENI2RlHBi00TNx5wxWF");
+
+const useStyles = makeStyles((theme: Theme) => ({
+  donate: {
+    background: theme.palette.background.default,
+    marginTop: "20px",
+  },
+}));
 
 const CARD_OPTIONS = {
   style: {
@@ -218,8 +227,10 @@ const CheckoutForm = () => {
 };
 
 export const StripeDonation = () => {
+  const classes = useStyles();
+
   return (
-    <div className="AppWrapper" style={{ marginTop: "20px" }}>
+    <div className={classes.donate}>
       <Elements stripe={stripePromise}>
         <CheckoutForm />
       </Elements>

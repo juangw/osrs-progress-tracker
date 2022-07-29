@@ -1,19 +1,16 @@
 import React, { useState, useEffect, FC } from "react";
 import moment from "moment";
-import { Theme } from "@material-ui/core";
+import { Card, Theme } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+import { LineGraph } from "./LineGraph";
+import { HighscoresTable } from "./UsersTable";
+import { UserSearchFiltersCard } from "./UserSearchFiltersCard";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { LineGraph } from "./Components/LineGraph";
-import { HighscoresTable } from "./Components/Table";
-import { NewUserInputCard } from "./Components/NewUserInputCard";
-import { UserSearchFiltersCard } from "./Components/UserSearchFiltersCard";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  home: {
-    background: theme.palette.primary.dark,
-    height: "100%",
-    width: "100%",
+  users: {
+    background: theme.palette.background.default,
   },
   tablesWrapper: {
     display: "flex",
@@ -23,7 +20,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     borderRight: "2px solid black",
     marginRight: "5px",
     marginLeft: "5px",
-  }
+  },
+  graphCard: {
+    background: theme.palette.primary.main,
+    margin: "20px",
+    border: `1px solid ${theme.palette.grey[500]}`,
+    boxShadow: "3px 3px 10px gray",
+  },
+  updateTimeCard: {
+    background: theme.palette.primary.main,
+    padding: "10px",
+    margin: "20px",
+    border: `1px solid ${theme.palette.grey[500]}`,
+    boxShadow: "3px 3px 10px gray",
+  },
+  tableCard: {
+    background: theme.palette.primary.main,
+    margin: "20px",
+    border: `1px solid ${theme.palette.grey[500]}`,
+    boxShadow: "3px 3px 10px gray",
+  },
 }));
 
 export type SummaryTypes =  "totalXP" | "gainedXP" | "totalLevel" | "ranking";
@@ -59,7 +75,7 @@ export interface RecentUpdate {
   (update: string): void;
 }
 
-export const HomePage: FC = () => {
+export const UsersPage: FC = () => {
   const classes = useStyles();
 
   const [alertStatus, setAlertStatus] = useState<AlertStatusTypes>("None");
@@ -77,34 +93,6 @@ export const HomePage: FC = () => {
       bosses: [],
     }
   );
-
-  const updateAlertStatus = (status: AlertStatusTypes) => {
-    setAlertStatus(status);
-  };
-
-  const updateAlertText = (text: string) => {
-    setAlertText(text);
-  };
-
-  const updateSummaryType = (summaryTypeName: SummaryTypes) => {
-    setSummaryType(summaryTypeName);
-  };
-
-  const updateProgressTimeframe = (timeFrame: ProgressTimeframes) => {
-    setProgressTimeframe(timeFrame);
-  };
-
-  const updateUserData = (data: any) => {
-    setUserHighscores(data);
-  };
-
-  const updateOldestUpdate = (updated: string) => {
-    setOldestUpdate(updated);
-  };
-
-  const updateRecentUpdate = (updated: string) => {
-    setRecentUpdate(updated);
-  };
 
   useEffect(() => {
     switch (summaryType) {
@@ -125,14 +113,14 @@ export const HomePage: FC = () => {
 
   const getAlertFromStatus = (status: string) => {
     switch (status) {
-        case "Failed":
-          return <Alert severity="error" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
-        case "Success":
-          return <Alert severity="success" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
-        case "Warning":
-          return <Alert severity="warning" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
-        default:
-          break;
+      case "Failed":
+        return <Alert severity="error" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
+      case "Success":
+        return <Alert severity="success" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
+      case "Warning":
+        return <Alert severity="warning" onClose={() => setAlertStatus("None")}>{alertText}</Alert>;
+      default:
+        break;
     }
   };
 
@@ -140,58 +128,58 @@ export const HomePage: FC = () => {
     const lastUpdatedText = lastUpdatedTime === "N/A" ? "N/A" : moment(lastUpdatedTime).format("MM-DD-YYYY HH:mm");
     const prevUpdatedText = prevUpdatedTime === "N/A" ? "N/A" : moment(prevUpdatedTime).format("MM-DD-YYYY HH:mm");
     return (
-        <React.Fragment>
-            <p style={{fontSize: 14}}>
-                Highscores Results From: {lastUpdatedText}
-            </p>
-            <p style={{fontSize: 14}}>
-                Compared Against Last Data Point From: {prevUpdatedText}
-            </p>
-        </React.Fragment>
+      <React.Fragment>
+        <p style={{fontSize: 14}}>
+          Highscores Results From: {lastUpdatedText}
+        </p>
+        <p style={{fontSize: 14}}>
+          Compared Against Last Data Point From: {prevUpdatedText}
+        </p>
+      </React.Fragment>
     );
-};
+  };
 
   return (
-    // @ts-ignore
-    <div className={classes.home}>
+    <div className={classes.users}>
       {getAlertFromStatus(alertStatus)}
 
-      <div style={{paddingTop: "10px"}}/>
-      <NewUserInputCard onStatusUpdate={updateAlertStatus} onAlertTextUpdate={updateAlertText}/>
-
-      <div style={{paddingTop: "10px"}}/>
       <UserSearchFiltersCard
-        onUserDataUpdate={updateUserData}
-        onSummaryTypeUpdate={updateSummaryType}
-        onProgressTimeframeUpdate={updateProgressTimeframe}
-        onStatusUpdate={updateAlertStatus}
-        onAlertTextUpdate={updateAlertText}
+        onUserDataUpdate={setUserHighscores}
+        onSummaryTypeUpdate={setSummaryType}
+        onProgressTimeframeUpdate={setProgressTimeframe}
+        onStatusUpdate={setAlertStatus}
+        onAlertTextUpdate={setAlertText}
       />
 
-      <div style={{paddingTop: "10px"}}/>
-      <LineGraph
-        xAccessor={{accessor: "date", displayText: "Date"}}
-        yAccessor={yAccessor}
-        data={userHighscores.skills_summary}
-      />
+      <Card className={classes.graphCard}>
+        <LineGraph
+          xAccessor={{accessor: "date", displayText: "Date"}}
+          yAccessor={yAccessor}
+          data={userHighscores.skills_summary}
+        />
+      </Card>
 
-      <div style={{paddingTop: "10px"}}/>
-      {displayUpdatedTime(oldestUpdate, recentUpdate)}
-      <div className={classes.tablesWrapper}>
-        <HighscoresTable
-          data={userHighscores.skills}
-          type="Skills"
-          timeframe={progressTimeframe}
-          onOldestUpdate={updateOldestUpdate}
-          onRecentUpdate={updateRecentUpdate}
-        />
-        <div className={classes.border} />
-        <HighscoresTable
-          data={userHighscores.bosses}
-          type="Bosses"
-          timeframe={progressTimeframe}
-        />
-      </div>
+      <Card className={classes.updateTimeCard}>
+        {displayUpdatedTime(oldestUpdate, recentUpdate)}
+      </Card>
+
+      <Card className={classes.tableCard}>
+        <div className={classes.tablesWrapper}>
+          <HighscoresTable
+            data={userHighscores.skills}
+            type="Skills"
+            timeframe={progressTimeframe}
+            onOldestUpdate={setOldestUpdate}
+            onRecentUpdate={setRecentUpdate}
+          />
+          <div className={classes.border} />
+          <HighscoresTable
+            data={userHighscores.bosses}
+            type="Bosses"
+            timeframe={progressTimeframe}
+          />
+        </div>
+      </Card>
     </div>
   );
 };

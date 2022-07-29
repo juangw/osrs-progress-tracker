@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from '../src/Components/Header'
-import { HomePage } from '../src/Components/HomePage';
+import { UsersPage } from '../src/Components/UsersPage';
 
-function App() {
+function Users() {
   const [isMounted, setIsMounted] = useState(true)
 
   useEffect(() => {
@@ -16,9 +16,9 @@ function App() {
   return (
     <div>
       <Header/>
-      <HomePage/>
+      <UsersPage/>
     </div>
   )
 }
 
-export default App
+export default Users

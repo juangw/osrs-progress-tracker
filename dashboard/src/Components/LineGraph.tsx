@@ -61,7 +61,6 @@ export const LineGraph: FC<LineGraphProps> = (props) => {
     };
 
     return (
-        // @ts-ignore
         <XYPlot
             width={1300}
             height={300}
