@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FC } from "react";
-import { Table, TableHead, TableRow, TableCell, TableBody, makeStyles, Theme } from "@material-ui/core";
+import { Table, TableHead, TableRow, TableCell, TableBody, Theme } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { cleanNumber } from "../Datasets/common";
 import { OldestUpdate, RecentUpdate, ProgressTimeframes } from "./UsersPage";
 
@@ -100,11 +101,11 @@ export const HighscoresTable: FC<TableProps> = (props) => {
     const getStyledCell = (value: number) => {
         if (value > 0) {
             return <TableCell align="left" className={classes.tableCellPositive}>{cleanNumber(value)}</TableCell>;
-        }
-        if (value < 0) {
+        } else if (value < 0) {
             return <TableCell align="left" className={classes.tableCellNegative}>{cleanNumber(value)}</TableCell>;
+        } else {
+          return <TableCell align="left" className={classes.tableCells}>{cleanNumber(value)}</TableCell>;
         }
-        return <TableCell align="left" className={classes.tableCells}>{cleanNumber(value)}</TableCell>;
     };
 
     const createRows = (tableType: string, key: string) => {

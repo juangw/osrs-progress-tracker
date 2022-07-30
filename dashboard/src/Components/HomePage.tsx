@@ -33,8 +33,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     boxShadow: "3px 3px 10px gray",
   },
   logo: {
-      height: 300,
-      width: 450,
       border: `5px solid ${theme.palette.secondary.main}`,
       borderRadius: "5px",
       marginRight: "20px",
@@ -43,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       textAlign: "left",
       fontWeight: "bold",
       fontSize: "15px",
+      margin: "10px",
   },
   enterUsernameCard: {
     background: theme.palette.primary.main,
@@ -110,12 +109,12 @@ export const HomePage: FC = () => {
 
       <Card className={classes.logoCard}>
           <div>
-            <img src="/oldSchoolLogo.jpg" alt="OSRS Logo" className={classes.logo} />
+            <img src="oldSchoolLogo.jpg" alt="OSRS Logo" className={classes.logo} height={300} width={450} />
           </div>
 
-          <div>
+          <div className={classes.logoText}>
             <h5>What is This Site for?</h5>
-            <p className={classes.logoText}>
+            <p>
               Track all of your Old School Runescape Progress here.
               By submitting your username below your account will beautomatically tracked daily for
               XP and boss KC gains.

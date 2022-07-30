@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { LineGraph } from "./LineGraph";
 import { HighscoresTable } from "./UsersTable";
 import { UserSearchFiltersCard } from "./UserSearchFiltersCard";
+import Skeleton from "@material-ui/lab/Skeleton";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -36,6 +37,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   tableCard: {
     background: theme.palette.primary.main,
+    margin: "20px",
+    border: `1px solid ${theme.palette.grey[500]}`,
+    boxShadow: "3px 3px 10px gray",
+  },
+  CardLoader: {
+    maxWidth: "none",
     margin: "20px",
     border: `1px solid ${theme.palette.grey[500]}`,
     boxShadow: "3px 3px 10px gray",
@@ -76,7 +83,8 @@ export interface RecentUpdate {
 }
 
 export const UsersPage: FC = () => {
-  const classes = useStyles();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const classes = useStyles(isLoading);
 
   const [alertStatus, setAlertStatus] = useState<AlertStatusTypes>("None");
   const [oldestUpdate, setOldestUpdate] = useState<string>("N/A");
@@ -149,37 +157,74 @@ export const UsersPage: FC = () => {
         onProgressTimeframeUpdate={setProgressTimeframe}
         onStatusUpdate={setAlertStatus}
         onAlertTextUpdate={setAlertText}
+        setIsUserPageLoading={setIsLoading}
       />
 
-      <Card className={classes.graphCard}>
-        <LineGraph
-          xAccessor={{accessor: "date", displayText: "Date"}}
-          yAccessor={yAccessor}
-          data={userHighscores.skills_summary}
-        />
-      </Card>
+      {
+        isLoading
+        ? <Skeleton className={classes.CardLoader} variant="rect">
+            <LineGraph
+              xAccessor={{accessor: "date", displayText: "Date"}}
+              yAccessor={yAccessor}
+              data={userHighscores.skills_summary}
+            />
+          </Skeleton>
+        : <Card className={classes.graphCard}>
+            <LineGraph
+              xAccessor={{accessor: "date", displayText: "Date"}}
+              yAccessor={yAccessor}
+              data={userHighscores.skills_summary}
+            />
+          </Card>
+      }
 
-      <Card className={classes.updateTimeCard}>
-        {displayUpdatedTime(oldestUpdate, recentUpdate)}
-      </Card>
+      {
+        isLoading
+        ? <Skeleton className={classes.CardLoader} variant="rect">
+            {displayUpdatedTime(oldestUpdate, recentUpdate)}
+          </Skeleton>
+        : <Card className={classes.updateTimeCard}>
+            {displayUpdatedTime(oldestUpdate, recentUpdate)}
+          </Card>
+      }
 
-      <Card className={classes.tableCard}>
-        <div className={classes.tablesWrapper}>
-          <HighscoresTable
-            data={userHighscores.skills}
-            type="Skills"
-            timeframe={progressTimeframe}
-            onOldestUpdate={setOldestUpdate}
-            onRecentUpdate={setRecentUpdate}
-          />
-          <div className={classes.border} />
-          <HighscoresTable
-            data={userHighscores.bosses}
-            type="Bosses"
-            timeframe={progressTimeframe}
-          />
-        </div>
-      </Card>
+      {
+        isLoading
+        ? <Skeleton className={classes.CardLoader} variant="rect">
+            <div className={classes.tablesWrapper}>
+              <HighscoresTable
+                data={userHighscores.skills}
+                type="Skills"
+                timeframe={progressTimeframe}
+                onOldestUpdate={setOldestUpdate}
+                onRecentUpdate={setRecentUpdate}
+              />
+              <div className={classes.border} />
+              <HighscoresTable
+                data={userHighscores.bosses}
+                type="Bosses"
+                timeframe={progressTimeframe}
+              />
+            </div>
+          </Skeleton>
+        : <Card className={classes.tableCard}>
+            <div className={classes.tablesWrapper}>
+              <HighscoresTable
+                data={userHighscores.skills}
+                type="Skills"
+                timeframe={progressTimeframe}
+                onOldestUpdate={setOldestUpdate}
+                onRecentUpdate={setRecentUpdate}
+              />
+              <div className={classes.border} />
+              <HighscoresTable
+                data={userHighscores.bosses}
+                type="Bosses"
+                timeframe={progressTimeframe}
+              />
+            </div>
+          </Card>
+      }
     </div>
   );
 };

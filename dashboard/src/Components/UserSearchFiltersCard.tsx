@@ -1,5 +1,5 @@
-import React, { useState, FC } from "react";
-import { Grid, Card, CardHeader, CardContent } from "@material-ui/core";
+import React, { useState, FC, Dispatch, SetStateAction } from "react";
+import { Grid, Card, CardHeader, CardContent, Button } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
 import { Select, MenuItem } from "@material-ui/core";
@@ -7,56 +7,65 @@ import moment from "moment";
 import { getHistoricalHighscoresForUser } from "../Datasets/highscores";
 import { translateDataset } from "../Datasets/common";
 import {
-    SummaryTypes,
-    ProgressTimeframes,
-    HighscoresData,
-    DataUpdate,
-    SummaryTypeUpdate,
-    ProgressTimeframeUpdate,
-    StatusUpdate,
-    TextUpdate
+  SummaryTypes,
+  ProgressTimeframes,
+  HighscoresData,
+  DataUpdate,
+  SummaryTypeUpdate,
+  ProgressTimeframeUpdate,
+  StatusUpdate,
+  TextUpdate
 } from "./UsersPage";
 import { useQuery } from "react-query";
 import { Theme } from "@material-ui/core";
 
 
 const useStyles = makeStyles((theme: Theme) => ({
-    enterUsernameCard: {
-        background: theme.palette.primary.main,
-        color: theme.palette.secondary.main,
-        margin: "20px",
-        height: "30%",
-        border: `1px solid ${theme.palette.grey[500]}`,
-        boxShadow: "3px 3px 10px gray",
-    },
-    textField: {
-        color: theme.palette.secondary.main,
-    },
-    textFieldOutline: {
-        borderColor: theme.palette.secondary.main,
-    },
-    selectField: {
-        color: theme.palette.secondary.main,
-    },
-    icon: {
-        fill: theme.palette.secondary.main,
-    }
+  enterUsernameCard: {
+    background: theme.palette.primary.main,
+    color: theme.palette.secondary.main,
+    margin: "20px 20px 0px 20px",
+    height: "30%",
+    border: `1px solid ${theme.palette.grey[500]}`,
+    boxShadow: "3px 3px 10px gray",
+  },
+  textField: {
+    color: theme.palette.secondary.main,
+  },
+  textFieldOutline: {
+    borderColor: theme.palette.secondary.main,
+  },
+  selectField: {
+    color: theme.palette.secondary.main,
+    margin: "10px",
+  },
+  button: {
+    background: theme.palette.primary.main,
+    borderColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.main,
+    marginLeft: "10px",
+  },
+  icon: {
+    fill: theme.palette.secondary.main,
+  }
 }));
 
 export const UserSearchFiltersCard: FC<{
-    onUserDataUpdate: DataUpdate,
-    onSummaryTypeUpdate: SummaryTypeUpdate,
-    onProgressTimeframeUpdate: ProgressTimeframeUpdate,
-    onStatusUpdate: StatusUpdate,
-    onAlertTextUpdate: TextUpdate
+  onUserDataUpdate: DataUpdate,
+  onSummaryTypeUpdate: SummaryTypeUpdate,
+  onProgressTimeframeUpdate: ProgressTimeframeUpdate,
+  onStatusUpdate: StatusUpdate,
+  onAlertTextUpdate: TextUpdate,
+  setIsUserPageLoading: Dispatch<SetStateAction<boolean>>
 }> = (
-    {
-        onUserDataUpdate,
-        onSummaryTypeUpdate,
-        onProgressTimeframeUpdate,
-        onStatusUpdate,
-        onAlertTextUpdate
-    }
+  {
+    onUserDataUpdate,
+    onSummaryTypeUpdate,
+    onProgressTimeframeUpdate,
+    onStatusUpdate,
+    onAlertTextUpdate,
+    setIsUserPageLoading,
+  }
 ) => {
     const classes = useStyles();
     const [textFieldValue, setTextFieldValue] = useState("");
@@ -77,11 +86,11 @@ export const UserSearchFiltersCard: FC<{
     };
 
     useQuery(
-        `${username}-${timeframe}-timeseries-data`,
-        () =>
+      `${username}-${timeframe}-timeseries-data`,
+      () => {
+        setIsUserPageLoading(true);
         getHistoricalHighscoresForUser({username: username, startDate: timeframe, pagination: [1, 100000], sortBy: ["created_date:asc"]})
         .then(result => {
-            console.log(result);
             if (!result.data.length) {
                 onAlertTextUpdate("Unable to Find Account, Enter Username to Begin Tracking");
                 onStatusUpdate("Warning");
@@ -89,9 +98,11 @@ export const UserSearchFiltersCard: FC<{
             }
             const dataset = translateDataset(result.data);
             onUserDataUpdate(getExperienceGained(dataset));
-        }),
-        { enabled: username !== null }
-      );
+            setIsUserPageLoading(false);
+        });
+      },
+      { enabled: username !== null }
+    );
 
     return (
       <Grid
@@ -117,11 +128,8 @@ export const UserSearchFiltersCard: FC<{
                   variant="outlined"
                   value={textFieldValue}
                   onChange={e => setTextFieldValue(e.target.value)}
-                  onBlur={() => setUsername(textFieldValue)}
-                  onKeyDown={(e) => {if (e.key === "Enter") { setUsername(textFieldValue); }}}
                   margin="normal"
                 />
-                <div style={{paddingRight: "10px"}}/>
                 <Select
                   className={classes.selectField}
                   labelId="label"
@@ -138,7 +146,6 @@ export const UserSearchFiltersCard: FC<{
                   <MenuItem value="totalLevel">Total Level</MenuItem>
                   <MenuItem value="ranking">Ranking</MenuItem>
                 </Select>
-                <div style={{paddingRight: "10px"}}/>
                 <Select
                   className={classes.selectField}
                   labelId="label"
@@ -176,6 +183,15 @@ export const UserSearchFiltersCard: FC<{
                   <MenuItem value="yearly">Yearly</MenuItem>
                   <MenuItem value="allTime">All Time</MenuItem>
                 </Select>
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  onClick={() => {
+                    setUsername(textFieldValue);
+                  }}
+                >
+                  Search
+                </Button>
               </Grid>
             </CardContent>
           </Card>
