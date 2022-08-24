@@ -118,6 +118,8 @@ class TestHighscores(unittest.TestCase):
         102276,263
         -1,-1
         -1,-1
+        -1,-1
+        -1,-1
         70818,52
         21410,76
         159596,283
@@ -130,6 +132,6 @@ class TestHighscores(unittest.TestCase):
         highscores_controller.set_user_highscores()
 
         # Then
-        self.assertEqual(len(highscores_controller.bosses.to_json()), 48)
+        self.assertEqual(len(highscores_controller.bosses.to_json()), 50)
         self.assertEqual(len(highscores_controller.minigames.to_json()), 14)
         self.assertEqual(len(highscores_controller.skills.to_json()), 23)

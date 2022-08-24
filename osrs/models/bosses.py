@@ -46,6 +46,8 @@ class Bosses:
     theatre_of_blood: Mapping[str, str] = field(default_factory=dict)
     theatre_of_blood_hard_mode: Mapping[str, str] = field(default_factory=dict)
     thermonuclear_smoke_devil: Mapping[str, str] = field(default_factory=dict)
+    tombs_of_amascut: Mapping[str, str] = field(default_factory=dict)
+    tombs_of_amascut_expert_mode: Mapping[str, str] = field(default_factory=dict)
     tzkal_zuk: Mapping[str, str] = field(default_factory=dict)
     tztok_jad: Mapping[str, str] = field(default_factory=dict)
     venenatis: Mapping[str, str] = field(default_factory=dict)
