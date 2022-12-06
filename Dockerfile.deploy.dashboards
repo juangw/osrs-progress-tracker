@@ -21,6 +21,6 @@ RUN curl -L https://github.com/a8m/envsubst/releases/download/v1.1.0/envsubst-`u
 COPY ./nginx/nginx.conf /etc/nginx/nginx.template
 COPY --from=build-stage /usr/src/app/dashboard/out /usr/share/nginx/html
 
-EXPOSE 3000 80
+EXPOSE 8080
 
 CMD ["/bin/sh", "-c", "envsubst < /etc/nginx/nginx.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]

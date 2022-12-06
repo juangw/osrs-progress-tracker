@@ -21,13 +21,13 @@ if os.environ.get("DEBUG_QUERY", False):
 origins = [
     "http://localhost:3000",
     "http://localhost:5000",  # Local front end
-    "https://osrs-progress-tracker-ui.herokuapp.com",  # Production front end
+    "https://osrs-progress-tracker-ui.fly.dev",  # Production front end
 ]
 
 app = FastAPI(
     servers=[
         {
-            "url": "https://osrs-progress-tracker.herokuapp.com",
+            "url": "https://osrs-progress-tracker.fly.dev",
             "description": "production environment",
         }
     ],

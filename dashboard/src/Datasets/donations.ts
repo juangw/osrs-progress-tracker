@@ -5,7 +5,7 @@ export async function getDonationIntent(amount: number, currency: string) {
     if (environment === "development") {
         baseUrl = "http://localhost:8000/donate_intent";
     } else {
-        baseUrl = "https://osrs-progress-tracker.herokuapp.com/donate_intent";
+        baseUrl = "https://osrs-progress-tracker.fly.dev/donate_intent";
     }
 
     const response = await fetch(`${baseUrl}?amount=${amount}&currency=${currency}`);

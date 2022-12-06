@@ -11,6 +11,6 @@ CONFIG = {
     },
     "prod": {
         "HIGHSCORE_ROWS": 88,
-        "API_URL": "https://osrs-progress-tracker.herokuapp.com",
+        "API_URL": "https://osrs-progress-tracker.fly.dev",
     },
 }

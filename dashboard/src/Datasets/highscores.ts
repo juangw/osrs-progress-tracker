@@ -23,7 +23,7 @@ export async function getHistoricalHighscoresForUser({
     if (environment === "development") {
         baseUrl = "http://localhost:8000/highscores/historical";
     } else {
-        baseUrl = "https://osrs-progress-tracker.herokuapp.com/highscores/historical";
+        baseUrl = "https://osrs-progress-tracker.fly.dev/highscores/historical";
     }
 
     if (typeof startDate !== "undefined") {
@@ -51,7 +51,7 @@ export async function postHighscoresForUser(username: string) {
     if (environment === "development") {
         baseUrl = "http://localhost:8000/highscores";
     } else {
-        baseUrl = "https://osrs-progress-tracker.herokuapp.com/highscores";
+        baseUrl = "https://osrs-progress-tracker.fly.dev/highscores";
     }
 
     let data;
