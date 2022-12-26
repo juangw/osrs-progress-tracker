@@ -17,7 +17,7 @@ import os
 DB_URI = CONFIG[ENV].get("DB_URI")
 URL = os.environ.get("DATABASE_URL", DB_URI)
 
-engine = sqlalchemy.create_engine(URL)
+engine = sqlalchemy.create_engine(URL, pool_pre_ping=True))
 Base = declarative_base()
 session_factory = sessionmaker(bind=engine)
 session = scoped_session(session_factory)
