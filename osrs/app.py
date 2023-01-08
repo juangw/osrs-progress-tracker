@@ -42,7 +42,7 @@ app.add_middleware(
 )
 
 # Start scheduling backend
-job_defaults = {"coalesce": False, "max_instances": 1}
+job_defaults = {"coalesce": False, "max_instances": 1, "misfire_grace_time": 15 * 60}
 cron = AsyncIOScheduler(job_defaults=job_defaults, daemon=True)
 
 
