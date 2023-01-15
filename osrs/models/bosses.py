@@ -37,6 +37,7 @@ class Bosses:
     nightmare: Mapping[str, str] = field(default_factory=dict)
     phosanis_nightmare: Mapping[str, str] = field(default_factory=dict)
     obor: Mapping[str, str] = field(default_factory=dict)
+    phantom_muspah: Mapping[str, str] = field(default_factory=dict)
     sarachnis: Mapping[str, str] = field(default_factory=dict)
     scorpia: Mapping[str, str] = field(default_factory=dict)
     skotizo: Mapping[str, str] = field(default_factory=dict)
