@@ -7,6 +7,8 @@ class Minigames:
     """Class for keeping track of minigame stats"""
 
     league_points: Mapping[str, str] = field(default_factory=dict)
+    bounty_hunter_v2: Mapping[str, str] = field(default_factory=dict)
+    bounty_hunter_rogue_v2: Mapping[str, str] = field(default_factory=dict)
     bounty_hunter: Mapping[str, str] = field(default_factory=dict)
     bounty_hunter_rogue: Mapping[str, str] = field(default_factory=dict)
     all_clue_scrolls: Mapping[str, str] = field(default_factory=dict)
