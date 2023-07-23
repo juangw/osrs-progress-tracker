@@ -5,17 +5,21 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
+from apscheduler.triggers.interval import IntervalTrigger
 from typing import Iterable, Mapping, Any
 
 import requests
+import logging
 import aiohttp
 import asyncio
 import os
 
-if os.environ.get("DEBUG_QUERY", False):
-    import logging
+# Configure the root log level and ensure all logs are sent to Gunicorn's error log.
+gunicorn_error_logger = logging.getLogger("gunicorn.error")
+logging.root.handlers.extend(gunicorn_error_logger.handlers)
+logging.root.setLevel(logging.INFO)
 
-    logging.basicConfig()
+if os.environ.get("DEBUG_QUERY", False):
     logging.getLogger("sqlalchemy.engine").setLevel(logging.INFO)
 
 origins = [
@@ -46,7 +50,7 @@ job_defaults = {"coalesce": False, "max_instances": 1, "misfire_grace_time": 15 
 cron = AsyncIOScheduler(job_defaults=job_defaults, daemon=True)
 
 
-def get_player_stats():
+async def get_player_stats():
     def get_users() -> Iterable[Mapping[str, Any]]:
         url = CONFIG[ENV].get("API_URL")
         return requests.get(url=f"{url}/highscores/usernames").json()
@@ -55,24 +59,25 @@ def get_player_stats():
         url = CONFIG[ENV].get("API_URL")
         username, account_type = user_data["username"], user_data["account_type"]
         async with aiohttp.ClientSession() as session:
-            response = session.post(
+            response = await session.post(
                 url=f"{url}/highscores/{username}?account_type={account_type}"
             )
-            return await response
+            logging.info(f"{response.url} - {response.status}")
+            return
 
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
     users = get_users()
     try:
-        loop.run_until_complete(
-            asyncio.gather(*[insert_user_stats(user) for user in users])
-        )
+        await asyncio.gather(*[insert_user_stats(user) for user in users])
     except Exception as e:
         print(e)
 
 
-# Start backend cron job once per day at Noon
-cron_trigger = CronTrigger(hour=12, timezone="America/Detroit")
+async def keep_instance_alive():
+    url = CONFIG[ENV].get("API_URL")
+    async with aiohttp.ClientSession() as session:
+        response = await session.get(url=f"{url}/healthcheck")
+        logging.info(f"{response.url} - {response.status}")
+        return
 
 
 @app.on_event("startup")
@@ -86,5 +91,16 @@ def startup():
     from osrs.routes import grand_exchange  # noqa: F401
     from osrs.routes import donations  # noqa: F401
 
-    cron.add_job(get_player_stats, cron_trigger)
+    #  Start backend crone job once per day at noon to fetch user stats
+    cron.add_job(get_player_stats, CronTrigger(hour=12, timezone="America/Detroit"))
+    cron.add_job(
+        keep_instance_alive, IntervalTrigger(minutes=10, timezone="America/Detroit")
+    )
     cron.start()
+
+    try:
+        # Keep the main thread running, as the scheduler runs in the background
+        asyncio.get_event_loop()
+    except (KeyboardInterrupt, SystemExit):
+        # Gracefully shutdown the scheduler on keyboard interrupt or system exit
+        cron.shutdown()
