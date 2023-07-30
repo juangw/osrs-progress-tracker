@@ -94,7 +94,7 @@ def startup():
     #  Start backend crone job once per day at noon to fetch user stats
     cron.add_job(get_player_stats, CronTrigger(hour=12, timezone="America/Detroit"))
     cron.add_job(
-        keep_instance_alive, IntervalTrigger(minutes=10, timezone="America/Detroit")
+        keep_instance_alive, IntervalTrigger(minutes=1, timezone="America/Detroit")
     )
     cron.start()
 
