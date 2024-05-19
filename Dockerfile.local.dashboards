@@ -9,8 +9,9 @@ ADD ./dashboard/package.json ./package.json
 RUN yarn install
 ADD ./dashboard .
 ENV PATH="./node_modules/.bin:${PATH}"
+ENV HOST=0.0.0.0
 
 EXPOSE 3000
 
 # Command to run the app
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "run", "start" ]

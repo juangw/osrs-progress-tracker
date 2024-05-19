@@ -20,7 +20,8 @@ pip3 install -r requirements.txt
 
 Start the API locally (remove the --reload for non development)
 ```bash
-uvicorn osrs.app:app --host=0.0.0.0 --port=8000
+uvicorn osrs.app:app --reload --host=0.0.0.0 --port=8000
+python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn --reload --host 0.0.0.0 --port 8000 osrs.app:app
 ```
 
 # Setting up with Docker
@@ -68,3 +69,8 @@ print(ge.get_item_search(category="1", alpha="a", page="1"))
 print(ge.get_item_detail(item_id="50"))
 print(ge.get_item_graph(item_id="50"))
 ```
+
+
+Debugging
+1. Grab docker container's IP address for osrs-progress-tracker-backend-app with `docker inspect <CID>`
+2. Put as host in your debug json, and put `/usr/src/app/` as the remote path

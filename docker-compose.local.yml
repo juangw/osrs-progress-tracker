@@ -1,4 +1,3 @@
-version: "3"
 services:
   osrs-progress-tracker-backend-app:
     tty: true
@@ -16,6 +15,8 @@ services:
       - "postgres"
     container_name: "osrs-progress-tracker-backend-app"
     image: "osrs-progress-tracker/backend"
+    entrypoint:
+      - "/bin/bash"
 
   osrs-progress-tracker-frontend-app:
     tty: true
