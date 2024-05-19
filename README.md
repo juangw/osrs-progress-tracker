@@ -70,7 +70,8 @@ print(ge.get_item_detail(item_id="50"))
 print(ge.get_item_graph(item_id="50"))
 ```
 
-
 Debugging
 1. Grab docker container's IP address for osrs-progress-tracker-backend-app with `docker inspect <CID>`
 2. Put as host in your debug json, and put `/usr/src/app/` as the remote path
+3. Run `pip3 install debugpy && python -m debugpy --wait-for-client --listen 0.0.0.0:5678 -m uvicorn --reload --host 0.0.0.0 --port 8000 osrs.app:app`
+
