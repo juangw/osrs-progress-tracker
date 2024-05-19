@@ -7,6 +7,7 @@ class Minigames:
     """Class for keeping track of minigame stats"""
 
     league_points: Mapping[str, str] = field(default_factory=dict)
+    deadman_points: Mapping[str, str] = field(default_factory=dict)
     bounty_hunter_v2: Mapping[str, str] = field(default_factory=dict)
     bounty_hunter_rogue_v2: Mapping[str, str] = field(default_factory=dict)
     bounty_hunter: Mapping[str, str] = field(default_factory=dict)
@@ -22,6 +23,7 @@ class Minigames:
     pvp_arena: Mapping[str, str] = field(default_factory=dict)
     soul_wars: Mapping[str, str] = field(default_factory=dict)
     guardians_of_the_rift: Mapping[str, str] = field(default_factory=dict)
+    colosseum_glory: Mapping[str, str] = field(default_factory=dict)
 
     def to_json(self):
         return self.__dict__

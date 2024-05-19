@@ -6,7 +6,7 @@ from osrs.models.bosses import Bosses
 from osrs.exceptions import OutdatedError, NoUserError
 from osrs.config import CONFIG, ENV
 
-from typing import Iterable
+from typing import Iterable, List
 
 import requests
 
@@ -16,7 +16,7 @@ class Highscores(object):
         self.username = username
         self.account_type = account_type
 
-        self.base_url = "http://services.runescape.com"
+        self.base_url = "https://services.runescape.com"
 
         self.skills_summary = SkillsSummary()
         self.skills = Skills()
@@ -60,7 +60,7 @@ class Highscores(object):
             self.skills_summary.total_experience,
         ) = skills_summary
 
-    def _set_skills(self, skills: Iterable[Iterable[str]]) -> None:
+    def _set_skills(self, skills: List[List[str]]) -> None:
         for index, attribute in enumerate(self.skills.__dict__):
             setattr(
                 self.skills,
@@ -72,7 +72,7 @@ class Highscores(object):
                 },
             )
 
-    def _set_minigames(self, minigames: Iterable[Iterable[str]]) -> None:
+    def _set_minigames(self, minigames: List[List[str]]) -> None:
         for index, attribute in enumerate(self.minigames.__dict__):
             setattr(
                 self.minigames,
@@ -80,7 +80,7 @@ class Highscores(object):
                 {"ranking": minigames[index][0], "count": minigames[index][1]},
             )
 
-    def _set_bosses(self, bosses: Iterable[Iterable[str]]) -> None:
+    def _set_bosses(self, bosses: List[List[str]]) -> None:
         for index, attribute in enumerate(self.bosses.__dict__):
             setattr(
                 self.bosses,

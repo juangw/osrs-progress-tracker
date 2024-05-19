@@ -43,10 +43,10 @@ docker run --rm -it -p 3000:3000 -v "$(pwd):/usr/src/app/dashboard" --network=ho
 
 Or with docker-compose
 ```
-docker-compose -f docker-compose.local.yml build
-docker-compose -f docker-compose.local.yml up -d
-docker-compose exec osrs-progress-tracker-backend-app bash
-docker-compose exec osrs-progress-tracker-frontend-app bash
+docker compose -f docker-compose.local.yml build
+docker compose -f docker-compose.local.yml up -d
+docker compose exec osrs-progress-tracker-backend-app bash
+docker compose exec osrs-progress-tracker-frontend-app bash
 ```
 
 Or you can just access the data through the module itself like the example below
